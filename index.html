@@ -75,7 +75,8 @@
   </div>
   <div class="hero-home-layout">
     <div class="hi">
-      <h1 class="h1">Maak AI onderdeel<br><span class="ol">van je bedrijf</span><br><span class="pk">met trainingen, strategie</span><br>en maatwerk automatisering</h1>
+      <h1 class="h1 h1-greeting" id="home-greeting">Goede<span class="hg-morgen">MORGEN<span class="hg-dot">.</span></span><span class="hg-period" hidden></span></h1>
+      <p class="h1-sub">Maak AI onderdeel <span class="ol">van je bedrijf</span><br><span class="pk">met trainingen, strategie</span> en maatwerk automatisering</p>
       <div class="hctas">
         <button class="btn-o" onclick="scrollToId('home-aanvraag')">Plan een kennismakingsgesprek</button>
         <button class="btn-o" onclick="nav('home','aanbod')">Kies de juiste route</button>
@@ -1965,6 +1966,23 @@
 
 
 <script>
+/* Home: Goede~~MORGEN.~~ middag/avond/nacht — past zich aan op het tijdstip */
+(function(){
+  function paint(){
+    const root=document.getElementById('home-greeting');
+    if(!root)return;
+    const h=new Date().getHours();
+    const period=h<6?'nacht':h<12?null:h<18?'middag':'avond';
+    const morgen=root.querySelector('.hg-morgen');
+    const periodEl=root.querySelector('.hg-period');
+    morgen.classList.toggle('struck',!!period);
+    if(period){periodEl.textContent=' '+period;periodEl.hidden=false;}
+    else{periodEl.textContent='';periodEl.hidden=true;}
+  }
+  paint();
+  setInterval(paint,60000);
+})();
+
 const cur=document.getElementById('cur');
 document.addEventListener('mousemove',e=>{cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px'});
 document.addEventListener('mouseover',e=>{
