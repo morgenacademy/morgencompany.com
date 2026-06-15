@@ -24,6 +24,7 @@ const EPISODE_TITLE_OVERRIDES = {
   1: 'Wat nodig is voor echte AI-adoptie',
 };
 const EPISODE_DESCRIPTION_OVERRIDES = {
+  6: 'Op zijn 12e hackte hij een bank. Frank Plattel laat zien hoe makkelijk je ergens binnenkomt — en dat de zwakste schakel vaak niet digitaal is. We bespreken wat AI verandert aan cybersecurity, en waar jij op moet letten.',
   3: 'De invloed van AI op ons werk is geen ver-van-je-bedshow meer. Ontdek welke skills het belangrijkst worden voor jou als mens.',
 };
 
