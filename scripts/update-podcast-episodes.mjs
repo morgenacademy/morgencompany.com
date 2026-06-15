@@ -12,6 +12,7 @@ const PAGE_PATHS = [
 ].map((path) => new URL(path, import.meta.url));
 const MAX_EPISODES = 5;
 const SPOTIFY_EPISODE_URLS = {
+  6: 'https://open.spotify.com/episode/5J82utbWo2ixzjO9zUoa3t',
   5: 'https://open.spotify.com/episode/466h9Mw2SNkeBkjrTtWmLz',
   4: 'https://open.spotify.com/episode/1dY7uU6xHQrcWKQQI3nhNw',
   3: 'https://open.spotify.com/episode/791EAnMDi47iWF8vKCIEPJ',
