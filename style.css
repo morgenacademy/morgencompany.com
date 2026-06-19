@@ -256,6 +256,10 @@ nav.scrolled {
   object-position: 62% 52%;
   animation: academyHeroSecondary 14s ease-in-out infinite;
 }
+/* Consultancy-hero: Tilburg-foto horizontaal spiegelen (publiek kijkt naar de tekst toe) */
+#page-consultancy .academy-hero-photo-primary {
+  transform: scaleX(-1);
+}
 .about-hero .academy-hero-media {
   --academy-hero-opacity: .76;
 }
