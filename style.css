@@ -265,21 +265,11 @@ nav.scrolled {
     radial-gradient(circle at 74% 50%, rgba(155,111,207,.1) 0%, transparent 42%);
 }
 .about-hero .academy-hero-photo-primary {
-  object-position: 58% 42%;
-  transform: scaleX(-1);
-  animation: aboutHeroPhoto1 21s ease-in-out infinite;
+  object-position: 58% 44%;
 }
 .about-hero .academy-hero-photo-secondary {
-  object-position: 58% 44%;
-  animation: aboutHeroPhoto2 21s ease-in-out infinite;
-}
-.about-hero .academy-hero-photo-tertiary {
   object-position: center 40%;
-  animation: aboutHeroPhoto3 21s ease-in-out infinite;
 }
-@keyframes aboutHeroPhoto1 { 0%, 28% { opacity: var(--academy-hero-opacity); } 33%, 94% { opacity: 0; } 100% { opacity: var(--academy-hero-opacity); } }
-@keyframes aboutHeroPhoto2 { 0%, 28% { opacity: 0; } 33%, 61% { opacity: var(--academy-hero-opacity); } 66%, 100% { opacity: 0; } }
-@keyframes aboutHeroPhoto3 { 0%, 61% { opacity: 0; } 66%, 94% { opacity: var(--academy-hero-opacity); } 100% { opacity: 0; } }
 @keyframes academyHeroPrimary {
   0%, 42% { opacity: var(--academy-hero-opacity); }
   50%, 92% { opacity: 0; }
@@ -292,15 +282,13 @@ nav.scrolled {
 }
 @media (prefers-reduced-motion: reduce) {
   .academy-hero-photo-primary,
-  .academy-hero-photo-secondary,
-  .academy-hero-photo-tertiary {
+  .academy-hero-photo-secondary {
     animation: none !important;
   }
   .academy-hero-photo-primary {
     opacity: var(--academy-hero-opacity);
   }
-  .academy-hero-photo-secondary,
-  .academy-hero-photo-tertiary {
+  .academy-hero-photo-secondary {
     opacity: 0;
   }
 }
