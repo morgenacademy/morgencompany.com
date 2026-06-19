@@ -605,6 +605,25 @@ nav.scrolled {
 /* ── 12. Opleidingen intro sectie ── */
 .lbintro { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; margin-bottom: 4rem; }
 .lbintro-p { font-size: .95rem; line-height: 1.8; color: var(--text-secondary); }
+.practice-photo {
+  margin: 0 0 3rem;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: var(--shadow);
+}
+.practice-photo img {
+  width: 100%;
+  max-height: 440px;
+  object-fit: cover;
+  object-position: center 40%;
+  display: block;
+  transition: transform .5s ease;
+}
+.practice-photo:hover img { transform: scale(1.025); }
+@media (max-width: 720px) {
+  .practice-photo img { max-height: 280px; }
+}
 
 /* ── 13. Toolselector ── */
 .toolselector-wrap {
