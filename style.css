@@ -502,6 +502,26 @@ nav.scrolled {
 }
 @keyframes logoScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
+/* Logo-band label — verwijst naar /projecten */
+.logo-band-label {
+  position: relative; z-index: 3;
+  display: flex; align-items: center; justify-content: center;
+  flex-wrap: wrap; gap: .55rem;
+  margin: 0 0 1.7rem; padding: 0 1rem;
+  font-size: .72rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .18em;
+  color: var(--text-secondary);
+}
+.logo-band-label .lbl-cta {
+  display: inline-flex; align-items: center; gap: .4rem;
+  color: var(--orange);
+}
+.logo-band-label .lbl-cta .arrow { transition: transform .25s; }
+#page-home .logo-band:hover .logo-band-label .lbl-cta .arrow,
+#page-home .logo-band:focus-visible .logo-band-label .lbl-cta .arrow {
+  transform: translateX(4px);
+}
+
 /* ── 10. Gedeelde sectie-elementen ── */
 .slabel {
   font-size: .65rem; font-weight: 700;
@@ -1525,7 +1545,16 @@ nav.scrolled {
 
 /* ── 17. Trust sectie ── */
 .trust-section { padding: 5rem 4rem; position: relative; z-index: 1; }
-#page-home .trust-section { padding: 7rem 4rem 5.5rem; }
+#page-home .trust-section { padding: 7rem 4rem 5.5rem; overflow: hidden; }
+#page-home .trust-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(rgba(12,8,24,.82), rgba(12,8,24,.92)),
+    url("/Fotos/Harmen%20training%20Gemeente%20Tilburg%201.jpg") center/cover no-repeat;
+}
 .trgst { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
 .tquote {
   font-weight: 700;
