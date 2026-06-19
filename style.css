@@ -256,10 +256,6 @@ nav.scrolled {
   object-position: 62% 52%;
   animation: academyHeroSecondary 14s ease-in-out infinite;
 }
-/* Consultancy-hero: Tilburg-foto horizontaal spiegelen (publiek kijkt naar de tekst toe) */
-#page-consultancy .academy-hero-photo-primary {
-  transform: scaleX(-1);
-}
 .about-hero .academy-hero-media {
   --academy-hero-opacity: .76;
 }
@@ -1448,6 +1444,14 @@ nav.scrolled {
 .academy-photo-card-karin img {
   object-position: center 30%;
 }
+.academy-photo-card-event {
+  grid-column: 2 / 3;
+  grid-row: 4 / span 2;
+  transform: translateY(1rem) rotate(-1deg);
+}
+.academy-photo-card-event img {
+  object-position: center 45%;
+}
 
 @media (max-width: 1024px) {
   .why-morgen {
@@ -1474,7 +1478,8 @@ nav.scrolled {
   .academy-photo-card-tall,
   .academy-photo-card-stage,
   .academy-photo-card-detail,
-  .academy-photo-card-karin {
+  .academy-photo-card-karin,
+  .academy-photo-card-event {
     grid-column: auto;
     grid-row: auto;
     transform: none;
