@@ -2995,6 +2995,7 @@ footer {
 .academy-route-photo img:nth-child(2) { animation: routeP2 24s ease-in-out infinite; }
 .academy-route-photo img:nth-child(3) { animation: routeP3 24s ease-in-out infinite; }
 .academy-route-photo img:nth-child(4) { animation: routeP4 24s ease-in-out infinite; }
+.academy-route-photo img:nth-child(3) { object-position: 76% 40%; } /* FCDB: Karin staat rechts in beeld */
 @keyframes routeP1 { 0%,21%{opacity:1} 25%,96%{opacity:0} 100%{opacity:1} }
 @keyframes routeP2 { 0%,21%{opacity:0} 25%,46%{opacity:1} 50%,100%{opacity:0} }
 @keyframes routeP3 { 0%,46%{opacity:0} 50%,71%{opacity:1} 75%,100%{opacity:0} }
