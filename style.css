@@ -543,6 +543,14 @@ nav.scrolled {
 .anim .reveal { opacity: 0; transform: translateY(24px); }
 .anim .reveal.visible { opacity: 1; transform: translateY(0); }
 
+/* Projecten thema-filters */
+.project-filters{display:flex;flex-wrap:wrap;gap:.55rem;justify-content:center;align-items:center;max-width:880px;margin:0 auto 2.6rem;padding:0 1rem}
+.pfilter{font-family:inherit;font-size:.88rem;font-weight:600;letter-spacing:.01em;color:rgba(255,255,255,.72);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:.5rem 1.15rem;cursor:pointer;transition:color .2s,background .2s,border-color .2s}
+.pfilter:hover{color:#fff;border-color:rgba(255,255,255,.34)}
+.pfilter.is-active{color:#0C0818;background:var(--orange);border-color:var(--orange)}
+.pfilter:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+@media (max-width:600px){.pfilter{font-size:.8rem;padding:.45rem .9rem}}
+
 .pgrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4.5rem; align-items: center; }
 .ptitle {
   font-weight: 900;
@@ -2753,8 +2761,9 @@ footer {
 }
 .project-image-contain img {
   object-fit: contain;
+  object-position: center;
   border-radius: calc(var(--radius-lg) - 1rem);
-  background: rgba(12,8,24,.62);
+  background: #fff;
 }
 .project-copy {
   padding: 1.45rem;
@@ -2767,6 +2776,8 @@ footer {
   letter-spacing: .16em;
   text-transform: uppercase;
 }
+.project-clients{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.85rem}
+.project-clients .project-client{margin-bottom:0}
 .project-client {
   display: inline-flex;
   align-items: center;
