@@ -1,7 +1,0 @@
-PR,URL,Title,Content type,Is rendered page,HTTP status code,Organic traffic,Is in sitemap,Redirect URL,Redirect URL code,Redirect URL patch,Redirect URL patch status,Referenced in sitemaps,No. of all inlinks
-20,https://morgencompany.com/academy,,text/html,false,301,0,true,https://morgencompany.com/academy/,200,,,https://morgencompany.com/sitemap.xml,11
-20,https://morgencompany.com/technology,,text/html,false,301,0,true,https://morgencompany.com/technology/,200,,,https://morgencompany.com/sitemap.xml,11
-7,https://morgencompany.com/about,,text/html,false,301,0,true,https://morgencompany.com/about/,200,,,https://morgencompany.com/sitemap.xml,4
-7,https://morgencompany.com/company,,text/html,false,301,0,true,https://morgencompany.com/company/,200,,,https://morgencompany.com/sitemap.xml,4
-7,https://morgencompany.com/projecten,,text/html,false,301,0,true,https://morgencompany.com/projecten/,200,,,https://morgencompany.com/sitemap.xml,4
-7,https://morgencompany.com/consultancy,,text/html,false,301,0,true,https://morgencompany.com/consultancy/,200,,,https://morgencompany.com/sitemap.xml,4
