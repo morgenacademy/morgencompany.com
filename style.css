@@ -183,6 +183,7 @@ nav.scrolled {
 
 /* Nav-dropdown (TRAIN) */
 .nav-drop { position: relative; display: flex; align-items: center; }
+.nav-drop::after { content: ""; position: absolute; top: 100%; left: 0; right: 0; height: .9rem; }
 .nav-drop-toggle {
   font-family: 'Barlow', sans-serif;
   font-size: .82rem; font-weight: 700; letter-spacing: .12em;
@@ -3464,6 +3465,7 @@ footer {
     backdrop-filter: none; -webkit-backdrop-filter: none;
   }
   .nav-caret { display: none; }
+  .nav-drop::after { display: none; }
   .speaker-grid, .agent-show-grid, .project-list, .org-managers, .org-departments, .org-stats, .assistant-detail-grid { grid-template-columns: 1fr; }
   .action-showcase { background-size: 5.5rem 100%, auto, auto; }
   .action-copy h3 { font-size: clamp(2.6rem, 14vw, 4.8rem); }
