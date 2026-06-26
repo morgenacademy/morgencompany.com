@@ -181,6 +181,38 @@ nav.scrolled {
 }
 .nav-toggle span { display: block; width: 18px; height: 2px; background: var(--white); border-radius: 1px; }
 
+/* Nav-dropdown (TRAIN) */
+.nav-drop { position: relative; display: flex; align-items: center; }
+.nav-drop-toggle {
+  font-family: 'Barlow', sans-serif;
+  font-size: .82rem; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text-secondary);
+  background: none; border: none; padding: 0; cursor: pointer;
+  display: inline-flex; align-items: center; gap: .3rem; white-space: nowrap;
+  transition: color .2s;
+}
+.nav-drop:hover .nav-drop-toggle, .nav-drop:focus-within .nav-drop-toggle { color: var(--white); }
+.nav-caret { font-size: .65em; line-height: 1; transition: transform .2s; }
+.nav-drop:hover .nav-caret, .nav-drop:focus-within .nav-caret { transform: rotate(180deg); }
+.nav-sub {
+  position: absolute; top: 100%; left: 0; margin-top: .7rem;
+  min-width: 220px; list-style: none; padding: .4rem;
+  background: rgba(12, 8, 24, 0.97);
+  backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  display: none; flex-direction: column; gap: .1rem; z-index: 300;
+}
+.nav-drop:hover .nav-sub, .nav-drop:focus-within .nav-sub { display: flex; }
+.nav-sub a {
+  display: block; width: 100%; padding: .55rem .7rem;
+  border-radius: calc(var(--radius) - 8px);
+  font-size: .82rem; font-weight: 700; letter-spacing: .02em;
+  text-transform: none; color: var(--text-secondary);
+  white-space: nowrap; transition: background .2s, color .2s;
+}
+.nav-sub a:hover { background: var(--glass-bg); color: var(--white); }
+
 /* ── 6. Pagina-layout ── */
 .page { display: none; }
 .page.active { display: block; }
@@ -3423,6 +3455,15 @@ footer {
   body.nav-open .nav-links { display: flex; }
   .nav-links li { width: 100%; }
   .nav-links a { display: inline-flex; width: 100%; }
+  .nav-drop { width: 100%; flex-direction: column; align-items: flex-start; }
+  .nav-drop-toggle { width: 100%; justify-content: flex-start; }
+  .nav-sub {
+    position: static; display: flex; margin: .5rem 0 .25rem;
+    padding: 0 0 0 .9rem; min-width: 0;
+    background: none; border: none; box-shadow: none;
+    backdrop-filter: none; -webkit-backdrop-filter: none;
+  }
+  .nav-caret { display: none; }
   .speaker-grid, .agent-show-grid, .project-list, .org-managers, .org-departments, .org-stats, .assistant-detail-grid { grid-template-columns: 1fr; }
   .action-showcase { background-size: 5.5rem 100%, auto, auto; }
   .action-copy h3 { font-size: clamp(2.6rem, 14vw, 4.8rem); }
