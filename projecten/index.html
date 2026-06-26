@@ -1302,7 +1302,7 @@
       <div class="project-image project-image-contain"><img loading="lazy" src="/Afbeeldingen%20projecten/Klantportaal.png" alt="Screenshot van een klantportaal voor training en opvolging"></div>
       <div class="project-copy">
         <div class="project-meta">Klantportaal &#183; Training, workshop en opvolging</div>
-        <a class="project-client" href="https://morgenacademy.nl" target="_blank" rel="noopener noreferrer">Morgen Academy</a>
+        <a class="project-client" href="https://morgenacademy.nl">Morgen Academy</a>
         <h3>Een live klantportaal rond training en samenwerking.</h3>
         <p>Voor trajecten met klanten ontwikkelden we een portaal waarin deelnemers hulpmiddelen kunnen openen, kopiëren en downloaden. Ook vervolgacties, verdieping, aanvullende informatie en feedback lopen via dezelfde omgeving.</p>
         <div class="project-facts">
@@ -2172,8 +2172,7 @@ const academyLinks={
 function goToAcademy(destination='home'){
   const target=academyLinks[destination] || academyLinks.home;
   if(typeof target==='string'){
-    const newTab=window.open(target,'_blank','noopener,noreferrer');
-    if(!newTab)window.location.href=target;
+    window.location.href=target;
     return;
   }
   nav(target.page,target.anchor);
