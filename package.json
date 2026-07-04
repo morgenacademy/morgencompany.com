@@ -1,0 +1,11 @@
+{
+  "name": "morgencompany-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test netlify/functions/lib/"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.70.0"
+  }
+}
