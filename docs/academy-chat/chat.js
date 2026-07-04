@@ -146,26 +146,26 @@ function cardHtml(card) {
   const vervolg = (card.vervolg || [])
     .map(
       (v) =>
-        `<div class="follow-up-card" onclick="scrollToId('${v.sectionTarget}')" style="cursor:pointer">
-           <div class="follow-up-card-title">${esc(v.training)}</div>
-           <div class="follow-up-card-desc">${esc(v.description)}</div>
+        `<div class="ac-followup" onclick="scrollToId('${v.sectionTarget}')">
+           <div class="ac-followup-title">${esc(v.training)}</div>
+           <div class="ac-followup-desc">${esc(v.description)}</div>
          </div>`
     )
     .join('');
 
   return `
-    <div class="training-card">
-      <div class="training-card-header">
-        <h3 class="training-name">${esc(card.training)}</h3>
-        <span class="training-duration">${esc(card.duration)}</span>
+    <div class="ac-card">
+      <div class="ac-card-head">
+        <h3 class="ac-card-title">${esc(card.training)}</h3>
+        <span class="ac-card-duration">${esc(card.duration)}</span>
       </div>
-      <ul class="training-bullets">${card.bullets.map((b) => `<li>${esc(b)}</li>`).join('')}</ul>
+      <ul class="ac-card-bullets">${card.bullets.map((b) => `<li>${esc(b)}</li>`).join('')}</ul>
       <div class="ac-card-cta">
-        <a href="javascript:void(0)" onclick="scrollToId('ac-aanvraag')" class="btn btn-primary">Vraag dit aan</a>
-        <a href="javascript:void(0)" onclick="scrollToId('${card.sectionTarget}')" class="btn btn-secondary">Bekijk ${esc(card.sectionLabel.toLowerCase())}</a>
-        <a href="mailto:totmorgen@morgenacademy.nl" class="btn btn-secondary">Stuur ons een bericht</a>
+        <a href="javascript:void(0)" onclick="scrollToId('ac-aanvraag')" class="ac-btn ac-btn-primary">Vraag dit aan</a>
+        <a href="javascript:void(0)" onclick="scrollToId('${card.sectionTarget}')" class="ac-btn ac-btn-secondary">Bekijk ${esc(card.sectionLabel.toLowerCase())}</a>
+        <a href="mailto:totmorgen@morgenacademy.nl" class="ac-btn ac-btn-secondary">Stuur ons een bericht</a>
       </div>
-      ${vervolg ? `<div class="follow-up-paths"><p class="follow-up-intro">Logische vervolgstappen:</p><div class="follow-up-cards">${vervolg}</div></div>` : ''}
+      ${vervolg ? `<div class="ac-followups"><p class="ac-followups-intro">Logische vervolgstappen</p><div class="ac-followups-grid">${vervolg}</div></div>` : ''}
     </div>`;
 }
 
@@ -174,9 +174,9 @@ function fallbackHtml() {
     <div class="ac-fallback">
       <p>De AI-wijzer is even niet bereikbaar. Je kunt direct een aanvraag doen of ons mailen — we reageren meestal binnen 24 uur.</p>
       <div class="ac-card-cta">
-        <a href="javascript:void(0)" onclick="scrollToId('ac-aanvraag')" class="btn btn-primary">Naar het aanvraagformulier</a>
-        <a href="mailto:totmorgen@morgenacademy.nl" class="btn btn-secondary">Stuur ons een bericht</a>
-        <a href="javascript:void(0)" onclick="acLoadLegacy()" class="btn btn-secondary">Gebruik de oude routewijzer</a>
+        <a href="javascript:void(0)" onclick="scrollToId('ac-aanvraag')" class="ac-btn ac-btn-primary">Naar het aanvraagformulier</a>
+        <a href="mailto:totmorgen@morgenacademy.nl" class="ac-btn ac-btn-secondary">Stuur ons een bericht</a>
+        <a href="javascript:void(0)" onclick="acLoadLegacy()" class="ac-btn ac-btn-secondary">Gebruik de oude routewijzer</a>
       </div>
     </div>`;
 }
