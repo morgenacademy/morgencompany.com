@@ -239,7 +239,7 @@ function buildBasisRoute(answers) {
 
   return cloneOffer('basis', answers, {
     why:
-      'Jullie willen laagdrempelig starten en eerst zorgen dat mensen in het team dezelfde basis hebben. Dan is een losse training de slimste eerste stap, en Basistraining AI de meest logische keuze.',
+      'Jullie willen laagdrempelig starten en eerst zorgen dat mensen in het team dezelfde basis hebben. Dan is de Basistraining AI de logische start van de leerlijn.',
     followUp,
     nextPaths,
   });
@@ -286,7 +286,7 @@ function buildManagementRoute(answers) {
 function buildMasterclassRoute(answers) {
   return cloneOffer('masterclass', answers, {
     why:
-      'Niet iedereen hoeft in jullie organisatie alles te kunnen bouwen of automatiseren. Jullie willen juist een kleine kartrekkersgroep vormen van mensen die al een basis hebben en dit verder trekken in processen, teams en implementatie. Dan past een masterclass beter dan een losse training.',
+      'Niet iedereen hoeft in jullie organisatie alles te kunnen bouwen of automatiseren. Jullie willen juist een kleine kartrekkersgroep vormen van mensen die al een basis hebben en dit verder trekken in processen, teams en implementatie. Dan past een masterclass beter dan een enkele training.',
     followUp:
       'Na de masterclass is vaak een begeleid implementatietraject of een gerichte vervolgtraining logisch om het verder te laten landen buiten de kartrekkersgroep zelf.',
     nextPaths: [
@@ -383,29 +383,32 @@ export function determineRoute(answers) {
       why:
         'Je zoekt een laagdrempelige individuele instap. Dan is het slimmer om direct online te starten dan een incompany route te kiezen die voor teams bedoeld is.',
       followUp:
-        'Wil je later met een team verder, dan kun je altijd nog door naar een losse training of incompany sessie.',
+        'Wil je later met een team verder, dan kun je altijd nog door naar een training op de leerlijn of een incompany sessie.',
       nextPaths: [],
       levelFrom,
     });
   }
 
-  if (answers.for_whom === 'organization' || answers.need_now === 'clarity') {
+  if (answers.for_whom === 'organization') {
     return buildChanceRoute(answers);
   }
 
-  if (answers.for_whom === 'management' || answers.desired_impact === 'roadmap') {
-    return buildManagementRoute(answers);
+  if (answers.for_whom === 'management') {
+    return answers.need_now === 'clarity' ? buildChanceRoute(answers) : buildManagementRoute(answers);
   }
 
   if (answers.for_whom === 'pioneers') {
+    if (answers.need_now === 'clarity') {
+      return buildChanceRoute(answers);
+    }
     if (answers.ai_usage === 'none' && answers.need_now === 'skills') {
       return buildBasisRoute(answers);
     }
-    if (answers.desired_impact === 'explore') {
-      return buildChanceRoute(answers);
-    }
     return buildMasterclassRoute(answers);
   }
+
+  // Team: route zo direct mogelijk naar de leerlijn.
+  const hasBase = answers.ai_usage !== 'none';
 
   if (answers.need_now === 'alignment') {
     return buildTeamWorkshopRoute(answers);
@@ -413,29 +416,18 @@ export function determineRoute(answers) {
 
   if (answers.need_now === 'build') {
     if (answers.desired_impact === 'systems_talk') {
-      return levelFrom >= 2 ? buildWorkflowRoute(answers) : buildBasisRoute(answers);
+      return hasBase ? buildWorkflowRoute(answers) : buildBasisRoute(answers);
     }
     if (answers.desired_impact === 'build_tool') {
-      return levelFrom >= 2 ? buildToolRoute(answers) : buildBasisRoute(answers);
+      return hasBase ? buildToolRoute(answers) : buildBasisRoute(answers);
     }
-  }
-
-  if (answers.need_now === 'skills') {
-    if (answers.ai_usage === 'advanced') return buildSamenwerkenRoute(answers);
-    if (answers.ai_usage === 'regular') return buildClaudeCodeRoute(answers);
-    return buildBasisRoute(answers);
-  }
-
-  if (answers.desired_impact === 'systems_talk') {
-    return levelFrom >= 2 ? buildWorkflowRoute(answers) : buildBasisRoute(answers);
-  }
-
-  if (answers.desired_impact === 'build_tool') {
-    return levelFrom >= 2 ? buildToolRoute(answers) : buildBasisRoute(answers);
   }
 
   if (answers.ai_usage === 'advanced') return buildSamenwerkenRoute(answers);
   if (answers.ai_usage === 'regular') return buildClaudeCodeRoute(answers);
+
+  if (answers.desired_impact === 'systems_talk' && hasBase) return buildWorkflowRoute(answers);
+  if (answers.desired_impact === 'build_tool' && hasBase) return buildToolRoute(answers);
 
   return buildBasisRoute(answers);
 }

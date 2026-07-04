@@ -12,8 +12,8 @@ const LEVELS = [
   },
   {
     level: 2,
-    label: 'Tactisch prompten',
-    desc: 'Van speelgoed naar praktisch hulpmiddel',
+    label: 'Dagelijks werken met AI',
+    desc: 'AI als vast hulpmiddel in je werk',
   },
   {
     level: 3,
