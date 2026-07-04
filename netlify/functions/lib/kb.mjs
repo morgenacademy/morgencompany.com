@@ -19,6 +19,7 @@ export const OFFERS = [
   },
   {
     key: 'basis',
+    priceFrom: '€750',
     training: 'Basistraining AI',
     startTypeLabel: 'De basis',
     sectionLabel: 'De leerlijn',
@@ -48,6 +49,7 @@ export const OFFERS = [
   },
   {
     key: 'workflows',
+    priceFrom: '€950',
     training: 'Automatiseren met AI',
     startTypeLabel: 'Automatiseren',
     sectionLabel: 'De leerlijn',
@@ -62,6 +64,7 @@ export const OFFERS = [
   },
   {
     key: 'toolbuilding',
+    priceFrom: '€750',
     training: 'Bouwen met AI (vibecoding)',
     startTypeLabel: 'Bouwen',
     sectionLabel: 'De leerlijn',
@@ -76,6 +79,7 @@ export const OFFERS = [
   },
   {
     key: 'claudecode',
+    priceFrom: '€950',
     training: 'Claude Code / Codex: de basis (stop met chatten)',
     startTypeLabel: 'Agentic werken',
     sectionLabel: 'De leerlijn',
@@ -90,6 +94,7 @@ export const OFFERS = [
   },
   {
     key: 'samenwerken',
+    priceFrom: '€950',
     training: 'Haal meer uit Claude Code + Samenwerken met AI',
     startTypeLabel: 'Team & gevorderd',
     sectionLabel: 'De leerlijn',
@@ -154,7 +159,7 @@ export const FAQ = [
   {
     vraag: 'Wat kost een training?',
     antwoord:
-      'De meeste trainingen zijn incompany en op maat; de prijs hangt af van groepsgrootte en vorm. De online basistraining is een losse instap. Voor een concrete prijs verwijs je naar het aanvraagformulier of totmorgen@morgenacademy.nl.',
+      'De leerlijn-trainingen starten vanaf €750 (basis en bouwen) tot €950 (automatiseren, Claude Code en samenwerken), per groep tot 10 deelnemers; grotere groepen in overleg. Alles is incompany en op maat, dus de exacte prijs hangt af van groep en vorm en loopt via het aanvraagformulier of totmorgen@morgenacademy.nl.',
   },
   {
     vraag: 'Kan het op locatie of online?',
@@ -185,7 +190,7 @@ export function findOffer(key) {
 export function buildSystemPrompt() {
   const aanbod = OFFERS.map(
     (o) =>
-      `- key: ${o.key} | ${o.training} (${o.startTypeLabel}, ${o.duration})\n  ${o.description}\n  Punten: ${o.bullets.join('; ')}`
+      `- key: ${o.key} | ${o.training} (${o.startTypeLabel}, ${o.duration}${o.priceFrom ? `, vanaf ${o.priceFrom}` : ''})\n  ${o.description}\n  Punten: ${o.bullets.join('; ')}`
   ).join('\n');
 
   const faq = FAQ.map((f) => `- V: ${f.vraag}\n  A: ${f.antwoord}`).join('\n');
@@ -203,7 +208,8 @@ ${faq}
 ## Gedrag
 - Stel hooguit een paar korte vragen om te snappen: voor wie (team/management/kartrekkers/individu), hoe ver ze met AI zijn, en wat ze nu nodig hebben.
 - Zodra je genoeg weet, roep de tool \`presenteer_advies\` aan met de best passende \`offer_key\` en 0 tot 2 logische \`vervolg_keys\`. Vat in je tekst kort samen waarom je dit adviseert.
-- Beantwoord feitvragen alleen op basis van de FAQ hierboven. Verzin nooit prijzen, data of voorwaarden. Weet je iets niet zeker? Verwijs naar het aanvraagformulier of totmorgen@morgenacademy.nl.
+- Bij een prijsvraag: geef de vanaf-prijs uit het aanbod als indicatie (dit zijn publieke vanaf-prijzen per groep tot 10 deelnemers; grotere groepen in overleg). Zeg erbij dat alles incompany en op maat is, dus dat de exacte prijs via het aanvraagformulier of totmorgen@morgenacademy.nl loopt. Verzin nooit een prijs, datum of voorwaarde die niet in het aanbod of de FAQ staat.
+- Beantwoord overige feitvragen op basis van de FAQ en het aanbod hierboven. Weet je iets niet zeker? Verwijs naar het aanvraagformulier of totmorgen@morgenacademy.nl.
 - Blijf binnen de scope van Morgen Academy. Buig off-topic vragen vriendelijk terug.`;
 }
 
