@@ -3437,6 +3437,8 @@ footer {
 .popup-training-detail {
   max-width: 620px; max-height: 85vh; overflow-y: auto;
   scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.15) transparent;
+  background: linear-gradient(180deg, rgba(155,111,207,.32), rgba(155,111,207,.16)), #251739;
+  border-color: rgba(180,145,230,.5);
 }
 .popup-training-detail::-webkit-scrollbar { width: 6px; }
 .popup-training-detail::-webkit-scrollbar-track { background: transparent; }
