@@ -20,11 +20,11 @@ const OFFERS = {
     key: 'basis',
     popupKey: 'basis',
     training: 'Basistraining AI',
-    startTypeLabel: 'Losse training',
-    sectionLabel: 'Losse trainingen',
+    startTypeLabel: 'De basis',
+    sectionLabel: 'De leerlijn',
     sectionTarget: 'ac-trainingen',
     duration: '2 uur',
-    description: 'De snelste en meest laagdrempelige teamtraining om dezelfde AI-basis te leggen.',
+    description: 'De laagdrempelige start: begrijp wat AI is, leer prompten en bouw je eerste eigen assistent.',
     bullets: [
       'Geen technische kennis nodig om mee te doen',
       'Begrijp wat AI is, wat het kan en hoe je er veilig mee werkt',
@@ -37,9 +37,9 @@ const OFFERS = {
     key: 'teamworkshop',
     popupKey: 'teamworkshop',
     training: 'Team-workshop',
-    startTypeLabel: 'Losse training',
-    sectionLabel: 'Losse trainingen',
-    sectionTarget: 'ac-trainingen',
+    startTypeLabel: 'Begeleide workshop',
+    sectionLabel: 'Begeleiding',
+    sectionTarget: 'ac-begeleiding',
     duration: 'Halve dag',
     description: 'Voor teams die vooral lijn, procesinzicht en gezamenlijke keuzes nodig hebben.',
     bullets: [
@@ -52,34 +52,66 @@ const OFFERS = {
   workflows: {
     key: 'workflows',
     popupKey: 'workflows',
-    training: 'Workflows & Agents',
-    startTypeLabel: 'Losse training',
-    sectionLabel: 'Losse trainingen',
+    training: 'Automatiseren met AI',
+    startTypeLabel: 'Automatiseren',
+    sectionLabel: 'De leerlijn',
     sectionTarget: 'ac-trainingen',
-    duration: '2 uur',
+    duration: 'Dagdeel',
     description: 'Voor teams die al een basis hebben en minder handwerk tussen systemen willen.',
     bullets: [
-      'Bouw workflows met Make, n8n of Zapier',
+      'Bouw workflows met n8n, Make of Zapier',
       'Laat systemen en data automatisch met elkaar praten',
-      'Leer wanneer automatisering of agentic AI de slimste keuze is',
+      'Geef een AI-agent een rol in de flow',
     ],
     levelTo: 5,
   },
   toolbuilding: {
     key: 'toolbuilding',
     popupKey: 'toolbuilding',
-    training: 'Tool Building',
-    startTypeLabel: 'Losse training',
-    sectionLabel: 'Losse trainingen',
+    training: 'Bouwen met AI (vibecoding)',
+    startTypeLabel: 'Bouwen',
+    sectionLabel: 'De leerlijn',
     sectionTarget: 'ac-trainingen',
     duration: '2 uur',
-    description: 'Voor teams die een eigen tool, prototype of assistent willen bouwen.',
+    description: 'Voor teams die een eigen tool, website of app willen bouwen.',
     bullets: [
       'Maak een eerste werkend prototype in de sessie',
-      'Werk met tools als Lovable, Cursor of Replit',
+      'Werk met Lovable, met een doorkijkje naar Claude Code en Codex',
       'Ontdek wat je zelf kunt bouwen zonder programmeerervaring',
     ],
     levelTo: 5,
+  },
+  claudecode: {
+    key: 'claudecode',
+    popupKey: 'claudecode',
+    training: 'Claude Code / Codex: de basis (stop met chatten)',
+    startTypeLabel: 'Agentic werken',
+    sectionLabel: 'De leerlijn',
+    sectionTarget: 'ac-trainingen',
+    duration: 'Dagdeel',
+    description: 'Van losse chats naar een AI-collega die meewerkt in je eigen mappen: bestanden lezen, context onthouden, werk uitvoeren.',
+    bullets: [
+      'Geef AI toegang tot je eigen map: bestanden lezen, context onthouden, werk uitvoeren',
+      'Leer de workflow: eerst verkennen en plannen, dan uitvoeren',
+      'Claude Code én Codex, per onderwerp naast elkaar',
+    ],
+    levelTo: 5,
+  },
+  samenwerken: {
+    key: 'samenwerken',
+    popupKey: 'samenwerken',
+    training: 'Haal meer uit Claude Code + Samenwerken met AI',
+    startTypeLabel: 'Team & gevorderd',
+    sectionLabel: 'De leerlijn',
+    sectionTarget: 'ac-trainingen',
+    duration: 'Dagdeel',
+    description: 'Voor teams die al met Claude Code werken en samen professioneel willen blijven terwijl het tempo omhoog gaat.',
+    bullets: [
+      'Verdieping: context, plan mode, subagents en workflows',
+      'De merge-realiteit: klein integreren, review slim organiseren',
+      'Concrete werkafspraken en borging als eindresultaat',
+    ],
+    levelTo: 6,
   },
   managers: {
     key: 'managers',
@@ -171,28 +203,28 @@ function makeNextPath(popupKey, title, desc) {
 function buildBasisRoute(answers) {
   const desired = answers.desired_impact;
   let followUp =
-    'Na deze training kunnen jullie gericht door naar een vervolg dat past bij jullie echte vraagstuk.';
+    'Na deze training kunnen jullie de leerlijn verder op: bouwen, automatiseren of de stap naar agentic werken.';
   let nextPaths = [
-    makeNextPath('teamworkshop', 'Team-workshop', 'Breng proces, lijn en eigenaarschap samen in kaart'),
-    makeNextPath('workflows', 'Workflows & Agents', 'Automatiseer handwerk tussen systemen'),
-    makeNextPath('toolbuilding', 'Tool Building', 'Bouw een eerste eigen tool of prototype'),
+    makeNextPath('toolbuilding', 'Bouwen met AI', 'Bouw een eerste eigen tool of prototype'),
+    makeNextPath('workflows', 'Automatiseren met AI', 'Automatiseer handwerk tussen systemen'),
+    makeNextPath('claudecode', 'Claude Code / Codex: de basis','Van chatvenster naar AI in je eigen map'),
   ];
 
   if (desired === 'systems_talk') {
     followUp =
-      'Jullie willen uiteindelijk minder handwerk tussen systemen. Leg eerst de basis en pak daarna Workflows & Agents erbij.';
+      'Jullie willen uiteindelijk minder handwerk tussen systemen. Leg eerst de basis en pak daarna Automatiseren met AI erbij.';
     nextPaths = [
-      makeNextPath('workflows', 'Workflows & Agents', 'De logische vervolgstap zodra de basis staat'),
+      makeNextPath('workflows', 'Automatiseren met AI', 'De logische vervolgstap zodra de basis staat'),
       makeNextPath('teamworkshop', 'Team-workshop', 'Zorg dat het hele team dezelfde werkwijze kiest'),
     ];
   }
 
   if (desired === 'build_tool') {
     followUp =
-      'Jullie willen uiteindelijk een eigen tool of assistent bouwen. Start laagdrempelig en stap daarna in Tool Building.';
+      'Jullie willen uiteindelijk een eigen tool of assistent bouwen. Start laagdrempelig en stap daarna in Bouwen met AI.';
     nextPaths = [
-      makeNextPath('toolbuilding', 'Tool Building', 'Bouw daarna een werkend prototype'),
-      makeNextPath('teamworkshop', 'Team-workshop', 'Koppel het bouwen aan een slim proces'),
+      makeNextPath('toolbuilding', 'Bouwen met AI', 'Bouw daarna een werkend prototype'),
+      makeNextPath('claudecode', 'Claude Code / Codex: de basis','Serieuzer bouwen met Claude Code of Codex'),
     ];
   }
 
@@ -223,8 +255,8 @@ function buildChanceRoute(answers) {
   if (answers.for_whom === 'team') {
     nextPaths = [
       makeNextPath('teamworkshop', 'Team-workshop', 'Als proces, lijn en teamafstemming centraal staan'),
-      makeNextPath('workflows', 'Workflows & Agents', 'Als systemen slimmer moeten samenwerken'),
-      makeNextPath('toolbuilding', 'Tool Building', 'Als er een eigen tool of prototype moet komen'),
+      makeNextPath('workflows', 'Automatiseren met AI', 'Als systemen slimmer moeten samenwerken'),
+      makeNextPath('toolbuilding', 'Bouwen met AI', 'Als er een eigen tool of prototype moet komen'),
     ];
   }
 
@@ -259,8 +291,8 @@ function buildMasterclassRoute(answers) {
       'Na de masterclass is vaak een begeleid implementatietraject of een gerichte vervolgtraining logisch om het verder te laten landen buiten de kartrekkersgroep zelf.',
     nextPaths: [
       makeNextPath('chancesession', 'AI-richtingssessie', 'Koppel de inzichten aan een bredere organisatiekeuze'),
-      makeNextPath('workflows', 'Workflows & Agents', 'Verdiep op procesautomatisering'),
-      makeNextPath('toolbuilding', 'Tool Building', 'Bouw een concreet prototype of interne tool'),
+      makeNextPath('workflows', 'Automatiseren met AI', 'Verdiep op procesautomatisering'),
+      makeNextPath('samenwerken', 'Samenwerken met AI', 'Werk als team professioneel met Claude Code'),
     ],
   });
 }
@@ -269,17 +301,17 @@ function buildTeamWorkshopRoute(answers) {
   const nextPaths =
     answers.desired_impact === 'systems_talk'
       ? [
-          makeNextPath('workflows', 'Workflows & Agents', 'Automatiseer daarna de processen die jullie kiezen'),
+          makeNextPath('workflows', 'Automatiseren met AI', 'Automatiseer daarna de processen die jullie kiezen'),
           makeNextPath('basis', 'Basistraining AI', 'Geef het hele team dezelfde basis in gebruik'),
         ]
       : answers.desired_impact === 'build_tool'
         ? [
-            makeNextPath('toolbuilding', 'Tool Building', 'Ga daarna een eerste prototype bouwen'),
+            makeNextPath('toolbuilding', 'Bouwen met AI', 'Ga daarna een eerste prototype bouwen'),
             makeNextPath('basis', 'Basistraining AI', 'Leg eerst de brede teambasis waar nodig'),
           ]
         : [
             makeNextPath('basis', 'Basistraining AI', 'Zorg dat iedereen dezelfde taal en basis heeft'),
-            makeNextPath('workflows', 'Workflows & Agents', 'Koppel proceskeuzes aan automatisering'),
+            makeNextPath('workflows', 'Automatiseren met AI', 'Koppel proceskeuzes aan automatisering'),
           ];
 
   return cloneOffer('teamworkshop', answers, {
@@ -294,12 +326,12 @@ function buildTeamWorkshopRoute(answers) {
 function buildWorkflowRoute(answers) {
   return cloneOffer('workflows', answers, {
     why:
-      'Jullie gebruiken AI al vaker en de grootste winst zit in minder handwerk tussen systemen. Dan is Workflows & Agents de juiste losse training: concreet genoeg om iets werkends neer te zetten, zonder meteen een heel traject te starten.',
+      'Jullie gebruiken AI al vaker en de grootste winst zit in minder handwerk tussen systemen. Dan is Automatiseren met AI de juiste training: concreet genoeg om iets werkends neer te zetten, zonder meteen een heel traject te starten.',
     followUp:
-      'Na deze training kun je het automatiseringswerk verder uitbouwen of koppelen aan begeleiding voor implementatie en borging.',
+      'Na deze training kun je het automatiseringswerk verder uitbouwen, of de stap maken naar agentic werken met Claude Code of Codex.',
     nextPaths: [
+      makeNextPath('claudecode', 'Claude Code / Codex: de basis','Laat AI werken in je eigen mappen'),
       makeNextPath('teamworkshop', 'Team-workshop', 'Breng ook teamafspraken en proceskeuzes in lijn'),
-      makeNextPath('masterclass', '4-daagse masterclass', 'Verdiep met een kartrekkersgroep op implementatie'),
     ],
   });
 }
@@ -307,12 +339,38 @@ function buildWorkflowRoute(answers) {
 function buildToolRoute(answers) {
   return cloneOffer('toolbuilding', answers, {
     why:
-      'Jullie willen niet alleen beter prompten, maar echt iets bouwen. Omdat er al voldoende basis is, is Tool Building de slimste eerste stap om snel van idee naar prototype te gaan.',
+      'Jullie willen niet alleen beter prompten, maar echt iets bouwen. Omdat er al voldoende basis is, is Bouwen met AI de slimste eerste stap om snel van idee naar prototype te gaan.',
     followUp:
-      'Als het prototype werkt, volgt vaak de vraag hoe je het borgt, opschaalt of verbindt met andere processen en systemen.',
+      'Als het prototype werkt, volgt vaak de vraag hoe je serieuzer bouwt en hoe je het borgt of opschaalt.',
     nextPaths: [
-      makeNextPath('masterclass', '4-daagse masterclass', 'Verdiep op implementatie en opschaling'),
-      makeNextPath('chancesession', 'AI-richtingssessie', 'Bepaal hoe dit past in een bredere route'),
+      makeNextPath('workflows', 'Automatiseren met AI', 'Koppel wat je bouwt aan je systemen'),
+      makeNextPath('claudecode', 'Claude Code / Codex: de basis','Serieuzer bouwen met Claude Code of Codex'),
+    ],
+  });
+}
+
+function buildClaudeCodeRoute(answers) {
+  return cloneOffer('claudecode', answers, {
+    why:
+      'Jullie gebruiken AI al regelmatig via het chatvenster. De grootste sprong zit dan niet in nóg beter prompten, maar in de stap naar agentic werken: AI die in je eigen mappen werkt, context onthoudt en werk uitvoert.',
+    followUp:
+      'Zodra meer mensen zo werken, wordt samenwerken de volgende vraag: afspraken, review en borging. Daar gaat Haal meer uit Claude Code over.',
+    nextPaths: [
+      makeNextPath('samenwerken', 'Samenwerken met AI', 'Haal meer uit Claude Code als team'),
+      makeNextPath('teamworkshop', 'Team-workshop', 'Kies samen welke processen dit het eerst raakt'),
+    ],
+  });
+}
+
+function buildSamenwerkenRoute(answers) {
+  return cloneOffer('samenwerken', answers, {
+    why:
+      'Er wordt bij jullie al gebouwd en geautomatiseerd met AI. Dan zit de winst niet in een basistraining, maar in verdieping en samenwerken: sneller worden zonder kwaliteit, review en beheer te verliezen.',
+    followUp:
+      'Vanuit deze training volgen vaak concrete werkafspraken en een plan voor borging in het bredere team of de organisatie.',
+    nextPaths: [
+      makeNextPath('trajectory', 'Begeleid implementatietraject', 'Borg en schaal de werkwijze in de organisatie'),
+      makeNextPath('chancesession', 'AI-richtingssessie', 'Bepaal waar de volgende winst zit'),
     ],
   });
 }
@@ -363,6 +421,8 @@ export function determineRoute(answers) {
   }
 
   if (answers.need_now === 'skills') {
+    if (answers.ai_usage === 'advanced') return buildSamenwerkenRoute(answers);
+    if (answers.ai_usage === 'regular') return buildClaudeCodeRoute(answers);
     return buildBasisRoute(answers);
   }
 
@@ -373,6 +433,9 @@ export function determineRoute(answers) {
   if (answers.desired_impact === 'build_tool') {
     return levelFrom >= 2 ? buildToolRoute(answers) : buildBasisRoute(answers);
   }
+
+  if (answers.ai_usage === 'advanced') return buildSamenwerkenRoute(answers);
+  if (answers.ai_usage === 'regular') return buildClaudeCodeRoute(answers);
 
   return buildBasisRoute(answers);
 }
