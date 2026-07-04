@@ -15,7 +15,9 @@
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
-  min-height: 240px;
+}
+.ac-chat-log:empty {
+  display: none;
 }
 
 /* ── Berichten ─────────────────────────────────────────── */
@@ -295,4 +297,20 @@
 
 .ac-fallback .ac-card-cta {
   margin-top: 1rem;
+}
+
+/* ── Neutraliseer de oude wizard-container binnen het nieuwe panel ──
+   De chat is geen wizard: geen 60vh-stage, geen dubbele donkere bg/blobs. */
+.ac-route-panel .trainingwijzer-wrapper {
+  background: transparent;
+  border-radius: 0;
+  overflow: visible;
+}
+.ac-route-panel .trainingwijzer-wrapper::before {
+  display: none;
+}
+.ac-route-panel .trainingwijzer-wrapper #trainingwijzer-app {
+  min-height: 0;
+  display: block;
+  padding: 0;
 }

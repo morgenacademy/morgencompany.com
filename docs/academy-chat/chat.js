@@ -14,6 +14,8 @@ const state = { log: [], messages: [], busy: false };
 const STARTERS = [
   'We staan aan het begin en willen praktisch met AI aan de slag.',
   'We willen zelf een tool of prototype bouwen.',
+  'Ons team wil meer uit Claude Code halen.',
+  'Hoe doen we projectmanagement met AI?',
   'Wat kost een teamtraining?',
 ];
 
