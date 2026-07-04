@@ -3228,6 +3228,68 @@ footer {
   .academy-route-photo img { animation: none !important; opacity: 0; }
   .academy-route-photo img:nth-child(1) { opacity: 1; }
 }
+
+/* ── AI-wijzer sectie: volle breedte, uitgelicht ── */
+.ac-route-section { padding: 3.5rem 4rem 4.5rem; scroll-margin-top: 96px; }
+.trainingwijzer-wrapper { scroll-margin-top: 120px; }
+.ac-route-inner { max-width: 1080px; margin: 0 auto; }
+.ac-route-title {
+  font-weight: 900;
+  font-size: clamp(1.9rem, 3.4vw, 2.9rem);
+  line-height: 1.06;
+  color: #fff;
+  text-align: center;
+  margin: 0 0 .7rem;
+}
+.ac-route-sub {
+  text-align: center;
+  color: var(--text-secondary, #d8ccec);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin: 0 auto 2rem;
+  max-width: 54ch;
+}
+.ac-route-panel {
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 24px;
+  padding: 1.75rem;
+  box-shadow: var(--shadow);
+}
+.ac-route-panel .trainingwijzer-wrapper { margin: 0; width: 100%; }
+.ac-route-panel .ac-chat { max-width: none; }
+
+/* ── Leerlijn-kop met foto ernaast ── */
+.ac-leerlijn-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(300px, .85fr);
+  gap: 2.5rem;
+  align-items: center;
+  margin-bottom: 2.75rem;
+}
+.ac-leerlijn-head .stitle {
+  font-size: clamp(2rem, 3.4vw, 3.4rem);
+  line-height: 1.05;
+}
+.academy-section-lead {
+  margin: .1rem 0 1.1rem;
+  font-size: 1.12rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--purple-light, #9b6fcf);
+  max-width: 54ch;
+}
+.ac-leerlijn-head .academy-route-photo {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+}
+
+@media (max-width: 900px) {
+  .ac-route-section { padding: 2.5rem 1.25rem 3rem; }
+  .ac-leerlijn-head { grid-template-columns: 1fr; gap: 1.75rem; }
+  .ac-leerlijn-head .academy-route-photo { max-width: 440px; }
+}
+
 .academy-online-copy .ptitle {
   max-width: 14ch;
 }
