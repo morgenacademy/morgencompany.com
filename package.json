@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test netlify/functions/lib/"
+    "test": "node --test \"netlify/functions/lib/**/*.test.mjs\""
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.70.0"
