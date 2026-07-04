@@ -42,7 +42,7 @@ export default async (req) => {
       try {
         const claude = client.messages.stream({
           model: 'claude-sonnet-5',
-          max_tokens: 1024,
+          max_tokens: 2048,
           thinking: { type: 'disabled' },
           system,
           tools: [presenteerAdviesTool],
