@@ -49,7 +49,7 @@ function renderWelcome() {
         <h1 class="welcome-title">Ontdek jullie <span class="highlight">slimste start</span></h1>
         <p class="welcome-subtitle">
           Beantwoord een paar korte vragen en ontdek wat nu de slimste eerste stap is:
-          een losse training, een masterclass of eerst samen scherpte krijgen.
+          een training op de leerlijn, een masterclass of eerst samen scherpte krijgen.
         </p>
         <button class="btn btn-primary btn-large" data-action="start">
           Start de routewijzer
