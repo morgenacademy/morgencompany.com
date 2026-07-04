@@ -239,7 +239,7 @@ function buildBasisRoute(answers) {
 
   return cloneOffer('basis', answers, {
     why:
-      'Jullie willen laagdrempelig starten en eerst zorgen dat mensen in het team dezelfde basis hebben. Dan is een losse training de slimste eerste stap, en Basistraining AI de meest logische keuze.',
+      'Jullie willen laagdrempelig starten en eerst zorgen dat mensen in het team dezelfde basis hebben. Dan is de Basistraining AI de logische start van de leerlijn.',
     followUp,
     nextPaths,
   });
@@ -286,7 +286,7 @@ function buildManagementRoute(answers) {
 function buildMasterclassRoute(answers) {
   return cloneOffer('masterclass', answers, {
     why:
-      'Niet iedereen hoeft in jullie organisatie alles te kunnen bouwen of automatiseren. Jullie willen juist een kleine kartrekkersgroep vormen van mensen die al een basis hebben en dit verder trekken in processen, teams en implementatie. Dan past een masterclass beter dan een losse training.',
+      'Niet iedereen hoeft in jullie organisatie alles te kunnen bouwen of automatiseren. Jullie willen juist een kleine kartrekkersgroep vormen van mensen die al een basis hebben en dit verder trekken in processen, teams en implementatie. Dan past een masterclass beter dan een enkele training.',
     followUp:
       'Na de masterclass is vaak een begeleid implementatietraject of een gerichte vervolgtraining logisch om het verder te laten landen buiten de kartrekkersgroep zelf.',
     nextPaths: [
@@ -383,7 +383,7 @@ export function determineRoute(answers) {
       why:
         'Je zoekt een laagdrempelige individuele instap. Dan is het slimmer om direct online te starten dan een incompany route te kiezen die voor teams bedoeld is.',
       followUp:
-        'Wil je later met een team verder, dan kun je altijd nog door naar een losse training of incompany sessie.',
+        'Wil je later met een team verder, dan kun je altijd nog door naar een training op de leerlijn of een incompany sessie.',
       nextPaths: [],
       levelFrom,
     });
