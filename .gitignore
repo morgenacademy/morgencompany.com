@@ -5,3 +5,7 @@ Ahfres report 30 april 2026/
 
 downloads/spraaktool/*.dmg
 downloads/spraaktool/*.exe
+
+node_modules/
+.env
+.netlify/

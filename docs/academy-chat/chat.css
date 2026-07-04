@@ -1,0 +1,94 @@
+/* docs/academy-chat/chat.css */
+.ac-chat {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.ac-chat-log {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 220px;
+}
+.ac-msg {
+  padding: 0.75rem 1rem;
+  border-radius: 14px;
+  line-height: 1.5;
+  max-width: 85%;
+  white-space: pre-wrap;
+}
+.ac-msg-user {
+  align-self: flex-end;
+  background: var(--pink, #e0218a);
+  color: #fff;
+}
+.ac-msg-bot {
+  align-self: flex-start;
+  background: rgba(255, 255, 255, 0.06);
+  color: inherit;
+}
+.ac-starters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.ac-starter {
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: transparent;
+  color: inherit;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  cursor: pointer;
+  font: inherit;
+}
+.ac-starter:hover {
+  border-color: var(--pink, #e0218a);
+}
+.ac-input-row {
+  display: flex;
+  gap: 0.5rem;
+}
+.ac-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+.ac-send {
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  border: none;
+  background: var(--pink, #e0218a);
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+}
+.ac-send:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.ac-typing::after {
+  content: '\2026';
+  animation: ac-blink 1.2s steps(3, end) infinite;
+}
+@keyframes ac-blink {
+  0% { opacity: 0.2; }
+  50% { opacity: 1; }
+  100% { opacity: 0.2; }
+}
+.ac-card-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.ac-fallback {
+  padding: 1rem 1.25rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
