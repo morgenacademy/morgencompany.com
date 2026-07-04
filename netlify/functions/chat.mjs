@@ -4,6 +4,7 @@ import { buildSystemPrompt, buildCard } from './lib/kb.mjs';
 import { presenteerAdviesTool } from './lib/tool.mjs';
 import { validateChatRequest } from './lib/guards.mjs';
 import { sse } from './lib/sse.mjs';
+import { checkRateLimit } from './lib/ratelimit.mjs';
 
 function json(obj, status) {
   return new Response(JSON.stringify(obj), {
@@ -24,6 +25,10 @@ export default async (req) => {
 
   const check = validateChatRequest(body);
   if (!check.ok) return json({ error: check.error }, 400);
+
+  const ip = req.headers.get('x-nf-client-connection-ip') || '';
+  const limit = await checkRateLimit(ip);
+  if (!limit.ok) return json({ error: 'te veel verzoeken, probeer het later opnieuw' }, 429);
 
   const system = buildSystemPrompt();
   const messages = body.messages;
