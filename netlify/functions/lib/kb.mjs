@@ -230,31 +230,37 @@ export const PROOF = {
   cases: [
     {
       naam: 'OnView (softwarebedrijf)',
+      url: '/projecten/#case-onview',
       pijler: 'Academy',
       case: 'Training "Claude Code professioneel houden" voor developmentteams die al met Claude Code werken: merge-realiteit, review-poort, kaders en werkafspraken. Directeur Ronald van Erven: "Er wordt door de collega\'s ook vandaag nog enthousiast op gereageerd."',
     },
     {
       naam: 'PinkRoccade Local Government',
+      url: '/projecten/#case-pinkroccade',
       pijler: 'Academy',
       case: 'Reeks workshops over n8n, automatiseren met AI en agentic workflows; deelnemers bouwden praktische automatiseringen.',
     },
     {
       naam: 'FC Den Bosch',
+      url: '/projecten/#case-fcdenbosch',
       pijler: 'Academy',
       case: 'Basistraining AI: zelf prompten en direct toepassen op eigen taken in communicatie, marketing en kantoor.',
     },
     {
       naam: 'Gemeente Tilburg',
+      url: '/projecten/#case-tilburg',
       pijler: 'Consultancy',
       case: 'AI als waardekeuze: sessies met OR en linking pins (zo\'n zestig mensen) om AI organisatiebreed, veilig en waardevol te laten landen.',
     },
     {
       naam: 'Solo Solis (een van de grootste zonnebrillengroothandels van Europa)',
+      url: '/projecten/#case-solosolis',
       pijler: 'Technology',
       case: 'Proces rond bedrukte producten geautomatiseerd: van 40+ handmatige stappen naar maximaal 6 controles.',
     },
     {
       naam: 'Trappenfabriek Vermeulen',
+      url: '/projecten/#case-trappenfabriek',
       pijler: 'Technology',
       case: 'Logistieke AI-planning: handmatig en foutgevoelig plannings- en transportproces geautomatiseerd; AI plant nu sneller en accurater.',
     },
@@ -309,7 +315,7 @@ export function buildSystemPrompt() {
 
   const bewijs = [
     ...PROOF.stats.map((s) => `- ${s}`),
-    ...PROOF.cases.map((c) => `- [${c.pijler}] ${c.naam}: ${c.case}`),
+    ...PROOF.cases.map((c) => `- [${c.pijler}] ${c.naam} (link: ${c.url}): ${c.case}`),
   ].join('\n');
 
   return `Je bent 'het Kompas', de AI-adviseur van Morgen. Morgen helpt organisaties met AI langs drie richtingen:
@@ -320,7 +326,7 @@ Weet iemand het nog niet? Dan is een vrijblijvend kennismakingsgesprek de beste 
 
 Je doel: de bezoeker zich gehoord laten voelen, samen scherp krijgen wat er speelt, en dan de best passende richting wijzen met uitleg waarom die bij hen past. Schrijf warm, concreet en zonder vakjargon. Kort waar het kan. Gebruik geen em-dashes; schrijf met gewone punten en komma's.
 
-Opmaak: alleen **vet** voor namen van trainingen of kernwoorden, spaarzaam. Geen koppen, links, tabellen of andere markdown. Korte alinea's; een kort lijstje met streepjes mag.
+Opmaak: alleen **vet** voor namen van trainingen of kernwoorden, spaarzaam. Korte alinea's; een kort lijstje met streepjes mag. Geen koppen of tabellen. Links alleen in dit ene geval: als je een case uit de bewijslijst noemt, maak de klantnaam klikbaar met [Naam](link uit de bewijslijst). Nooit andere of zelfbedachte links.
 
 ## Aanbod (enige geldige opties)
 ${aanbod}
@@ -333,6 +339,7 @@ ${bewijs}
 
 ## Gedrag
 - Begin met erkennen wat de bezoeker vertelt, zodat het voelt alsof je echt luistert. Stel hooguit een paar korte vragen om te snappen wat ze willen (zelf leren, laten implementeren of laten bouwen), voor wie, en waar ze nu staan.
+- Schat het niveau in aan de stijl en woordkeuze van de vraag, en pas je taal en advies daarop aan. Noemt iemand repos, pull requests, review, CI, subagents, n8n of API's? Dan praat je met een professioneel team dat al bouwt: geen uitleg wat Claude Code is, maar meteen over waar zij zitten (kwaliteit borgen, merge-realiteit, review als flessenhals, werkafspraken) en de verdieping als logische stap. Softwarebedrijven als OnView laten Claude Code complete features en software bouwen in hun eigen repos; herken dat en laat merken dat wij daar dagelijks mee werken. Vraagt iemand "wat is AI eigenlijk", dan begin je juist bij de basis.
 - Bouw vertrouwen met bewijs: als een case uit de bewijslijst echt lijkt op de situatie van de bezoeker, noem die kort en natuurlijk ("bij OnView deden we net zoiets: ..."). Hooguit één case per bericht, alleen uit de lijst, en alleen als het relevant is. Verzin nooit klanten, resultaten of quotes. Voor meer voorbeelden mag je naar morgencompany.com/projecten verwijzen.
 - Zodra je genoeg weet, roep de tool \`presenteer_advies\` aan met de best passende \`offer_key\`, een korte persoonlijke \`waarom\` (1 tot 2 zinnen die HUN situatie koppelen aan wat deze stap hen concreet oplevert), en 0 tot 2 logische \`vervolg_keys\`.
 - Het gaat niet om doorverwijzen. Laat in je tekst merken dat je geluisterd hebt: vat kort samen wat je hoorde en leg uit waarom dit past en wat het hen oplevert.

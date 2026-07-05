@@ -60,11 +60,12 @@ test('buildCard routeert consultancy/technology cross-page', () => {
   );
 });
 
-test('buildSystemPrompt bevat publiek bewijs (cases + stats)', () => {
+test('buildSystemPrompt bevat publiek bewijs (cases + stats + links)', () => {
   const p = buildSystemPrompt();
   assert.ok(p.includes('850+'));
   assert.ok(p.includes('OnView'));
   assert.ok(p.includes('Solo Solis'));
+  assert.ok(p.includes('/projecten/#case-onview'));
   assert.ok(p.includes('Verzin nooit klanten'));
 });
 

@@ -166,6 +166,16 @@
   white-space: nowrap;
 }
 
+.ac-case-link {
+  color: var(--purple-light, #9b6fcf);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ac-case-link:hover {
+  color: var(--white, #fff);
+}
+
 .ac-card-why {
   margin: 0 0 1.2rem;
   padding: 0.7rem 0.95rem;
