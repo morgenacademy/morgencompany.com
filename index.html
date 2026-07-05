@@ -2206,11 +2206,12 @@ function goToAcademy(destination='home'){
 
 function nav(page,anchor,options={}){
   const {updateHistory=true,replaceHistory=false,customPath=null,activeNav=null}=options;
+  const wasActive=document.getElementById('page-'+page)?.classList.contains('active');
   updateRouteMeta(page);
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const t=document.getElementById('page-'+page);
   if(t)t.classList.add('active');
-  window.scrollTo(0,0);
+  if(!wasActive)window.scrollTo(0,0);
   document.querySelectorAll('.nav-links a[data-page]').forEach(a=>a.classList.remove('active'));
   const al=document.querySelector('.nav-links a[data-page="'+(activeNav||page)+'"]');
   if(al)al.classList.add('active');
@@ -2224,7 +2225,7 @@ function nav(page,anchor,options={}){
       window.history.pushState({},'',nextUrl);
     }
   }
-  if(anchor){setTimeout(()=>{const el=document.getElementById(anchor);if(el)el.scrollIntoView({behavior:'smooth'});},80);}
+  if(anchor){setTimeout(()=>{const el=document.getElementById(anchor);if(!el)return;el.scrollIntoView({behavior:'smooth'});setTimeout(()=>el.scrollIntoView({behavior:'smooth'}),450);},80);}
   closeNav();
   setTimeout(()=>{initReveal();updateAboutJourney();},100);
 }
