@@ -123,7 +123,7 @@ function cardHtml(card) {
         <a href="${card.href}" class="ac-btn ac-btn-primary">Bekijk deze stap</a>
         <a href="${mailtoHref(card)}" class="ac-btn ac-btn-secondary">Stuur ons een bericht</a>
       </div>
-      ${card.samenvatting ? '<p class="ac-card-handoff">Je verhaal nemen we mee: het aanvraagformulier staat alvast voor je ingevuld.</p>' : ''}
+      ${card.samenvatting ? '<p class="ac-card-handoff">Je verhaal staat alvast in het aanvraagformulier.</p>' : ''}
       ${vervolg ? `<div class="ac-followups"><p class="ac-followups-intro">Logische vervolgstappen</p><div class="ac-followups-grid">${vervolg}</div></div>` : ''}
     </div>`;
 }
