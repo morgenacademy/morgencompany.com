@@ -3,13 +3,20 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { OFFER_KEYS, findOffer, buildSystemPrompt, buildCard } from './kb.mjs';
 
-test('OFFER_KEYS bevat alle 13 keys (academy + consultancy + technology + kennismaking)', () => {
-  assert.equal(OFFER_KEYS.length, 13);
+test('OFFER_KEYS bevat alle 14 keys (academy + consultancy + technology + kennismaking)', () => {
+  assert.equal(OFFER_KEYS.length, 14);
   assert.ok(OFFER_KEYS.includes('basis'));
   assert.ok(OFFER_KEYS.includes('masterclass'));
+  assert.ok(OFFER_KEYS.includes('pmtraining'));
   assert.ok(OFFER_KEYS.includes('implementatietraject'));
   assert.ok(OFFER_KEYS.includes('maatwerk'));
   assert.ok(OFFER_KEYS.includes('kennismaking'));
+});
+
+test('ctaLabel matcht het doel van de knop', () => {
+  assert.equal(buildCard({ offer_key: 'pmtraining', waarom: 'x', samenvatting: 'y', vervolg_keys: [] }).ctaLabel, 'Bekijk deze training');
+  assert.equal(buildCard({ offer_key: 'implementatietraject', waarom: 'x', samenvatting: 'y', vervolg_keys: [] }).ctaLabel, 'Vraag dit aan');
+  assert.equal(buildCard({ offer_key: 'kennismaking', waarom: 'x', samenvatting: 'y', vervolg_keys: [] }).ctaLabel, 'Plan een kennismaking');
 });
 
 test('findOffer geeft het juiste aanbod terug', () => {

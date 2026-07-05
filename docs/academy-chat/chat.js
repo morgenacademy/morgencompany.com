@@ -120,7 +120,7 @@ function cardHtml(card) {
       ${card.waarom ? `<p class="ac-card-why">${md(card.waarom)}</p>` : ''}
       <ul class="ac-card-bullets">${card.bullets.map((b) => `<li>${esc(b)}</li>`).join('')}</ul>
       <div class="ac-card-cta">
-        <a href="${card.href}" class="ac-btn ac-btn-primary">Bekijk deze stap</a>
+        <a href="${card.href}" class="ac-btn ac-btn-primary">${esc(card.ctaLabel || 'Vraag dit aan')}</a>
         <a href="${mailtoHref(card)}" class="ac-btn ac-btn-secondary">Stuur ons een bericht</a>
       </div>
       ${card.samenvatting ? '<p class="ac-card-handoff">Je verhaal staat alvast in het aanvraagformulier.</p>' : ''}
