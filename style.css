@@ -3259,11 +3259,13 @@ footer {
   max-width: 54ch;
 }
 .ac-route-panel {
-  background: rgba(255,255,255,.03);
-  border: 1px solid rgba(255,255,255,.09);
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.13);
   border-radius: 24px;
   padding: 1.75rem;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,.08);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
 }
 .ac-route-panel .trainingwijzer-wrapper { margin: 0; width: 100%; }
 .ac-route-panel .ac-chat { max-width: none; }
