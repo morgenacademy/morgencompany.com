@@ -2,6 +2,8 @@
 .env.local
 ahrefs report*/
 Ahfres report 30 april 2026/
+# ahrefs/crawl-exports = lokale to-do lijst; afgewerkt rapport wordt verwijderd
+issues/
 
 downloads/spraaktool/*.dmg
 downloads/spraaktool/*.exe
