@@ -39,7 +39,7 @@ const OFFERS = {
     training: 'Team-workshop',
     startTypeLabel: 'Begeleide workshop',
     sectionLabel: 'Begeleiding',
-    sectionTarget: 'ac-begeleiding',
+    sectionTarget: 'ac-verdiepen',
     duration: 'Halve dag',
     description: 'Voor teams die vooral lijn, procesinzicht en gezamenlijke keuzes nodig hebben.',
     bullets: [
@@ -151,7 +151,7 @@ const OFFERS = {
     training: 'AI-richtingssessie voor MT of projectgroep',
     startTypeLabel: 'Begeleide sessie',
     sectionLabel: 'Begeleiding',
-    sectionTarget: 'ac-begeleiding',
+    sectionTarget: 'ac-verdiepen',
     duration: '90 min - halve dag',
     description: 'Voor organisaties die eerst scherp willen krijgen waar de meeste winst zit en wat de slimste route is.',
     bullets: [

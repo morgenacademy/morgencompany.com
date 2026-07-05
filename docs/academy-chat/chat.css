@@ -166,6 +166,17 @@
   white-space: nowrap;
 }
 
+.ac-card-why {
+  margin: 0 0 1.2rem;
+  padding: 0.7rem 0.95rem;
+  border-left: 2px solid var(--purple-light, #9b6fcf);
+  background: rgba(155, 111, 207, 0.1);
+  border-radius: 0 8px 8px 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-primary, #f0ecf5);
+}
+
 .ac-card-bullets {
   list-style: none;
   margin: 0 0 1.3rem;

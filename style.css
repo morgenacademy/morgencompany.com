@@ -1185,6 +1185,17 @@ nav.scrolled {
   font-weight: 700;
   color: var(--orange);
 }
+.tcard-wide {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.tcard-wide .tcard-wide-copy { max-width: 72ch; }
+.tcard-wide .tdesc { margin-bottom: 0; }
+.tcard-wide .tmeta { margin-top: 0; flex-shrink: 0; }
 
 /* ── 15b. Leerlijn (skill tree: basis boven, richtingen eronder) ── */
 .leerlijn {
@@ -1250,7 +1261,7 @@ nav.scrolled {
   padding: 1.4rem 1.6rem;
   border-color: rgba(155,111,207,.55);
 }
-.leerlijn-fundament .leerlijn-icon { grid-column: 1; grid-row: 1 / 5; margin-bottom: 0; }
+.leerlijn-fundament .leerlijn-icon { grid-column: 1; grid-row: 1; align-self: start; margin-bottom: 0; }
 .leerlijn-fundament .leerlijn-name { grid-column: 2; font-size: 1.05rem; }
 .leerlijn-fundament .leerlijn-aud { grid-column: 2; margin-top: .15rem; }
 .leerlijn-fundament .leerlijn-desc { grid-column: 2; margin-top: .45rem; max-width: 88ch; }
