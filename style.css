@@ -1672,12 +1672,12 @@ nav.scrolled {
 }
 .academy-photo-card-detail {
   grid-column: 1 / 2;
-  grid-row: 3 / span 2;
+  grid-row: 3 / span 3;
   transform: translateX(2.8rem) rotate(.9deg);
 }
 .academy-photo-card-karin {
   grid-column: 3 / 4;
-  grid-row: 3 / span 2;
+  grid-row: 3 / span 3;
   transform: translateX(-1rem) translateY(2rem) rotate(1.1deg);
 }
 .academy-photo-card-wide img {
