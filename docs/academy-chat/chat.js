@@ -24,9 +24,18 @@ const STARTERS = [
 const esc = (s) =>
   String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
-// Mini-markdown voor bot-tekst: alleen **vet**. Eerst escapen (XSS-veilig),
-// dan pas de vet-markering omzetten. Meer opmaak staan we bewust niet toe.
-const md = (s) => esc(s).replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>');
+// Mini-markdown voor bot-tekst: alleen **vet** en case-links. Eerst escapen
+// (XSS-veilig), dan pas markering omzetten. Links zijn whitelisted: alleen
+// interne /projecten-links (de bewijs-cases), altijd in een nieuw venster.
+const SAFE_LINK = /^\/projecten\/(#[a-zA-Z0-9-]+)?$/;
+const md = (s) =>
+  esc(s)
+    .replace(/\[([^\]\n]+)\]\(([^)\s]+)\)/g, (m, label, href) =>
+      SAFE_LINK.test(href)
+        ? `<a href="${href}" target="_blank" rel="noopener" class="ac-case-link">${label}</a>`
+        : label
+    )
+    .replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>');
 
 function itemHtml(item) {
   if (item.type === 'user') {
