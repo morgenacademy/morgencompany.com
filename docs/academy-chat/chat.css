@@ -7,14 +7,14 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 0.9rem;
   font-family: 'Barlow', system-ui, sans-serif;
 }
 
 .ac-chat-log {
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
+  gap: 0.7rem;
 }
 .ac-chat-log:empty {
   display: none;
@@ -23,10 +23,10 @@
 /* ── Berichten ─────────────────────────────────────────── */
 
 .ac-msg {
-  padding: 0.85rem 1.15rem;
-  border-radius: 14px;
-  line-height: 1.65;
-  font-size: 1rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 12px;
+  line-height: 1.6;
+  font-size: 0.85rem;
   max-width: 80%;
   white-space: pre-wrap;
   word-wrap: break-word;
@@ -134,8 +134,8 @@
   align-self: stretch;
   background: rgba(155, 111, 207, 0.14);
   border: 1px solid rgba(180, 145, 230, 0.32);
-  border-radius: 16px;
-  padding: 1.5rem 1.6rem;
+  border-radius: 14px;
+  padding: 1.1rem 1.25rem;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
@@ -145,12 +145,12 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 1rem;
-  margin-bottom: 1.1rem;
+  margin-bottom: 0.85rem;
 }
 
 .ac-card-title {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1.05rem;
   font-weight: 800;
   line-height: 1.25;
   color: var(--accent, #d8fe56); /* het enige accent in de chat */
@@ -158,12 +158,12 @@
 
 .ac-card-duration {
   flex: none;
-  font-size: 0.75rem;
+  font-size: 0.68rem;
   font-weight: 600;
   color: var(--text-secondary, #d8ccec);
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 999px;
-  padding: 0.25rem 0.7rem;
+  padding: 0.2rem 0.6rem;
   white-space: nowrap;
 }
 
@@ -178,30 +178,30 @@
 }
 
 .ac-card-why {
-  margin: 0 0 1.2rem;
-  padding: 0.7rem 0.95rem;
+  margin: 0 0 0.9rem;
+  padding: 0.55rem 0.8rem;
   border-left: 2px solid var(--purple-light, #9b6fcf);
   background: rgba(155, 111, 207, 0.1);
   border-radius: 0 8px 8px 0;
-  font-size: 0.95rem;
+  font-size: 0.82rem;
   line-height: 1.5;
   color: var(--text-primary, #f0ecf5);
 }
 
 .ac-card-bullets {
   list-style: none;
-  margin: 0 0 1.3rem;
+  margin: 0 0 1rem;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
+  gap: 0.4rem;
 }
 
 .ac-card-bullets li {
   position: relative;
-  padding-left: 1.1rem;
-  font-size: 0.95rem;
-  line-height: 1.55;
+  padding-left: 1rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
   color: var(--text-primary, #f0ecf5);
 }
 
@@ -227,9 +227,9 @@
 .ac-btn {
   font-family: inherit;
   font-weight: 600;
-  font-size: 0.9rem;
-  padding: 0.7rem 1.25rem;
-  border-radius: 10px;
+  font-size: 0.76rem;
+  padding: 0.38rem 0.8rem;
+  border-radius: 12px;
   cursor: pointer;
   text-decoration: none;
   border: 1px solid transparent;
@@ -257,15 +257,21 @@
   border-color: rgba(255, 255, 255, 0.32);
 }
 
+.ac-card-handoff {
+  margin: 0.6rem 0 0;
+  font-size: 0.72rem;
+  color: var(--text-muted, #7a6b8e);
+}
+
 /* ── Vervolgstappen ────────────────────────────────────── */
 
 .ac-followups {
-  margin-top: 1.4rem;
+  margin-top: 1rem;
 }
 
 .ac-followups-intro {
-  margin: 0 0 0.7rem;
-  font-size: 0.72rem;
+  margin: 0 0 0.5rem;
+  font-size: 0.66rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -279,12 +285,12 @@
 }
 
 .ac-followup {
-  flex: 1 1 200px;
-  min-width: 200px;
+  flex: 1 1 180px;
+  min-width: 180px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
-  padding: 0.9rem 1rem;
+  padding: 0.65rem 0.8rem;
   cursor: pointer;
   transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -294,14 +300,14 @@
 }
 
 .ac-followup-title {
-  margin-bottom: 0.3rem;
-  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+  font-size: 0.78rem;
   font-weight: 700;
   color: var(--text-primary, #f0ecf5);
 }
 
 .ac-followup-desc {
-  font-size: 0.82rem;
+  font-size: 0.72rem;
   line-height: 1.45;
   color: var(--text-muted, #7a6b8e);
 }
@@ -309,9 +315,10 @@
 /* ── Fallback ──────────────────────────────────────────── */
 
 .ac-fallback {
-  padding: 1.1rem 1.3rem;
-  border-radius: 14px;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
   line-height: 1.6;
+  font-size: 0.85rem;
   border: 1px solid rgba(255, 255, 255, 0.14);
   background: rgba(255, 255, 255, 0.04);
   color: var(--text-secondary, #d8ccec);
