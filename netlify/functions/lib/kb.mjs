@@ -126,13 +126,27 @@ export const OFFERS = [
     ],
   },
   {
-    key: 'masterclass',
-    training: 'Masterclass AI voor interne kartrekkers',
-    startTypeLabel: 'Masterclass',
-    sectionLabel: 'Masterclasses',
+    key: 'pmtraining',
+    training: 'Projectmanagement met AI',
+    startTypeLabel: 'Projectmanagement',
+    sectionLabel: 'Verdieping en begeleiding',
     sectionTarget: 'ac-verdiepen',
     duration: '4 dagen',
-    description: 'Voor een kleine interne kartrekkersgroep die AI verder wil trekken in processen, teams en implementatie.',
+    description: 'Een 4-daagse training over projecten voorbereiden, aansturen en laten slagen met AI. Een nieuwe kijk op projectmanagement met technologie.',
+    bullets: [
+      'AI verwerken in hoe projecten worden voorbereid, aangestuurd, georganiseerd en afgerond',
+      'Voor PM’s en projectwerkers: sneller schakelen, slimmer voorbereiden, minder overhead',
+      'Direct toepasbaar op de projecten die het team nu draait',
+    ],
+  },
+  {
+    key: 'masterclass',
+    training: 'AI Implementatie Masterclass',
+    startTypeLabel: 'Masterclass',
+    sectionLabel: 'Verdieping en begeleiding',
+    sectionTarget: 'ac-verdiepen',
+    duration: '4 dagen',
+    description: 'Vierdaagse deep dive voor een kleine interne kartrekkersgroep: van basiskennis naar bouwen, integreren en laten landen in team, proces en afdeling.',
     bullets: [
       'Breng mensen uit verschillende teams of afdelingen samen',
       'Werk van kans en value case naar concrete toepassing',
@@ -216,6 +230,15 @@ export function offerHref(o) {
 
 export function offerDomein(o) {
   return o.domein || 'Academy';
+}
+
+// CTA-tekst op de advieskaart: moet matchen met waar de knop echt heen gaat.
+// Formulier-doelen zeggen "aanvragen/plannen", sectie-doelen zeggen "bekijken".
+const FORM_TARGETS = new Set(['ac-aanvraag']);
+export function offerCta(o) {
+  if (o.key === 'kennismaking') return 'Plan een kennismaking';
+  if (o.href || FORM_TARGETS.has(o.sectionTarget)) return 'Vraag dit aan';
+  return 'Bekijk deze training';
 }
 
 // Publiek bewijs — cases en cijfers die al op de site staan (/projecten, homepage).
@@ -344,6 +367,7 @@ ${bewijs}
 - Zodra je genoeg weet, roep de tool \`presenteer_advies\` aan met de best passende \`offer_key\`, een korte persoonlijke \`waarom\` (1 tot 2 zinnen die HUN situatie koppelen aan wat deze stap hen concreet oplevert), een \`samenvatting\` van hun situatie in de ik/wij-vorm (dient als vooringevuld bericht in het contactformulier, dus feitelijk en in hun woorden), en 0 tot 2 logische \`vervolg_keys\`.
 - Het gaat niet om doorverwijzen. Laat in je tekst merken dat je geluisterd hebt: vat kort samen wat je hoorde en leg uit waarom dit past en wat het hen oplevert.
 - Routeer op richting: zelf leren → een training of masterclass; laten begeleiden of invoeren → het AI-implementatietraject; laten bouwen of automatiseren → maatwerk; twijfel, breed of strategisch → het kennismakingsgesprek.
+- Kies de laagdrempeligste stap die echt past. Een meermaands traject adviseer je alleen als de bezoeker expliciet om organisatiebrede invoering met begeleiding vraagt; anders is een concrete training de logische eerste stap, met het traject hooguit als vervolgstap. Let op: één team dat in of voor andere teams werkt (zoals een pool projectmanagers die intern wordt ingevlogen op projecten) is gewoon één team. Voor projectmanagers is **Projectmanagement met AI** dan de voor de hand liggende start.
 - Prijzen: trainingen hebben publieke vanaf-prijzen (per groep tot 10 deelnemers; grotere groepen in overleg) die je als indicatie mag geven. Bij een prijsvraag: noem de range (vanaf €750 tot €950) en hooguit de een of twee trainingen die het relevantst lijken; som nooit het hele aanbod op. Sluit af met één gerichte vraag zodat je daarna gericht kunt adviseren. Consultancy en technology zijn maatwerk zonder publieke prijs; zeg dat eerlijk en verwijs voor een voorstel naar het gesprek of formulier. Verzin nooit een prijs, dienst, datum of voorwaarde die hier niet staat.
 - Beantwoord feitvragen op basis van de FAQ en het aanbod. Weet je iets niet zeker? Verwijs naar het kennismakingsgesprek of totmorgen@morgenacademy.nl.
 - Blijf binnen de scope van Morgen (leren, implementeren en bouwen met AI). Buig off-topic vragen vriendelijk terug.`;
@@ -365,6 +389,7 @@ export function buildCard(input) {
     startTypeLabel: offer.startTypeLabel,
     sectionLabel: offer.sectionLabel,
     href: offerHref(offer),
+    ctaLabel: offerCta(offer),
     bullets: offer.bullets,
     vervolg,
   };
