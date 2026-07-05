@@ -148,7 +148,7 @@ function cardHtml(card) {
   const vervolg = (card.vervolg || [])
     .map(
       (v) =>
-        `<div class="ac-followup" onclick="scrollToId('${v.sectionTarget}')">
+        `<div class="ac-followup" onclick="location.href='${v.href}'">
            <div class="ac-followup-title">${esc(v.training)}</div>
            <div class="ac-followup-desc">${esc(v.description)}</div>
          </div>`
@@ -161,10 +161,10 @@ function cardHtml(card) {
         <h3 class="ac-card-title">${esc(card.training)}</h3>
         <span class="ac-card-duration">${esc(card.duration)}</span>
       </div>
+      ${card.waarom ? `<p class="ac-card-why">${esc(card.waarom)}</p>` : ''}
       <ul class="ac-card-bullets">${card.bullets.map((b) => `<li>${esc(b)}</li>`).join('')}</ul>
       <div class="ac-card-cta">
-        <a href="javascript:void(0)" onclick="scrollToId('ac-aanvraag')" class="ac-btn ac-btn-primary">Vraag dit aan</a>
-        <a href="javascript:void(0)" onclick="scrollToId('${card.sectionTarget}')" class="ac-btn ac-btn-secondary">Bekijk ${esc(card.sectionLabel.toLowerCase())}</a>
+        <a href="${card.href}" class="ac-btn ac-btn-primary">Bekijk deze stap</a>
         <a href="mailto:totmorgen@morgenacademy.nl" class="ac-btn ac-btn-secondary">Stuur ons een bericht</a>
       </div>
       ${vervolg ? `<div class="ac-followups"><p class="ac-followups-intro">Logische vervolgstappen</p><div class="ac-followups-grid">${vervolg}</div></div>` : ''}
@@ -174,11 +174,10 @@ function cardHtml(card) {
 function fallbackHtml() {
   return `
     <div class="ac-fallback">
-      <p>De AI-wijzer is even niet bereikbaar. Je kunt direct een aanvraag doen of ons mailen — we reageren meestal binnen 24 uur.</p>
+      <p>Het Kompas is even niet bereikbaar. Je kunt direct een gesprek aanvragen of ons mailen. We reageren meestal binnen een werkdag.</p>
       <div class="ac-card-cta">
-        <a href="javascript:void(0)" onclick="scrollToId('ac-aanvraag')" class="ac-btn ac-btn-primary">Naar het aanvraagformulier</a>
+        <a href="/#home-aanvraag" class="ac-btn ac-btn-primary">Plan een kennismakingsgesprek</a>
         <a href="mailto:totmorgen@morgenacademy.nl" class="ac-btn ac-btn-secondary">Stuur ons een bericht</a>
-        <a href="javascript:void(0)" onclick="acLoadLegacy()" class="ac-btn ac-btn-secondary">Gebruik de oude routewijzer</a>
       </div>
     </div>`;
 }

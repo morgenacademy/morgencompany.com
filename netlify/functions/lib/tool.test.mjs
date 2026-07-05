@@ -22,3 +22,8 @@ test('vervolg_keys is een array met dezelfde enum', () => {
 test('schema staat geen extra properties toe', () => {
   assert.equal(presenteerAdviesTool.input_schema.additionalProperties, false);
 });
+
+test('waarom is een verplicht stringveld', () => {
+  assert.equal(presenteerAdviesTool.input_schema.properties.waarom.type, 'string');
+  assert.ok(presenteerAdviesTool.input_schema.required.includes('waarom'));
+});
