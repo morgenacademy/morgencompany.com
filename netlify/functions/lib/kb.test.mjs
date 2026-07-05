@@ -43,10 +43,16 @@ test('buildCard verrijkt input tot kaart met waarom en academy-href', () => {
   });
   assert.equal(card.training, 'Basistraining AI');
   assert.equal(card.waarom, 'Omdat jullie net starten, is de basis de logische eerste stap.');
+  assert.equal(card.samenvatting, '');
   assert.equal(card.href, '/academy/#ac-trainingen');
   assert.equal(card.vervolg.length, 2);
   assert.equal(card.vervolg[0].training, 'Bouwen met AI (vibecoding)');
   assert.ok(card.vervolg[0].href.startsWith('/academy/#'));
+});
+
+test('buildCard geeft samenvatting door', () => {
+  const card = buildCard({ offer_key: 'basis', waarom: 'x', samenvatting: 'Wij zijn een team dat net start.', vervolg_keys: [] });
+  assert.equal(card.samenvatting, 'Wij zijn een team dat net start.');
 });
 
 test('buildCard routeert consultancy/technology cross-page', () => {

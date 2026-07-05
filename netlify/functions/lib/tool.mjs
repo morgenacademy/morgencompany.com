@@ -19,13 +19,18 @@ export const presenteerAdviesTool = {
         description:
           'Korte, persoonlijke rationale (1 tot 2 zinnen) die de situatie van de bezoeker koppelt aan waarom dit past en wat het hen concreet oplevert. Geen algemene marketingtekst; verwijs naar wat ze net vertelden.',
       },
+      samenvatting: {
+        type: 'string',
+        description:
+          'Feitelijke samenvatting van de situatie en vraag van de bezoeker in 2 tot 4 zinnen, geschreven in de ik/wij-vorm alsof de bezoeker het zelf vertelt (bijv. "Wij zijn een developmentteam dat..."). Dient als vooringevuld bericht in het contactformulier, zodat de bezoeker het verhaal niet opnieuw hoeft te typen. Alleen wat de bezoeker vertelde, geen advies of verkooppraat.',
+      },
       vervolg_keys: {
         type: 'array',
         description: '0 tot 2 logische vervolgstappen na dit aanbod.',
         items: { type: 'string', enum: OFFER_KEYS },
       },
     },
-    required: ['offer_key', 'waarom', 'vervolg_keys'],
+    required: ['offer_key', 'waarom', 'samenvatting', 'vervolg_keys'],
     additionalProperties: false,
   },
 };
