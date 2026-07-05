@@ -13,12 +13,10 @@
 //                nooit tool-blokken en nooit lege content (voorkomt API-400).
 
 const STARTERS = [
-  'We staan aan het begin en willen praktisch met AI aan de slag.',
   'We willen zelf een tool of prototype bouwen.',
   'Ons team wil meer uit Claude Code halen.',
   'We willen een proces laten automatiseren of iets laten bouwen.',
-  'Hoe doen we projectmanagement met AI?',
-  'Wat kost een teamtraining?',
+  'We willen projectmanagement slimmer aanpakken met AI.',
 ];
 
 const esc = (s) =>
@@ -49,6 +47,59 @@ function itemHtml(item) {
   return '';
 }
 
+// ── Gespreks-overdracht ──────────────────────────────────────────────
+// Zodra het Kompas een advies geeft, bewaren we de samenvatting van het
+// gesprek. Elk aanvraagformulier op de site vult die automatisch voor in,
+// zodat de bezoeker het verhaal niet opnieuw hoeft te typen.
+
+const HANDOFF_KEY = 'kompas-handoff';
+const HANDOFF_TTL = 60 * 60 * 1000; // 1 uur
+
+function saveHandoff(card) {
+  if (!card.samenvatting) return;
+  try {
+    sessionStorage.setItem(
+      HANDOFF_KEY,
+      JSON.stringify({ training: card.training, samenvatting: card.samenvatting, ts: Date.now() })
+    );
+  } catch (e) {
+    /* storage niet beschikbaar: prefill slaan we dan gewoon over */
+  }
+}
+
+function readHandoff() {
+  try {
+    const raw = sessionStorage.getItem(HANDOFF_KEY);
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    if (!data.samenvatting || Date.now() - (data.ts || 0) > HANDOFF_TTL) return null;
+    return data;
+  } catch (e) {
+    return null;
+  }
+}
+
+function handoffText(data) {
+  return `Via het Kompas kwam ik uit bij: ${data.training}.\n\n${data.samenvatting}`;
+}
+
+// Vult de vraag-textarea van de aanvraagformulieren voor (alleen als die leeg is).
+function prefillKompasForms() {
+  const data = readHandoff();
+  if (!data) return;
+  document.querySelectorAll('#hm-vraag, #ac-vraag, #te-proces, #co-uitdaging').forEach((ta) => {
+    if (ta && ta.value.trim() === '') ta.value = handoffText(data);
+  });
+}
+
+function mailtoHref(card) {
+  const subject = encodeURIComponent(`Aanvraag via het Kompas: ${card.training}`);
+  const body = card.samenvatting
+    ? `&body=${encodeURIComponent(handoffText({ training: card.training, samenvatting: card.samenvatting }))}`
+    : '';
+  return `mailto:totmorgen@morgenacademy.nl?subject=${subject}${body}`;
+}
+
 function cardHtml(card) {
   const vervolg = (card.vervolg || [])
     .map(
@@ -70,8 +121,9 @@ function cardHtml(card) {
       <ul class="ac-card-bullets">${card.bullets.map((b) => `<li>${esc(b)}</li>`).join('')}</ul>
       <div class="ac-card-cta">
         <a href="${card.href}" class="ac-btn ac-btn-primary">Bekijk deze stap</a>
-        <a href="mailto:totmorgen@morgenacademy.nl" class="ac-btn ac-btn-secondary">Stuur ons een bericht</a>
+        <a href="${mailtoHref(card)}" class="ac-btn ac-btn-secondary">Stuur ons een bericht</a>
       </div>
+      ${card.samenvatting ? '<p class="ac-card-handoff">Je verhaal nemen we mee: het aanvraagformulier staat alvast voor je ingevuld.</p>' : ''}
       ${vervolg ? `<div class="ac-followups"><p class="ac-followups-intro">Logische vervolgstappen</p><div class="ac-followups-grid">${vervolg}</div></div>` : ''}
     </div>`;
 }
@@ -195,6 +247,8 @@ function initKompas(mount) {
           drawLog();
         } else if (evt.type === 'advies') {
           state.log.push({ type: 'card', card: evt.card });
+          saveHandoff(evt.card);
+          prefillKompasForms(); // formulier op dezelfde pagina meteen voorinvullen
           drawLog();
         } else if (evt.type === 'error') {
           throw new Error(evt.message || 'chat error');
@@ -207,3 +261,8 @@ function initKompas(mount) {
 }
 
 document.querySelectorAll('#trainingwijzer-app, [data-kompas]').forEach(initKompas);
+
+// Cross-page overdracht: kwam de bezoeker via een advieskaart op een andere
+// pagina (consultancy/technology) of scrollt die zelf naar het formulier,
+// dan staat het verhaal er al.
+prefillKompasForms();

@@ -27,3 +27,8 @@ test('waarom is een verplicht stringveld', () => {
   assert.equal(presenteerAdviesTool.input_schema.properties.waarom.type, 'string');
   assert.ok(presenteerAdviesTool.input_schema.required.includes('waarom'));
 });
+
+test('samenvatting is een verplicht stringveld', () => {
+  assert.equal(presenteerAdviesTool.input_schema.properties.samenvatting.type, 'string');
+  assert.ok(presenteerAdviesTool.input_schema.required.includes('samenvatting'));
+});
