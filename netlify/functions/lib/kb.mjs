@@ -218,6 +218,49 @@ export function offerDomein(o) {
   return o.domein || 'Academy';
 }
 
+// Publiek bewijs — cases en cijfers die al op de site staan (/projecten, homepage).
+// De bot mag hier natuurlijk naar verwijzen als het relevant is; nooit details
+// verzinnen die hier niet staan.
+export const PROOF = {
+  stats: [
+    '850+ medewerkers getraind in AI',
+    'Gemiddelde trainingsbeoordeling 9.8/10',
+    '5.0 op Google reviews',
+  ],
+  cases: [
+    {
+      naam: 'OnView (softwarebedrijf)',
+      pijler: 'Academy',
+      case: 'Training "Claude Code professioneel houden" voor developmentteams die al met Claude Code werken: merge-realiteit, review-poort, kaders en werkafspraken. Directeur Ronald van Erven: "Er wordt door de collega\'s ook vandaag nog enthousiast op gereageerd."',
+    },
+    {
+      naam: 'PinkRoccade Local Government',
+      pijler: 'Academy',
+      case: 'Reeks workshops over n8n, automatiseren met AI en agentic workflows; deelnemers bouwden praktische automatiseringen.',
+    },
+    {
+      naam: 'FC Den Bosch',
+      pijler: 'Academy',
+      case: 'Basistraining AI: zelf prompten en direct toepassen op eigen taken in communicatie, marketing en kantoor.',
+    },
+    {
+      naam: 'Gemeente Tilburg',
+      pijler: 'Consultancy',
+      case: 'AI als waardekeuze: sessies met OR en linking pins (zo\'n zestig mensen) om AI organisatiebreed, veilig en waardevol te laten landen.',
+    },
+    {
+      naam: 'Solo Solis (een van de grootste zonnebrillengroothandels van Europa)',
+      pijler: 'Technology',
+      case: 'Proces rond bedrukte producten geautomatiseerd: van 40+ handmatige stappen naar maximaal 6 controles.',
+    },
+    {
+      naam: 'Trappenfabriek Vermeulen',
+      pijler: 'Technology',
+      case: 'Logistieke AI-planning: handmatig en foutgevoelig plannings- en transportproces geautomatiseerd; AI plant nu sneller en accurater.',
+    },
+  ],
+};
+
 // Handgeschreven FAQ — feitvragen die de bot mag beantwoorden.
 export const FAQ = [
   {
@@ -264,6 +307,11 @@ export function buildSystemPrompt() {
 
   const faq = FAQ.map((f) => `- V: ${f.vraag}\n  A: ${f.antwoord}`).join('\n');
 
+  const bewijs = [
+    ...PROOF.stats.map((s) => `- ${s}`),
+    ...PROOF.cases.map((c) => `- [${c.pijler}] ${c.naam}: ${c.case}`),
+  ].join('\n');
+
   return `Je bent 'het Kompas', de AI-adviseur van Morgen. Morgen helpt organisaties met AI langs drie richtingen:
 - LEREN (Morgen Academy): trainingen en masterclasses zodat mensen zelf met AI leren werken.
 - LATEN IMPLEMENTEREN (Morgen Consultancy): een begeleid traject van strategie naar werkende aanpak en borging.
@@ -278,8 +326,12 @@ ${aanbod}
 ## FAQ (enige geldige feiten)
 ${faq}
 
+## Bewijs (publieke cases en cijfers, van morgencompany.com/projecten)
+${bewijs}
+
 ## Gedrag
 - Begin met erkennen wat de bezoeker vertelt, zodat het voelt alsof je echt luistert. Stel hooguit een paar korte vragen om te snappen wat ze willen (zelf leren, laten implementeren of laten bouwen), voor wie, en waar ze nu staan.
+- Bouw vertrouwen met bewijs: als een case uit de bewijslijst echt lijkt op de situatie van de bezoeker, noem die kort en natuurlijk ("bij OnView deden we net zoiets: ..."). Hooguit één case per bericht, alleen uit de lijst, en alleen als het relevant is. Verzin nooit klanten, resultaten of quotes. Voor meer voorbeelden mag je naar morgencompany.com/projecten verwijzen.
 - Zodra je genoeg weet, roep de tool \`presenteer_advies\` aan met de best passende \`offer_key\`, een korte persoonlijke \`waarom\` (1 tot 2 zinnen die HUN situatie koppelen aan wat deze stap hen concreet oplevert), en 0 tot 2 logische \`vervolg_keys\`.
 - Het gaat niet om doorverwijzen. Laat in je tekst merken dat je geluisterd hebt: vat kort samen wat je hoorde en leg uit waarom dit past en wat het hen oplevert.
 - Routeer op richting: zelf leren → een training of masterclass; laten begeleiden of invoeren → het AI-implementatietraject; laten bouwen of automatiseren → maatwerk; twijfel, breed of strategisch → het kennismakingsgesprek.

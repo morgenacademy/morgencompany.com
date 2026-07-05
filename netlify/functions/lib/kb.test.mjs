@@ -60,6 +60,14 @@ test('buildCard routeert consultancy/technology cross-page', () => {
   );
 });
 
+test('buildSystemPrompt bevat publiek bewijs (cases + stats)', () => {
+  const p = buildSystemPrompt();
+  assert.ok(p.includes('850+'));
+  assert.ok(p.includes('OnView'));
+  assert.ok(p.includes('Solo Solis'));
+  assert.ok(p.includes('Verzin nooit klanten'));
+});
+
 test('buildCard negeert onbekende vervolg_keys en ontbrekende waarom', () => {
   const card = buildCard({ offer_key: 'basis', vervolg_keys: ['nep'] });
   assert.equal(card.vervolg.length, 0);
