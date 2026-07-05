@@ -24,9 +24,16 @@ const STARTERS = [
 const esc = (s) =>
   String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
+// Mini-markdown voor bot-tekst: alleen **vet**. Eerst escapen (XSS-veilig),
+// dan pas de vet-markering omzetten. Meer opmaak staan we bewust niet toe.
+const md = (s) => esc(s).replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>');
+
 function itemHtml(item) {
-  if (item.type === 'user' || item.type === 'bot') {
-    return `<div class="ac-msg ac-msg-${item.type}">${esc(item.text)}</div>`;
+  if (item.type === 'user') {
+    return `<div class="ac-msg ac-msg-user">${esc(item.text)}</div>`;
+  }
+  if (item.type === 'bot') {
+    return `<div class="ac-msg ac-msg-bot">${md(item.text)}</div>`;
   }
   if (item.type === 'card') return cardHtml(item.card);
   if (item.type === 'fallback') return fallbackHtml();
@@ -50,7 +57,7 @@ function cardHtml(card) {
         <h3 class="ac-card-title">${esc(card.training)}</h3>
         <span class="ac-card-duration">${esc(card.duration)}</span>
       </div>
-      ${card.waarom ? `<p class="ac-card-why">${esc(card.waarom)}</p>` : ''}
+      ${card.waarom ? `<p class="ac-card-why">${md(card.waarom)}</p>` : ''}
       <ul class="ac-card-bullets">${card.bullets.map((b) => `<li>${esc(b)}</li>`).join('')}</ul>
       <div class="ac-card-cta">
         <a href="${card.href}" class="ac-btn ac-btn-primary">Bekijk deze stap</a>
