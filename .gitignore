@@ -9,3 +9,5 @@ downloads/spraaktool/*.exe
 node_modules/
 .env
 .netlify/
+
+.claude/
