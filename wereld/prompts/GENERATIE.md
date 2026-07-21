@@ -145,11 +145,30 @@ codex exec -C "$WORK" -s workspace-write --skip-git-repo-check \
   'Use the image generation tool ($imagegen) to generate: '"$(cat "$PROMPTS/still-train-binnen.txt")"' Wide 3:2 landscape, high resolution. Save it as ./still_train_binnen.png. Do not do anything else.'
 ```
 
+**Stijlreferenties meegeven (aanrader voor het anchor).** Codex' beeldtool
+accepteert referentiebeelden via `-i`; de prompt moet dan VOOR de eerste
+`-i`-vlag staan (variadisch). Leg 1 a 2 referenties klaar in `$WORK/ref/`
+(bijv. frames uit de inspiratievideo als stijl-moodboard: papercraft-look,
+gelaagdheid, lichtval; het is een stijlreferentie, geen beeld om na te bouwen)
+en breid het commando uit:
+
+```bash
+codex exec -C "$WORK" -s workspace-write --skip-git-repo-check \
+  'Use the image generation tool ($imagegen) to generate: '"$(cat "$PROMPTS/still-hub.txt")"' Match the papercraft layering and lighting style of the reference images, but follow the prompt for all content and colors. Wide 3:2 landscape, high resolution. Save it as ./still_hub.png. Do not do anything else.' \
+  -i ref/stijl-1.png -i ref/stijl-2.png
+```
+
+Omdat het anchor gratis is: gerust 2 a 3 varianten maken (met en zonder
+referenties) en de beste kiezen; pas na Harmen's akkoord (anchor-gate, stap 3.4)
+gaat er iets naar video.
+
 Output landt op 1536x1024 (exact 3:2). **Review beide stills op cohesie** voor je
 verder gaat: zelfde hoek, zelfde palet, zelfde licht, geen leesbare tekst op de
 schermen. Off-style: alleen die ene opnieuw genereren. Een van de twee bronnen
 gebruiken voor alle stills van een build (hier: altijd Codex), nooit mengen met
-Higgsfield-stills, dat leest als stijldrift.
+Higgsfield-stills, dat leest als stijldrift. De still-train-binnen daarna
+genereren met de goedgekeurde hub-still als extra referentie (`-i
+still_hub.png`), zodat binnen en buiten dezelfde wereld zijn.
 
 Posters voor desktop meteen wegschrijven (geen resize nodig, 1536x1024 is het
 contract):
