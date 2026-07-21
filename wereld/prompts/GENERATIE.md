@@ -6,9 +6,37 @@ Dit draaiboek vervangt de placeholder-assets uit fase 1 door echte AI-assets. Br
 (batch-commando's) en het ontwerp
 `docs/superpowers/specs/2026-07-21-morgen-wereld-design.md`.
 
-Kern: er wordt pas gegenereerd na een expliciete go van Harmen op de kalibratie
-(stap 3). Stills kosten nul credits (Codex op het ChatGPT-abonnement), alleen de
-video's tikken het Higgsfield-saldo aan.
+Kern: er wordt pas gegenereerd na een expliciete go van Harmen op de begroting
+(stap 3) en op de hub-still (het anchor, stap 4). Stills kosten nul credits
+(Codex op het ChatGPT-abonnement), alleen de video's tikken het
+Higgsfield-saldo aan.
+
+## Routekeuze: MCP eerst, CLI als fallback
+
+Er zijn twee routes naar Higgsfield; de volgorde, prompts en het seam-contract
+zijn identiek.
+
+**Route A (voorkeur): Higgsfield MCP.** De connector is op claude.ai gekoppeld
+en de tools zijn in Claude Code-sessies beschikbaar (o.a. `generate_video`,
+`generate_image`, `models_explore`, `balance`, `media_upload`, `job_display`).
+Geverifieerd op 2026-07-21 via `models_explore get seedance_2_0`:
+
+- medias-rollen **`start_image` en `end_image` bestaan** en dragen het
+  seam-contract; lokale frames gaan eerst via `media_upload` naar een media-id.
+- `duration` vrij 4-15 s (6/8/10 kunnen exact), `mode: std` met `resolution`
+  tot 4k, aspect `16:9` en `9:16` (de mobiele keten kan dus native portret).
+- **`generate_audio` staat default aan: expliciet `false` meegeven**, de site
+  is muted en audio kost alleen maar generatietijd.
+- `get_cost: true` geeft de exacte creditprijs van een generatie **zonder te
+  genereren**: daarmee wordt de hele begroting vooraf doorgerekend en vervalt
+  de oude meet-kalibratie. `balance` toont saldo en plan.
+
+Auth loopt via de connector; er is geen CLI-login nodig. Exacte
+parametervormen bij uitvoering altijd even uit de actuele toolschema's halen.
+
+**Route B (fallback): Higgsfield CLI**, zoals hieronder in stap 1.3-1.4 en de
+`higgsfield generate create`-commando's. Alleen nodig als de MCP wegvalt of een
+parameter niet blijkt te ondersteunen.
 
 ## 0. Wat er al klaarligt en wat er moet landen
 
@@ -49,17 +77,13 @@ Doelassets, exact dezelfde bestandsnamen als het placeholdercontract maar onder
 
 2. **Codex CLI** is aanwezig en ingelogd; verifieer met `codex login status`
    (moet een ChatGPT-login rapporteren, versie >= 0.125).
-3. **Higgsfield CLI installeren.** Volg de officiele Higgsfield CLI-documentatie
-   (de `higgsfield-generate` skill waarnaar SKILL.md verwijst zit niet in deze
-   repo). Verifieer daarna met `higgsfield --version`.
-4. **`higgsfield auth login`: interactieve stap voor Harmen.** Dit is een
-   OAuth-flow in de browser en kan niet door een agent worden gedraaid. Daarna zo
-   nodig `higgsfield workspace set <id>`. Klaar wanneer dit zonder auth-fout
-   draait en een creditsaldo toont:
-
-   ```bash
-   higgsfield workspace list
-   ```
+3. **Alleen Route B:** Higgsfield CLI installeren volgens de officiele
+   documentatie (de `higgsfield-generate` skill waarnaar SKILL.md verwijst zit
+   niet in deze repo). Verifieer met `higgsfield --version`.
+4. **Alleen Route B:** `higgsfield auth login` is een interactieve OAuth-stap
+   voor Harmen; daarna zo nodig `higgsfield workspace set <id>`. Klaar wanneer
+   `higgsfield workspace list` zonder auth-fout een saldo toont. Bij Route A is
+   dit alles onnodig: de MCP-connector is al geautoriseerd.
 
 ## 2. Werkmap en shellregels
 
@@ -83,35 +107,29 @@ Shellregels (hard geleerd, zie SKILL.md Gotchas):
   achtergrond** en poll de logs, nooit blokkerend in de voorgrond.
 - Geef `--start-image`/`--end-image` altijd **lokale bestandspaden**, nooit job-UUID's.
 
-## 3. Kalibratie en go/no-go (verplicht voor alles)
+## 3. Begroting en go/no-go (verplicht voor alles)
 
-De CLI toont geen prijzen en plannen verschillen; **kalibreer, gok niet**
-(SKILL.md stap 1.6). Referentie van juli 2026 op een plus-plan: standaardvideo
-ongeveer 40 tot 55 credits, maar vertrouw alleen de eigen meting.
+Bij Route A is gokken en meten allebei onnodig: **reken de hele begroting
+vooraf exact door met `get_cost: true`** per geplande generatie (zelfde model,
+duur, resolutie en aspect als de echte call, zonder te genereren).
 
-1. **Schema-check** (voor de intro belangrijk):
+1. **Saldo en plan**: `balance`. Referentie 2026-07-21: 10 credits op free;
+   voor de PoC is de 1-dags trial of een Plus-maand nodig. Trial geactiveerd?
+   Direct daarna de auto-renewal opzeggen (doet Harmen op de site).
+2. **Prijstabel maken**: `get_cost` voor alle 6 video's (intro 6s, dive 8s,
+   leg 10s; elk in 16:9 1080p std en in 9:16). Tel op, plus 15%
+   re-roll-marge (NSFW-filter op interieurs is grillig).
+3. **Go/no-go door Harmen op de begroting.** Waarschuw als het totaal boven
+   ~70% van het (trial)saldo uitkomt.
+4. **Anchor-gate (harde stop).** Genereer de hub-still (stap 4, nul credits)
+   en leg hem aan Harmen voor: leest hij als Morgen-papercraft met paarse
+   gloed, spaarzaam geel-groen, brug aan de voorrand? Alles wat daarna komt
+   erft dit beeld; **geen enkele video vóór expliciet akkoord op deze still.**
+   Bij twijfel: still opnieuw, dat kost niets.
 
-   ```bash
-   higgsfield model get seedance_2_0
-   ```
-
-   Controleer: welke `--duration`-waarden zijn toegestaan (dit draaiboek wil 6, 8
-   en 10; staat 6 er niet bij, gebruik 8 voor de intro), en of `--end-image`
-   zonder `--start-image` mag (nodig voor de intro, stap 5.1; mag het niet, zie
-   het alternatief daar).
-2. **Saldo voor**: `higgsfield workspace list`, noteer het getal.
-3. **1 still**: genereer `still-hub` via Codex (stap 4). Kost nul credits en is
-   meteen de stijlcheck: leest het als Morgen-papercraft met paarse gloed en
-   spaarzaam geel-groen?
-4. **1 video**: genereer alleen de intro (stap 5.1). Dat is de enige clip die
-   geen eerder frame nodig heeft.
-5. **Saldo na**: `higgsfield workspace list` opnieuw. Verschil = prijs van een
-   standaardvideo.
-6. **Extrapoleer**: totaal = 6 video's (3 desktop + 3 mobiel) x gemeten prijs
-   x 1,15 re-roll-marge (NSFW-filter op interieurs is grillig). Waarschuw als de
-   schatting boven ~70% van het saldo uitkomt.
-7. **Go/no-go door Harmen.** Bij go is de kalibratie-intro meteen de echte
-   eerste clip; niets weggooien. Bij no-go: stoppen, de still kostte niets.
+Route B-fallback: schema-check `higgsfield model get seedance_2_0` (duration
+6/8/10 toegestaan? `--end-image` zonder `--start-image`?), saldo diffen rond
+één testvideo en extrapoleren zoals SKILL.md stap 1.6 beschrijft.
 
 ## 4. Stills via Codex CLI (nul credits)
 
