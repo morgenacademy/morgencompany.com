@@ -75,6 +75,13 @@ Doelassets, exact dezelfde bestandsnamen als het placeholdercontract maar onder
    for t in ffmpeg ffprobe jq cwebp codex; do command -v "$t" || echo "ONTBREEKT: $t"; done
    ```
 
+   `cwebp` ontbreekt op deze Mac; gebruik dan Pillow als gelijkwaardige
+   vervanger voor elke `cwebp`-regel in dit draaiboek:
+
+   ```bash
+   python3 -c "from PIL import Image; Image.open('BRON.png').save('DOEL.webp','WEBP',quality=84)"
+   ```
+
 2. **Codex CLI** is aanwezig en ingelogd; verifieer met `codex login status`
    (moet een ChatGPT-login rapporteren, versie >= 0.125).
 3. **Alleen Route B:** Higgsfield CLI installeren volgens de officiele
