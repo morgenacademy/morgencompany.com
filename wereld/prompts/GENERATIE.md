@@ -125,7 +125,12 @@ duur, resolutie en aspect als de echte call, zonder te genereren).
    Direct daarna de auto-renewal opzeggen (doet Harmen op de site).
 2. **Prijstabel maken**: `get_cost` voor alle 6 video's (intro 6s, dive 8s,
    leg 10s; elk in 16:9 1080p std en in 9:16). Tel op, plus 15%
-   re-roll-marge (NSFW-filter op interieurs is grillig).
+   re-roll-marge (NSFW-filter op interieurs is grillig). Gemeten 2026-07-22
+   (seedance_2_0 std): 1080p = 9 credits/s, 720p = 4,5 credits/s, aspect maakt
+   niet uit. De mobiele 9:16-keten op **720p native** renderen: het
+   encode-doel is toch 720 breed, dus 1080p is daar weggegooid geld.
+   PoC-totaal daarmee: desktop 1080p 216 + mobiel 720p 108 = 324, met marge
+   ~375 credits.
 3. **Go/no-go door Harmen op de begroting.** Waarschuw als het totaal boven
    ~70% van het (trial)saldo uitkomt.
 4. **Anchor-gate (harde stop).** Genereer de hub-still (stap 4, nul credits)
