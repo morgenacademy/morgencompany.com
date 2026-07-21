@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Morgen | Stap de wereld binnen</title>
+  <meta name="description" content="Vlieg de wereld van Morgen binnen en ontdek wat we doen: Train, Implement, Build en Inspire.">
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="wereld.css">
+</head>
+<body data-state="boot">
+
+  <h1 class="sr-only">De wereld van Morgen</h1>
+
+  <!-- Minimale nav-balk, boven alle states -->
+  <nav class="wereld-nav" aria-label="Hoofdnavigatie">
+    <a class="wereld-merk" href="/wereld/" aria-label="Morgen wereld, terug naar start">MORGEN<span class="wereld-merk-punt" aria-hidden="true">.</span></a>
+    <a class="wereld-huidige" href="/">Huidige site</a>
+  </nav>
+
+  <!-- Hub: het plein met de vier gebouwen -->
+  <section id="hub" class="stage" tabindex="-1" aria-label="Het Morgen-plein">
+    <img id="hub-still" class="hub-still" alt="Overzicht van het Morgen-plein met vier gebouwen">
+    <div id="hotspots" class="hotspots"></div>
+  </section>
+
+  <!-- Cinematics: intro-vlucht en dive delen 1 video-element -->
+  <section id="cine" class="stage" aria-label="Vlucht door de wereld">
+    <video id="cine-video" muted playsinline preload="auto"></video>
+    <button id="skip-intro" class="knop-ghost skip-knop" type="button">Sla intro over</button>
+  </section>
+
+  <!-- Binnen-verhaal: scroll-gescrubd via de scrub-engine -->
+  <div id="verhaal">
+    <div id="world"></div>
+    <button id="exit-verhaal" class="knop-ghost exit-knop" type="button">Terug naar het plein</button>
+    <aside id="verhaal-einde" class="einde" aria-label="Einde van het Train-verhaal">
+      <p class="einde-eyebrow">Train</p>
+      <h2 class="einde-titel">De leerlijn</h2>
+      <ul class="einde-lijst">
+        <li><strong>Basistraining AI</strong><span>Van &ldquo;waar moet ik beginnen?&rdquo; naar: dit kan ik gewoon</span></li>
+        <li><strong>Bouwen met AI (vibecoding)</strong><span>Bouw in no time je eerste site, app of tool</span></li>
+        <li><strong>Automatiseren met AI</strong><span>Laat processen slimmer, sneller en beter lopen</span></li>
+        <li><strong>Claude Code / Codex: de basis</strong><span>Van losse chats naar een AI-collega die meewerkt</span></li>
+      </ul>
+      <div class="einde-acties">
+        <a class="knop-accent" href="/academy/">Bekijk alle trainingen</a>
+        <button class="knop-ghost" id="einde-terug" type="button">Terug naar het plein</button>
+      </div>
+    </aside>
+  </div>
+
+  <noscript>
+    <div class="noscript-melding">
+      <p>Deze pagina heeft JavaScript nodig. Bekijk in plaats daarvan de <a href="/">huidige site</a>.</p>
+    </div>
+  </noscript>
+
+  <script src="scrub-engine.js"></script>
+  <script src="wereld.js"></script>
+</body>
+</html>
