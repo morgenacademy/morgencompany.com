@@ -9,12 +9,16 @@ lanterns, little flags and one glowing round landmark dot. Highly detailed, cent
 composition, absolutely no text, no letters, no numbers, no logos.
 
 Subject: the interior of the miniature paper lecture hall, its roof lifted away so the
-room opens up like a dollhouse. Curved rows of layered paper seats descend toward a
-low stage with a small lectern. Behind the stage, large presentation screens glow
-softly with abstract AI diagrams: node-and-edge network graphs, flowing curves and
-simple bar shapes made purely of geometry, strictly without any readable text, letters
-or numbers on any screen. Warm inviting lesson atmosphere: cozy purple ambient light
-with lavender highlights on the paper edges, tiny yellow-green paper lanterns along
-the aisles. A handful of tiny paper figures sit in the seats while one figure presents
-on stage. The stage and its glowing screens are the focal point, centered in the frame
-with a little headroom above.
+room opens up like a dollhouse. The architecture still reads as the hall seen from
+outside, but the floor is a hands-on workshop space, not a lecture: one long shared
+wooden paper table in the middle with tiny open paper laptops, cups and note sheets,
+and paper figures actively working side by side, some turned toward each other in
+conversation. One figure, the trainer, stands between the participants at the table,
+leaning in to help, not presenting from a stage. A small paper flip-chart easel stands
+to one side. On the back wall one large screen glows softly with an abstract AI
+diagram: a node-and-edge network graph and simple flowing curves made purely of
+geometry, strictly without any readable text, letters or numbers on any screen or
+sheet. Warm inviting maker atmosphere: cozy purple ambient light with lavender
+highlights on the paper edges, tiny yellow-green paper lanterns near the table. The
+shared table with its working figures is the focal point, centered in the frame with a
+little headroom above.
