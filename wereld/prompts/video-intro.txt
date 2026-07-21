@@ -8,10 +8,15 @@ yellow-green #D8FE56 accent is used very sparingly, only on small details such a
 lanterns, little flags and one glowing round landmark dot. Highly detailed, centered
 composition, absolutely no text, no letters, no numbers, no logos.
 
-Single continuous cinematic camera move, no cuts. Begin very high above the miniature
-paper campus, thin paper clouds drifting past, the whole garden village far below like
-a tiny model. The camera slowly descends in one gentle arc toward the village, the
-four paper buildings and the glowing yellow-green dot on the central square growing
-larger, until the full campus overview fills the frame in a calm, stable framing. In
-the final second, settle into a slow, steady forward drift toward the central square.
-Smooth, graceful, slow motion, subtle parallax. No text, no captions.
+Single continuous cinematic camera move, no cuts. Begin low and just outside the
+island, hovering at walking height in front of the small arched paper bridge at the
+front edge, the entrance path and lantern posts ahead, the campus village rising in
+the distance. The camera glides forward across the bridge and along the winding
+entrance path, brushing past paper hedges and warm lantern light, clearly entering
+the world. Still gliding forward it rises in one gentle continuous crane-up,
+revealing more and more of the garden village, until the full campus overview fills
+the frame in a calm, stable three-quarter isometric framing: the four paper
+buildings and the glowing yellow-green dot arranged around the central square. In
+the final second, settle into a slow, steady forward drift toward the central
+square. The camera never reverses or pulls back. Smooth, graceful, slow motion,
+subtle parallax. No text, no captions.
