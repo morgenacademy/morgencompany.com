@@ -7,24 +7,26 @@
    x/y = desktop, xm/ym = mobiel (optioneel, valt terug op x/y).
    Pas deze getallen aan zodra de echte hub-still er is. */
 const HOTSPOTS = [
-  { id: 'train',     label: 'Train',     x: 28, y: 58, xm: 30, ym: 42, enabled: true  },
-  { id: 'implement', label: 'Implement', x: 50, y: 40, xm: 62, ym: 30, enabled: false },
-  { id: 'build',     label: 'Build',     x: 72, y: 54, xm: 58, ym: 58, enabled: false },
-  { id: 'inspire',   label: 'Inspire',   x: 46, y: 76, xm: 34, ym: 72, enabled: false },
+  { id: 'train',     label: 'Train',     x: 22, y: 34, xm: 22, ym: 39, enabled: true  },
+  { id: 'implement', label: 'Implement', x: 44, y: 24, xm: 44, ym: 36, enabled: false },
+  { id: 'build',     label: 'Build',     x: 69, y: 26, xm: 69, ym: 37, enabled: false },
+  { id: 'inspire',   label: 'Inspire',   x: 77, y: 55, xm: 77, ym: 47, enabled: false },
 ];
 
-/* ---- Assetcontract (relatief aan /wereld/) ---- */
+/* ---- Assetcontract (relatief aan /wereld/) ----
+   Mobiele mp4's wijzen tijdelijk naar de desktopclips totdat de natieve
+   9:16-keten gegenereerd is; de engine en cine-player croppen cover. */
 const ASSETS = {
-  hub:         'assets/placeholder/hub.webp',
-  hubM:        'assets/placeholder/hub-m.webp',
-  trainStill:  'assets/placeholder/train-binnen.webp',
-  trainStillM: 'assets/placeholder/train-binnen-m.webp',
-  intro:       'assets/placeholder/vid/intro.mp4',
-  introM:      'assets/placeholder/vid/intro-m.mp4',
-  diveTrain:   'assets/placeholder/vid/dive-train.mp4',
-  diveTrainM:  'assets/placeholder/vid/dive-train-m.mp4',
-  legTrain:    'assets/placeholder/vid/leg-train.mp4',
-  legTrainM:   'assets/placeholder/vid/leg-train-m.mp4',
+  hub:         'assets/echt/hub.webp',
+  hubM:        'assets/echt/hub-m.webp',
+  trainStill:  'assets/echt/train-binnen.webp',
+  trainStillM: 'assets/echt/train-binnen-m.webp',
+  intro:       'assets/echt/vid/intro.mp4',
+  introM:      'assets/echt/vid/intro.mp4',
+  diveTrain:   'assets/echt/vid/dive-train.mp4',
+  diveTrainM:  'assets/echt/vid/dive-train.mp4',
+  legTrain:    'assets/echt/vid/leg-train.mp4',
+  legTrainM:   'assets/echt/vid/leg-train.mp4',
 };
 
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
