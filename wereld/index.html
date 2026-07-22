@@ -37,17 +37,13 @@
   <div id="verhaal">
     <div id="world"></div>
     <button id="exit-verhaal" class="knop-ghost exit-knop" type="button">Terug naar het plein</button>
-    <aside id="verhaal-einde" class="einde" aria-label="Einde van het Train-verhaal">
-      <p class="einde-eyebrow">Train</p>
-      <h2 class="einde-titel">De leerlijn</h2>
-      <ul class="einde-lijst">
-        <li><strong>Basistraining AI</strong><span>Van &ldquo;waar moet ik beginnen?&rdquo; naar: dit kan ik gewoon</span></li>
-        <li><strong>Bouwen met AI (vibecoding)</strong><span>Bouw in no time je eerste site, app of tool</span></li>
-        <li><strong>Automatiseren met AI</strong><span>Laat processen slimmer, sneller en beter lopen</span></li>
-        <li><strong>Claude Code / Codex: de basis</strong><span>Van losse chats naar een AI-collega die meewerkt</span></li>
-      </ul>
+    <aside id="verhaal-einde" class="einde" aria-label="Einde van het verhaal">
+      <!-- Generiek eindpaneel: wordt per gebouw gevuld door wereld.js -->
+      <p class="einde-eyebrow" id="einde-eyebrow"></p>
+      <h2 class="einde-titel" id="einde-titel"></h2>
+      <ul class="einde-lijst" id="einde-lijst"></ul>
       <div class="einde-acties">
-        <a class="knop-accent" href="/academy/">Bekijk alle trainingen</a>
+        <a class="knop-accent" id="einde-cta" href="/academy/"></a>
         <button class="knop-ghost" id="einde-terug" type="button">Terug naar het plein</button>
       </div>
     </aside>
