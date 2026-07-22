@@ -15,7 +15,7 @@ const HOTSPOTS = [
   // still-binnenwereld (geen dive), de wegwijzer linkt naar het Kompas op de site.
   { id: 'projecten', label: 'Projecten',     x: 27, y: 51, xm: 27, ym: 52, enabled: true, sub: true },
   { id: 'overons',   label: 'Over Morgen.',  x: 70, y: 67, xm: 71, ym: 62, enabled: true, sub: true },
-  { id: 'kompas',    label: 'Kompas',        x: 52, y: 47, xm: 52, ym: 50, enabled: true, sub: true, href: '/#trainingwijzer-app' },
+  { id: 'kompas',    label: 'Kompas',        x: 52, y: 47, xm: 52, ym: 50, enabled: true, sub: true, kompas: true },
 ];
 
 /* ---- Assetcontract (relatief aan /wereld/) ----
@@ -209,6 +209,10 @@ const eindeLijst = document.getElementById('einde-lijst');
 const eindeCta = document.getElementById('einde-cta');
 const eindeCta2 = document.getElementById('einde-cta2');
 const eindeTerug = document.getElementById('einde-terug');
+const kompasPaneel = document.getElementById('kompas-paneel');
+const kompasSluit = document.getElementById('kompas-sluit');
+const wereldTicker = document.getElementById('wereld-ticker');
+const tickerTrack = document.getElementById('ticker-track');
 
 /* ---------- Cinematics: 1 hergebruikt video-element ---------- */
 let cineDone = null;
@@ -382,6 +386,8 @@ function startIntro() {
 function toHub() {
   stopCine();
   stopAmbient();
+  sluitKompas();
+  wereldTicker.hidden = true;
   setState('hub');
   window.scrollTo(0, 0);
   hubEl.focus({ preventScroll: true });
@@ -413,6 +419,7 @@ function toVerhaal(gebouwId) {
   // Engine-layout verversen nu de container zichtbaar is
   window.dispatchEvent(new Event('orientationchange'));
   startAmbient(gebouwId || huidigGebouw);
+  toonTicker(gebouwId || huidigGebouw);
 }
 
 /* ---------- Hub opbouwen ---------- */
@@ -435,11 +442,56 @@ HOTSPOTS.forEach((h) => {
     (h.enabled ? '' : '<span class="hotspot-badge">binnenkort</span>');
   b.addEventListener('click', () => {
     if (!h.enabled) return;
+    if (h.kompas) { openKompas(); return; }
     if (h.href) { window.location.href = h.href; return; }
     startDive(h.id);
   });
   hotspotLayer.appendChild(b);
 });
+
+/* ---------- het Kompas: vak onderaan op de hub ---------- */
+function openKompas() {
+  kompasPaneel.hidden = false;
+}
+function sluitKompas() {
+  kompasPaneel.hidden = true;
+}
+kompasSluit.addEventListener('click', sluitKompas);
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && !kompasPaneel.hidden) sluitKompas();
+});
+
+/* ---------- Logo-ticker: loopt onderin tijdens Projecten ---------- */
+const TICKER_LOGOS = [
+  { src: '/logos/logo-e0471b2770.png', alt: 'klantlogo' },
+  { src: '/docs/logos/pinkroccade.png', alt: 'PinkRoccade' },
+  { src: '/logos/logo-c14ea2f159.png', alt: 'klantlogo' },
+  { src: '/docs/logos/gemeente-tilburg.svg', alt: 'Gemeente Tilburg' },
+  { src: '/docs/logos/pharmapartners.png', alt: 'PharmaPartners' },
+  { src: '/logos/logo-8c22008faf.png', alt: 'klantlogo' },
+  { src: '/logos/logo-8e5d10ac4a.png', alt: 'klantlogo' },
+  { src: '/logos/logo-0be1ac9b0c.png', alt: 'klantlogo' },
+  { src: '/docs/logos/vlm.png', alt: 'VLM' },
+  { src: '/logos/logo-0a46f8e343.png', alt: 'klantlogo' },
+  { src: '/docs/logos/fc-den-bosch.png', alt: 'FC Den Bosch' },
+  { src: '/logos/logo-a3564bb2de.png', alt: 'klantlogo' },
+  { src: '/logos/logo-fda4ea2999.png', alt: 'klantlogo' },
+  { src: '/docs/logos/agrifood-capital.png', alt: 'AgriFood Capital' },
+  { src: '/logos/logo-cddbd087d9.png', alt: 'klantlogo' },
+  { src: '/logos/logo-f5c55a8062.png', alt: 'klantlogo' },
+  { src: '/logos/Logo%20Onview.png', alt: 'OnView' },
+  { src: '/docs/logos/house-of-eve.svg', alt: 'House of Eve' },
+];
+(function vulTicker() {
+  const set = TICKER_LOGOS
+    .map((l) => '<img src="' + l.src + '" alt="' + escHtml(l.alt) + '" class="clogo" loading="lazy">')
+    .join('');
+  tickerTrack.innerHTML = set + set;   // dubbel voor een naadloze -50%-loop
+})();
+
+function toonTicker(gebouwId) {
+  wereldTicker.hidden = (gebouwId !== 'projecten');
+}
 
 /* ---------- Exits ---------- */
 skipKnop.addEventListener('click', toHub);

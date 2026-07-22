@@ -10,6 +10,19 @@
   --w-accent: #D8FE56;
   --w-ink: #F4F0FA;
   --w-ink-zacht: #BCAEDB;
+
+  /* Vars die de Kompas-widget (docs/academy-chat/chat.css + chat.js) verwacht,
+     hier gemapt op de Morgen-huisstijl zodat de widget standalone klopt. */
+  --purple: #5B2D8E;
+  --purple-light: #9B6FCF;
+  --accent: #D8FE56;
+  --pink: #D8FE56;
+  --white: #FFFFFF;
+  --text-primary: #F0ECF5;
+  --text-secondary: #D8CCEC;
+  --text-muted: #7A6B8E;
+  --bg-dark: #0C0818;
+  --glass-border: rgba(255, 255, 255, .18);
 }
 
 /* Theming van de scrub-engine (unlayered, wint van de @layer sw defaults) */
@@ -368,6 +381,111 @@ body[data-state="verhaal"] #verhaal { display: block; }
 .sw-route__label { background: rgba(12, 8, 24, .8); color: var(--w-ink); }
 .sw-topbar { pointer-events: none; }
 
+/* ---------- het Kompas: vak onderaan (bij de brug) ---------- */
+.kompas-paneel {
+  position: fixed;
+  left: 50%;
+  bottom: clamp(16px, 4vh, 40px);
+  transform: translate(-50%, 12px);
+  z-index: 160;
+  width: min(94vw, 620px);
+  max-height: min(78vh, 620px);
+  max-height: min(78dvh, 620px);
+  overflow-y: auto;
+  padding: clamp(18px, 3.5vw, 28px);
+  border-radius: 26px;
+  background: rgba(12, 8, 24, .82);
+  border: 1px solid rgba(155, 111, 207, .38);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 30px 80px rgba(12, 8, 24, .75);
+  opacity: 0;
+  transition: opacity .35s ease, transform .35s ease;
+}
+.kompas-paneel:not([hidden]) { opacity: 1; transform: translate(-50%, 0); }
+.kompas-eyebrow {
+  margin: 0;
+  font-weight: 700;
+  font-size: .74rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--w-accent);
+}
+.kompas-titel {
+  margin: 6px 0 0;
+  font-weight: 900;
+  font-size: clamp(1.4rem, 3.4vw, 1.9rem);
+  line-height: 1.05;
+}
+.kompas-sub {
+  margin: 6px 0 14px;
+  font-size: .95rem;
+  color: var(--w-ink-zacht);
+}
+.kompas-sluit {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(155, 111, 207, .4);
+  background: rgba(12, 8, 24, .6);
+  color: var(--w-ink);
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+}
+.kompas-sluit:hover { border-color: var(--w-accent); background: rgba(91, 45, 142, .5); }
+
+/* ---------- Logo-ticker (Projecten): loopt onderin ---------- */
+.wereld-ticker {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 120;
+  background: linear-gradient(0deg, var(--w-bg) 60%, transparent);
+  padding-bottom: env(safe-area-inset-bottom);
+  pointer-events: none;
+}
+.wereld-ticker .logo-band {
+  overflow: hidden;
+  position: relative;
+  padding: 14px 0;
+  background: rgba(255, 255, 255, .03);
+  border-top: 1px solid rgba(155, 111, 207, .25);
+}
+.wereld-ticker .logo-band::before,
+.wereld-ticker .logo-band::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 120px;
+  z-index: 2;
+  pointer-events: none;
+}
+.wereld-ticker .logo-band::before { left: 0; background: linear-gradient(90deg, var(--w-bg), transparent); }
+.wereld-ticker .logo-band::after { right: 0; background: linear-gradient(-90deg, var(--w-bg), transparent); }
+.wereld-ticker .logo-track {
+  display: flex;
+  align-items: center;
+  gap: 3.5rem;
+  width: max-content;
+  animation: wereldLogoScroll 34s linear infinite;
+}
+.wereld-ticker .clogo {
+  height: 34px;
+  width: auto;
+  opacity: .5;
+  filter: brightness(0) invert(1);
+  flex-shrink: 0;
+}
+@keyframes wereldLogoScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
 /* ---------- Klein scherm ---------- */
 @media (max-width: 860px) {
   .hotspot { font-size: .85rem; padding: 9px 14px; }
@@ -376,6 +494,9 @@ body[data-state="verhaal"] #verhaal { display: block; }
   .einde { top: auto; bottom: calc(16px + env(safe-area-inset-bottom)); transform: translate(-50%, 6px); }
   .einde.is-zichtbaar { transform: translate(-50%, 0); }
   .einde-lijst span { font-size: .84rem; }
+  .kompas-paneel { width: 96vw; bottom: 10px; }
+  .wereld-ticker .clogo { height: 26px; }
+  .wereld-ticker .logo-band { padding: 10px 0; }
 }
 
 /* ---------- Reduced motion ---------- */

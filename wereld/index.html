@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="wereld.css">
+  <link rel="stylesheet" href="/docs/academy-chat/chat.css">
 </head>
 <body data-state="boot">
 
@@ -50,6 +51,22 @@
     </aside>
   </div>
 
+  <!-- het Kompas: opent als vak onderaan (bij de brug) vanaf de hub -->
+  <aside id="kompas-paneel" class="kompas-paneel" aria-label="het Kompas" hidden>
+    <button id="kompas-sluit" class="kompas-sluit" type="button" aria-label="Sluit het Kompas">&#215;</button>
+    <p class="kompas-eyebrow">het Kompas</p>
+    <h2 class="kompas-titel">Waar kunnen we je mee helpen?</h2>
+    <p class="kompas-sub">Beschrijf je situatie, wij wijzen je de eerste stap.</p>
+    <div data-kompas></div>
+  </aside>
+
+  <!-- Logo-ticker, loopt onderin tijdens het Projecten-verhaal -->
+  <div id="wereld-ticker" class="wereld-ticker" aria-label="Klanten en projecten" hidden>
+    <div class="logo-band">
+      <div class="logo-track" id="ticker-track"></div>
+    </div>
+  </div>
+
   <noscript>
     <div class="noscript-melding">
       <p>Deze pagina heeft JavaScript nodig. Bekijk in plaats daarvan de <a href="/">huidige site</a>.</p>
@@ -58,5 +75,6 @@
 
   <script src="scrub-engine.js"></script>
   <script src="wereld.js"></script>
+  <script type="module" src="/docs/academy-chat/chat.js"></script>
 </body>
 </html>
