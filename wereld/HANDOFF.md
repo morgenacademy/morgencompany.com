@@ -12,7 +12,10 @@ Video's (Seedance 2.0, 720p, trial-dag; ~6s elk, 4:3). Geencodeerd en in `wereld
 - intro, dive-train (OUD interieur, gebogen rijen), leg-train (oud, getrimd 4,4s)
 - dive-implement, leg-implement, dive-build, leg-build, dive-inspire — allemaal QA-goedgekeurd + geencodeerd (crf20/GOP8/unsharp/faststart)
 
-## Nog lopend (2 background-agents)
+## EERST FIXEN (melding Harmen, einde sessie 1)
+Bij klik op **Implement** toont de dive/binnenwereld nu de **lange Train-tafel** in plaats van de werkplaats. Vermoedelijke oorzaak: de Chrome-agent heeft bij de Train-herkansing (lange tafel als Reference) een history-kaart verward of een bestand overschreven; Seedance dook eerder al eens met een tafel-interieur het schuur-gebouw in. Aanpak: frames extraheren uit ALLE mp4's in `wereld/assets/echt/vid/` én `~/morgen-wereld-bron/` (ffmpeg -ss 3 + -sseof), per bestand vaststellen welk gebouw/interieur er echt in zit, toewijzing herstellen, en wat mis is opnieuw genereren via de trial-route (zie leerpunten; trial tot ~00:47). Eis Train-dive: het ZUILEN-gebouw links induiken en binnen de lange gedeelde tafel; eis Implement-dive: de open schuur met werkbanken/lopende band. Daarna encoden (GENERATIE.md §7), committen, preview checken.
+
+## Nog lopend (2 background-agents, sterven bij sessie-einde)
 1. **Chrome-agent** (sonnet) genereert de laatste 3 clips op higgsfield.ai:
    - `leg-inspire.mp4` (vanaf dive-inspire eindframe)
    - `dive-train.mp4` v3 + `leg-train.mp4` v4 — HERKANSING met `still_train_binnen.png` (lange gedeelde tafel) als Reference, want Harmen wil de lange tafel, niet de gebogen collegerijen. Overschrijft de oude train-clips (backups bestaan).
