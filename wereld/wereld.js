@@ -11,11 +11,11 @@ const HOTSPOTS = [
   { id: 'implement', label: 'Implement', x: 44, y: 24, xm: 44, ym: 36, enabled: true },
   { id: 'build',     label: 'Build',     x: 69, y: 26, xm: 69, ym: 37, enabled: true },
   { id: 'inspire',   label: 'Inspire',   x: 77, y: 55, xm: 77, ym: 47, enabled: true },
-  // Plein-plekken: stolpen-tuin en kampvuur openen een still-binnenwereld
-  // (geen dive-cinematic), de wegwijzer verwijst direct naar het Kompas op de site.
-  { id: 'projecten', label: 'Projecten', x: 27, y: 55, xm: 27, ym: 52, enabled: true },
-  { id: 'overons',   label: 'Over ons',  x: 71, y: 71, xm: 71, ym: 62, enabled: true },
-  { id: 'kompas',    label: 'Kompas',    x: 52, y: 51, xm: 52, ym: 50, enabled: true, href: '/#trainingwijzer-app' },
+  // Plein-plekken, secundair (sub): stolpen-tuin en kampvuur openen een
+  // still-binnenwereld (geen dive), de wegwijzer linkt naar het Kompas op de site.
+  { id: 'projecten', label: 'Projecten',     x: 27, y: 55, xm: 27, ym: 52, enabled: true, sub: true },
+  { id: 'overons',   label: 'Over Morgen.',  x: 71, y: 71, xm: 71, ym: 62, enabled: true, sub: true },
+  { id: 'kompas',    label: 'Kompas',        x: 52, y: 51, xm: 52, ym: 50, enabled: true, sub: true, href: '/#trainingwijzer-app' },
 ];
 
 /* ---- Assetcontract (relatief aan /wereld/) ----
@@ -156,13 +156,13 @@ const GEBOUWEN = {
     },
   },
   overons: {
-    label: 'Over ons',
+    label: 'Over Morgen.',
     dive: null, diveM: null, leg: null, legM: null,
     still:  'assets/echt/overons.webp',
     stillM: 'assets/echt/overons.webp',
     cta: { label: 'Lees over Morgen', href: '/about/' },
     sectie: {
-      eyebrow: 'Over ons',
+      eyebrow: 'Over Morgen.',
       title: 'Technologie als bedrijfskeuze.',
       body: 'Rond het kampvuur zitten de mensen van Morgen: aanpak, technologie en mensen. Zo groeit AI van eerste ervaring naar echte toepassing.',
       tags: ['Aanpak', 'Technologie', 'Mensen'],
@@ -390,7 +390,7 @@ hubStill.addEventListener('error', () => { hubStill.style.visibility = 'hidden';
 HOTSPOTS.forEach((h) => {
   const b = document.createElement('button');
   b.type = 'button';
-  b.className = 'hotspot' + (h.enabled ? '' : ' is-disabled');
+  b.className = 'hotspot' + (h.sub ? ' is-sub' : '') + (h.enabled ? '' : ' is-disabled');
   const x = (isMobile() && h.xm != null) ? h.xm : h.x;
   const y = (isMobile() && h.ym != null) ? h.ym : h.y;
   b.style.left = x + '%';
