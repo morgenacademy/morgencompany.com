@@ -42,6 +42,7 @@ const GEBOUWEN = {
     still:  'assets/echt/train-binnen.webp',
     stillM: 'assets/echt/train-binnen-m.webp',
     cta: { label: 'Bekijk alle trainingen', href: '/academy/' },
+    cta2: { label: 'Open de Trainingwijzer', href: '/#trainingwijzer-app' },
     sectie: {
       eyebrow: 'Train',
       title: 'Klein beginnen. Groot doorpakken.',
@@ -49,12 +50,20 @@ const GEBOUWEN = {
       tags: ['Basistraining AI', 'Bouwen met AI (vibecoding)', 'Automatiseren met AI', 'Claude Code / Codex: de basis'],
     },
     einde: {
-      titel: 'De leerlijn',
+      titel: 'Alle trainingen',
       items: [
-        { kop: 'Basistraining AI', tekst: 'Van “waar moet ik beginnen?” naar: dit kan ik gewoon' },
-        { kop: 'Bouwen met AI (vibecoding)', tekst: 'Bouw in no time je eerste site, app of tool' },
-        { kop: 'Automatiseren met AI', tekst: 'Laat processen slimmer, sneller en beter lopen' },
-        { kop: 'Claude Code / Codex: de basis', tekst: 'Van losse chats naar een AI-collega die meewerkt' },
+        { kop: 'Basistraining AI', tekst: 'Van “waar begin ik?” naar: dit kan ik gewoon', href: '/academy/#ac-trainingen' },
+        { kop: 'Bouwen met AI (vibecoding)', tekst: 'Bouw in no time je eerste site, app of tool', href: '/academy/#ac-trainingen' },
+        { kop: 'Automatiseren met AI', tekst: 'Processen slimmer laten lopen met n8n', href: '/academy/#ac-trainingen' },
+        { kop: 'Claude Code / Codex: de basis', tekst: 'Van losse chats naar een AI-collega die meewerkt', href: '/academy/#ac-trainingen' },
+        { kop: 'Haal meer uit Claude Code', tekst: 'Voor teams die al met Claude Code werken', href: '/academy/#ac-trainingen' },
+        { kop: 'Keynotes & kick-offs', tekst: 'Energie, richting en urgentie losmaken', href: '/academy/#ac-verdiepen' },
+        { kop: 'AI-richtingssessie', tekst: 'Samen bepalen welke route logisch is', href: '/academy/#ac-verdiepen' },
+        { kop: 'Team-workshop', tekst: 'Kiezen welk proces slimmer kan', href: '/academy/#ac-verdiepen' },
+        { kop: 'Mini masterclass AI in management', tekst: 'AI in sturing, besluitvorming en praktijk', href: '/academy/#ac-verdiepen' },
+        { kop: 'Projectmanagement met AI', tekst: 'Nieuwe kijk op projecten organiseren', href: '/academy/#ac-verdiepen' },
+        { kop: 'AI Implementatie Masterclass', tekst: '4-daagse deep dive: van kennis naar landen', href: '/academy/#ac-verdiepen' },
+        { kop: 'Begeleid implementatietraject', tekst: 'Van eerste sessie naar borging en opschaling', href: '/academy/#ac-verdiepen' },
       ],
     },
   },
@@ -76,10 +85,10 @@ const GEBOUWEN = {
     einde: {
       titel: 'Van inzicht naar praktijk',
       items: [
-        { kop: 'Zien wat er speelt', tekst: 'We brengen in kaart wat er al gebeurt, waar energie ontstaat en waar processen, afspraken of systemen knellen' },
-        { kop: 'Keuzes scherp maken', tekst: 'Wat gebruik je wel, wat niet, wie is eigenaar en welke kaders zijn nodig?' },
-        { kop: 'Werken met het team', tekst: 'We werken met de mensen die het straks gebruiken' },
-        { kop: 'Vast ritme', tekst: 'De aanpak krijgt plek in overleg, besluitvorming en dagelijkse werkwijze' },
+        { kop: 'Zien wat er speelt', tekst: 'We brengen in kaart wat er al gebeurt, waar energie ontstaat en waar processen, afspraken of systemen knellen', href: '/consultancy/#co-aanpak' },
+        { kop: 'Keuzes scherp maken', tekst: 'Wat gebruik je wel, wat niet, wie is eigenaar en welke kaders zijn nodig?', href: '/consultancy/#co-aanpak' },
+        { kop: 'Werken met het team', tekst: 'We werken met de mensen die het straks gebruiken', href: '/consultancy/#co-aanpak' },
+        { kop: 'Vast ritme', tekst: 'De aanpak krijgt plek in overleg, besluitvorming en dagelijkse werkwijze', href: '/consultancy/#co-aanpak' },
       ],
     },
   },
@@ -99,12 +108,12 @@ const GEBOUWEN = {
       tags: ['Maatwerk', 'AI-workflows', 'Procesautomatisering'],
     },
     einde: {
-      titel: 'Zij gingen je voor',
+      titel: 'Wat we bouwen',
       items: [
-        { kop: 'Trappenfabriek Vermeulen', tekst: 'Logistieke AI-planning voor een trappenfabriek' },
-        { kop: 'Solo Solis', tekst: 'Van 40+ handmatige stappen naar maximaal 6 controles' },
-        { kop: 'PinkRoccade Local Government', tekst: 'Workshops over n8n, automatiseren met AI en agentic workflows' },
-        { kop: 'Gemeente Tilburg', tekst: 'Waardegedreven AI en procesdenken' },
+        { kop: 'Proces eerst', tekst: 'Eerst scherp krijgen welk werk beter kan en waar technologie waarde toevoegt', href: '/technology/#te-aanpak' },
+        { kop: 'Slim koppelen', tekst: 'Bestaande tools, data en systemen gebruiken waar dat logisch is', href: '/technology/#te-aanpak' },
+        { kop: 'Op maat', tekst: 'Workflows, applicaties en koppelingen rond het echte proces', href: '/technology/#te-aanpak' },
+        { kop: 'In het werk', tekst: 'De oplossing landt in team, proces en werkwijze', href: '/technology/#te-aanpak' },
       ],
     },
   },
@@ -126,10 +135,10 @@ const GEBOUWEN = {
     einde: {
       titel: 'Verder verdiepen',
       items: [
-        { kop: 'Keynotes', tekst: 'Voor events, directiedagen en teams die technologie willen duiden' },
-        { kop: 'Podcast: How to get the work done (with AI)', tekst: 'Over slimmer werken in het MKB: direct merkbaar in tijd, kosten en rust' },
-        { kop: 'Artikelen', tekst: 'Lezen op eigen tempo: besluitvorming, menselijkheid en leiderschap' },
-        { kop: 'Boek: De Digitale Collega', tekst: 'AI als teamlid in jouw organisatie' },
+        { kop: 'Keynotes', tekst: 'Voor events, directiedagen en teams die technologie willen duiden', href: '/inspiratie/' },
+        { kop: 'Podcast: How to get the work done (with AI)', tekst: 'Over slimmer werken in het MKB: direct merkbaar in tijd, kosten en rust', href: '/inspiratie/' },
+        { kop: 'Artikelen', tekst: 'Lezen op eigen tempo: besluitvorming, menselijkheid en leiderschap', href: '/inspiratie/' },
+        { kop: 'Boek: De Digitale Collega', tekst: 'AI als teamlid in jouw organisatie', href: '/inspiratie/' },
       ],
     },
   },
@@ -146,12 +155,14 @@ const GEBOUWEN = {
       tags: ['Cases', 'AI in productie', 'Maatwerk'],
     },
     einde: {
-      titel: 'Onder de stolpen',
+      titel: 'Zij gingen je voor',
       items: [
-        { kop: 'AI Personal Coach', tekst: 'Een coach-app die gedragsverandering ondersteunt' },
-        { kop: 'Hogeschool-processen', tekst: 'Alle processen van een afdeling scherp in beeld' },
-        { kop: 'Boekings- en betaalplatform', tekst: 'Compleet platform met rollen en autorisaties' },
-        { kop: 'Interieurrenders', tekst: 'Fotorealistische renders uit 2D- en 3D-exports' },
+        { kop: 'PinkRoccade Local Government', tekst: 'Workshops n8n, automatiseren met AI en agentic workflows', href: '/projecten/#case-pinkroccade' },
+        { kop: 'Rabobank & AgriFood Capital', tekst: 'MKB Boost: ondernemers werken aan hun bedrijf', href: '/projecten/' },
+        { kop: 'Solo Solis', tekst: 'Van 40+ handmatige stappen naar maximaal 6 controles', href: '/projecten/#case-solosolis' },
+        { kop: 'Gemeente Tilburg', tekst: 'Waardegedreven AI en procesdenken', href: '/projecten/#case-tilburg' },
+        { kop: 'Avans Hogeschool', tekst: 'Alle processen van een afdeling scherp in beeld', href: '/projecten/' },
+        { kop: 'OnView & PharmaPartners', tekst: 'Claude Code professioneel houden in developmentteams', placeholder: true },
       ],
     },
   },
@@ -170,10 +181,10 @@ const GEBOUWEN = {
     einde: {
       titel: 'Meet the humans',
       items: [
-        { kop: 'Van ervaring naar toepassing', tekst: 'Het begint met zelf doen: je eerste assistent, tool of automatisering' },
-        { kop: 'Dan wordt het concreet', tekst: 'Keuzes over werk, processen en de plek van AI in de organisatie' },
-        { kop: 'Borging in het team', tekst: 'We werken met de mensen die het straks gebruiken' },
-        { kop: 'Morgen als partner', tekst: 'Academy, consultancy en technology onder één dak' },
+        { kop: 'Van ervaring naar toepassing', tekst: 'Het begint met zelf doen: je eerste assistent, tool of automatisering', href: '/about/#about-aanpak' },
+        { kop: 'Dan wordt het concreet', tekst: 'Keuzes over werk, processen en de plek van AI in de organisatie', href: '/about/#about-aanpak' },
+        { kop: 'Borging in het team', tekst: 'We werken met de mensen die het straks gebruiken', href: '/about/#about-aanpak' },
+        { kop: 'Morgen als partner', tekst: 'Academy, consultancy en technology onder één dak', href: '/about/#about-inspiratie' },
       ],
     },
   },
@@ -196,6 +207,7 @@ const eindeEyebrow = document.getElementById('einde-eyebrow');
 const eindeTitel = document.getElementById('einde-titel');
 const eindeLijst = document.getElementById('einde-lijst');
 const eindeCta = document.getElementById('einde-cta');
+const eindeCta2 = document.getElementById('einde-cta2');
 const eindeTerug = document.getElementById('einde-terug');
 
 /* ---------- Cinematics: 1 hergebruikt video-element ---------- */
@@ -331,10 +343,30 @@ function vulEinde(gebouwId) {
   eindeEyebrow.textContent = g.label;
   eindeTitel.textContent = g.einde.titel;
   eindeLijst.innerHTML = g.einde.items
-    .map((it) => '<li><strong>' + escHtml(it.kop) + '</strong><span>' + escHtml(it.tekst) + '</span></li>')
+    .map((it) => {
+      const kop = escHtml(it.kop);
+      const tekst = escHtml(it.tekst);
+      if (it.placeholder) {
+        return '<li class="is-placeholder"><strong>' + kop + '</strong><span>' + tekst +
+          '</span><span class="einde-badge">binnenkort</span></li>';
+      }
+      if (it.href) {
+        return '<li class="is-link"><a href="' + escHtml(it.href) + '"><strong>' + kop +
+          '</strong><span>' + tekst + '</span></a></li>';
+      }
+      return '<li><strong>' + kop + '</strong><span>' + tekst + '</span></li>';
+    })
     .join('');
   eindeCta.textContent = g.cta.label;
   eindeCta.href = g.cta.href;
+  // Optionele tweede CTA (bijv. Trainingwijzer → het Kompas)
+  if (g.cta2) {
+    eindeCta2.textContent = g.cta2.label;
+    eindeCta2.href = g.cta2.href;
+    eindeCta2.hidden = false;
+  } else {
+    eindeCta2.hidden = true;
+  }
 }
 
 /* ---------- State-machine ---------- */
