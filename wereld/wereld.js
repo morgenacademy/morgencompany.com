@@ -13,9 +13,9 @@ const HOTSPOTS = [
   { id: 'inspire',   label: 'Inspire',   x: 77, y: 55, xm: 77, ym: 47, enabled: true },
   // Plein-plekken, secundair (sub): stolpen-tuin en kampvuur openen een
   // still-binnenwereld (geen dive), de wegwijzer linkt naar het Kompas op de site.
-  { id: 'projecten', label: 'Projecten',     x: 27, y: 55, xm: 27, ym: 52, enabled: true, sub: true },
-  { id: 'overons',   label: 'Over Morgen.',  x: 71, y: 71, xm: 71, ym: 62, enabled: true, sub: true },
-  { id: 'kompas',    label: 'Kompas',        x: 52, y: 51, xm: 52, ym: 50, enabled: true, sub: true, href: '/#trainingwijzer-app' },
+  { id: 'projecten', label: 'Projecten',     x: 27, y: 51, xm: 27, ym: 52, enabled: true, sub: true },
+  { id: 'overons',   label: 'Over Morgen.',  x: 70, y: 67, xm: 71, ym: 62, enabled: true, sub: true },
+  { id: 'kompas',    label: 'Kompas',        x: 52, y: 47, xm: 52, ym: 50, enabled: true, sub: true, href: '/#trainingwijzer-app' },
 ];
 
 /* ---- Assetcontract (relatief aan /wereld/) ----
