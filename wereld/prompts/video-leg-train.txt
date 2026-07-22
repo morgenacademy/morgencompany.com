@@ -13,10 +13,13 @@ forward glide along the long shared wooden table of the miniature paper workshop
 hall. The tiny paper figures are subtly alive: hands softly typing on little paper
 laptops, one figure pointing at a screen, two turning toward each other in quiet
 conversation, the trainer leaning in between participants to help; warm lantern
-light flickering gently. The camera rises smoothly in a gentle, soft arc, the full
-scale of the workshop revealing below: the shared table with its working figures,
-the flip-chart easel, small yellow-green lanterns near the table. It then eases into
-a calm descending sweep past the large glowing screen, abstract node-and-edge
-diagrams and flowing geometric shapes drifting by, strictly without any readable
-text. In the final second, settle into a slow, steady forward drift toward the
+light flickering gently. The camera rises gently just above the rows of tables,
+staying well inside the hall beneath the roofline, the workshop revealing below: the
+shared tables with their working figures, the flip-chart easel, small yellow-green
+lanterns near the tables. The camera always stays inside the room; it never leaves
+the hall, never pulls back outside, and the building is never seen from the outside.
+It then eases into a calm descending sweep past the large glowing screen, abstract
+node-and-edge diagrams and flowing geometric shapes drifting by, strictly without
+any readable text. Keep the warm purple ambient glow and lavender highlights
+throughout, consistent with the start frame. In the final second, settle into a slow, steady forward drift toward the
 screen. Smooth, graceful, slow motion, subtle parallax. No text, no captions.
