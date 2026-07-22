@@ -21,5 +21,9 @@ the hall, never pulls back outside, and the building is never seen from the outs
 It then eases into a calm descending sweep past the large glowing screen, abstract
 node-and-edge diagrams and flowing geometric shapes drifting by, strictly without
 any readable text. Keep the warm purple ambient glow and lavender highlights
-throughout, consistent with the start frame. In the final second, settle into a slow, steady forward drift toward the
+throughout, consistent with the start frame. The hall, its walls, tables, screen
+and figures remain exactly the same room for the entire shot: absolutely no scene
+change, no transformation, no cut, no dissolve, no new location; the camera simply
+moves gently through the same continuous space from start to finish. In the final
+second, settle into a slow, steady forward drift toward the
 screen. Smooth, graceful, slow motion, subtle parallax. No text, no captions.
