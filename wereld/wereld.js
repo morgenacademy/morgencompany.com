@@ -11,6 +11,11 @@ const HOTSPOTS = [
   { id: 'implement', label: 'Implement', x: 44, y: 24, xm: 44, ym: 36, enabled: true },
   { id: 'build',     label: 'Build',     x: 69, y: 26, xm: 69, ym: 37, enabled: true },
   { id: 'inspire',   label: 'Inspire',   x: 77, y: 55, xm: 77, ym: 47, enabled: true },
+  // Plein-plekken: stolpen-tuin en kampvuur openen een still-binnenwereld
+  // (geen dive-cinematic), de wegwijzer verwijst direct naar het Kompas op de site.
+  { id: 'projecten', label: 'Projecten', x: 27, y: 55, xm: 27, ym: 52, enabled: true },
+  { id: 'overons',   label: 'Over ons',  x: 71, y: 71, xm: 71, ym: 62, enabled: true },
+  { id: 'kompas',    label: 'Kompas',    x: 52, y: 51, xm: 52, ym: 50, enabled: true, href: '/#trainingwijzer-app' },
 ];
 
 /* ---- Assetcontract (relatief aan /wereld/) ----
@@ -128,6 +133,50 @@ const GEBOUWEN = {
       ],
     },
   },
+  projecten: {
+    label: 'Projecten',
+    dive: null, diveM: null, leg: null, legM: null,
+    still:  'assets/echt/projecten.webp',
+    stillM: 'assets/echt/projecten.webp',
+    cta: { label: 'Bekijk alle projecten', href: '/projecten/' },
+    sectie: {
+      eyebrow: 'Projecten',
+      title: 'Maquettes van echt werk.',
+      body: 'Elke stolp in de tuin is een project dat al draait: gebouwd met AI en geland in het dagelijkse werk van een organisatie.',
+      tags: ['Cases', 'AI in productie', 'Maatwerk'],
+    },
+    einde: {
+      titel: 'Onder de stolpen',
+      items: [
+        { kop: 'AI Personal Coach', tekst: 'Een coach-app die gedragsverandering ondersteunt' },
+        { kop: 'Hogeschool-processen', tekst: 'Alle processen van een afdeling scherp in beeld' },
+        { kop: 'Boekings- en betaalplatform', tekst: 'Compleet platform met rollen en autorisaties' },
+        { kop: 'Interieurrenders', tekst: 'Fotorealistische renders uit 2D- en 3D-exports' },
+      ],
+    },
+  },
+  overons: {
+    label: 'Over ons',
+    dive: null, diveM: null, leg: null, legM: null,
+    still:  'assets/echt/overons.webp',
+    stillM: 'assets/echt/overons.webp',
+    cta: { label: 'Lees over Morgen', href: '/about/' },
+    sectie: {
+      eyebrow: 'Over ons',
+      title: 'Technologie als bedrijfskeuze.',
+      body: 'Rond het kampvuur zitten de mensen van Morgen: aanpak, technologie en mensen. Zo groeit AI van eerste ervaring naar echte toepassing.',
+      tags: ['Aanpak', 'Technologie', 'Mensen'],
+    },
+    einde: {
+      titel: 'Meet the humans',
+      items: [
+        { kop: 'Van ervaring naar toepassing', tekst: 'Het begint met zelf doen: je eerste assistent, tool of automatisering' },
+        { kop: 'Dan wordt het concreet', tekst: 'Keuzes over werk, processen en de plek van AI in de organisatie' },
+        { kop: 'Borging in het team', tekst: 'We werken met de mensen die het straks gebruiken' },
+        { kop: 'Morgen als partner', tekst: 'Academy, consultancy en technology onder één dak' },
+      ],
+    },
+  },
 };
 
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -228,6 +277,49 @@ function toonWorld(gebouwId) {
   });
 }
 
+/* ---------- Ambient: binnenclip speelt zachtjes tot de eerste scroll ----------
+   Verzoek Harmen: "er beweegt niets" na de dive. De engine scrubt de clip pas
+   bij scroll; tot die tijd spelen we de sectie-video gedempt en vertraagd af.
+   Zodra de bezoeker scrolt neemt de scrub-engine het over (die zet currentTime
+   bij elke scroll-tick), dus hier alleen pauzeren en luisteraars opruimen.
+   Bewust buiten de engine om: scrub-engine.js blijft byte-identiek. */
+let ambientStop = null;
+
+function stopAmbient() { if (ambientStop) ambientStop(); }
+
+function startAmbient(gebouwId) {
+  stopAmbient();
+  const host = worldHosts[gebouwId];
+  if (!host) return;
+  let pogingen = 0;
+  const zoek = () => {
+    const v = host.querySelector('video');
+    if (!v) {
+      // engine maakt het video-element async aan; even nawachten
+      if (++pogingen < 10) setTimeout(zoek, 250);
+      return;
+    }
+    const stop = () => {
+      window.removeEventListener('scroll', stop);
+      window.removeEventListener('wheel', stop);
+      window.removeEventListener('touchmove', stop);
+      if (ambientStop === stop) ambientStop = null;
+      try { v.pause(); } catch (e) {}
+    };
+    ambientStop = stop;
+    window.addEventListener('scroll', stop, { passive: true });
+    window.addEventListener('wheel', stop, { passive: true });
+    window.addEventListener('touchmove', stop, { passive: true });
+    v.muted = true;
+    v.playbackRate = 0.45;
+    const p = v.play();
+    if (p && p.catch) p.catch(() => {});   // autoplay geweigerd: still blijft staan, scrub werkt gewoon
+  };
+  // Niet meteen: de scrollTo(0,0) van toVerhaal vuurt nog een scroll-event
+  // na deze aanroep; met een korte adempauze vangt de stop-listener die niet.
+  setTimeout(zoek, 400);
+}
+
 /* ---------- Generiek eindpaneel, per gebouw gevuld ---------- */
 function escHtml(s) {
   return String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -257,6 +349,7 @@ function startIntro() {
 
 function toHub() {
   stopCine();
+  stopAmbient();
   setState('hub');
   window.scrollTo(0, 0);
   hubEl.focus({ preventScroll: true });
@@ -267,8 +360,9 @@ function startDive(gebouwId) {
   mountWorld(gebouwId);           // laadt het binnen-verhaal alvast tijdens de dive
   toonWorld(gebouwId);
   vulEinde(gebouwId);
-  if (reduce) { toVerhaal(gebouwId); return; }
   const g = GEBOUWEN[gebouwId];
+  // Reduced motion of een plek zonder dive-cinematic: direct het verhaal in.
+  if (reduce || !g.dive) { toVerhaal(gebouwId); return; }
   setState('dive');
   playCine(g.dive, g.diveM, () => toVerhaal(gebouwId));
 }
@@ -286,6 +380,7 @@ function toVerhaal(gebouwId) {
   eindePaneel.classList.remove('is-zichtbaar');
   // Engine-layout verversen nu de container zichtbaar is
   window.dispatchEvent(new Event('orientationchange'));
+  startAmbient(gebouwId || huidigGebouw);
 }
 
 /* ---------- Hub opbouwen ---------- */
@@ -306,7 +401,11 @@ HOTSPOTS.forEach((h) => {
     '<span class="hotspot-dot" aria-hidden="true"></span>' +
     '<span class="hotspot-label">' + h.label + '</span>' +
     (h.enabled ? '' : '<span class="hotspot-badge">binnenkort</span>');
-  b.addEventListener('click', () => { if (h.enabled) startDive(h.id); });
+  b.addEventListener('click', () => {
+    if (!h.enabled) return;
+    if (h.href) { window.location.href = h.href; return; }
+    startDive(h.id);
+  });
   hotspotLayer.appendChild(b);
 });
 
