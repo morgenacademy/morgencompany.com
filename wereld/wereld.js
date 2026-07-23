@@ -156,13 +156,14 @@ const GEBOUWEN = {
     },
     einde: {
       titel: 'Zij gingen je voor',
+      grid: true,
       items: [
-        { kop: 'PinkRoccade Local Government', tekst: 'Workshops n8n, automatiseren met AI en agentic workflows', href: '/projecten/#case-pinkroccade' },
-        { kop: 'Rabobank & AgriFood Capital', tekst: 'MKB Boost: ondernemers werken aan hun bedrijf', href: '/projecten/' },
-        { kop: 'Solo Solis', tekst: 'Van 40+ handmatige stappen naar maximaal 6 controles', href: '/projecten/#case-solosolis' },
-        { kop: 'Gemeente Tilburg', tekst: 'Waardegedreven AI en procesdenken', href: '/projecten/#case-tilburg' },
-        { kop: 'Avans Hogeschool', tekst: 'Alle processen van een afdeling scherp in beeld', href: '/projecten/' },
-        { kop: 'OnView & PharmaPartners', tekst: 'Claude Code professioneel houden in developmentteams', placeholder: true },
+        { kop: 'PinkRoccade Local Government', tekst: 'Workshops n8n, automatiseren met AI en agentic workflows', href: '/projecten/#case-pinkroccade', img: '/docs/logos/logo_localgovernment.png' },
+        { kop: 'Rabobank & AgriFood Capital', tekst: 'MKB Boost: ondernemers werken aan hun bedrijf', href: '/projecten/', img: '/Fotos/MKB%20Boost%20Kick%20off-14.jpg' },
+        { kop: 'Solo Solis', tekst: 'Van 40+ handmatige stappen naar maximaal 6 controles', href: '/projecten/#case-solosolis', img: '/Afbeeldingen%20projecten/SoloSolis%20print-order%20automatisatie.png' },
+        { kop: 'Gemeente Tilburg', tekst: 'Waardegedreven AI en procesdenken', href: '/projecten/#case-tilburg', img: '/Fotos/Harmen%20training%20Gemeente%20Tilburg%201.jpg' },
+        { kop: 'Avans Hogeschool', tekst: 'Alle processen van een afdeling scherp in beeld', href: '/projecten/', img: '/docs/company/karin-ai-automation-01.jpg' },
+        { kop: 'OnView & PharmaPartners', tekst: 'Claude Code professioneel houden in developmentteams', placeholder: true, img: '/Fotos/Harmen%20Claude%20Code%20training%20avans.jpg' },
       ],
     },
   },
@@ -343,22 +344,27 @@ function escHtml(s) {
 
 function vulEinde(gebouwId) {
   const g = GEBOUWEN[gebouwId];
+  const grid = !!g.einde.grid;   // showcase-grid met preview-foto's (Projecten)
   eindePaneel.setAttribute('aria-label', 'Einde van het ' + g.label + '-verhaal');
+  eindePaneel.classList.toggle('einde--breed', grid);
   eindeEyebrow.textContent = g.label;
   eindeTitel.textContent = g.einde.titel;
+  eindeLijst.classList.toggle('einde-lijst--grid', grid);
   eindeLijst.innerHTML = g.einde.items
     .map((it) => {
       const kop = escHtml(it.kop);
       const tekst = escHtml(it.tekst);
+      const thumb = it.img
+        ? '<span class="einde-thumb" style="background-image:url(\'' + escHtml(it.img) + '\')" aria-hidden="true"></span>'
+        : '';
+      const binnen = thumb + '<strong>' + kop + '</strong><span>' + tekst + '</span>';
       if (it.placeholder) {
-        return '<li class="is-placeholder"><strong>' + kop + '</strong><span>' + tekst +
-          '</span><span class="einde-badge">binnenkort</span></li>';
+        return '<li class="is-placeholder">' + binnen + '<span class="einde-badge">binnenkort</span></li>';
       }
       if (it.href) {
-        return '<li class="is-link"><a href="' + escHtml(it.href) + '"><strong>' + kop +
-          '</strong><span>' + tekst + '</span></a></li>';
+        return '<li class="is-link"><a href="' + escHtml(it.href) + '">' + binnen + '</a></li>';
       }
-      return '<li><strong>' + kop + '</strong><span>' + tekst + '</span></li>';
+      return '<li>' + binnen + '</li>';
     })
     .join('');
   eindeCta.textContent = g.cta.label;

@@ -361,6 +361,25 @@ body[data-state="verhaal"] #verhaal { display: block; }
 }
 .einde-lijst strong { font-weight: 700; font-size: .98rem; }
 .einde-lijst span { font-size: .88rem; color: var(--w-ink-zacht); }
+
+/* Showcase-grid (Projecten): 2 kaarten naast elkaar met preview-foto */
+.einde--breed { width: min(94vw, 720px); }
+.einde-lijst--grid { grid-template-columns: 1fr 1fr; }
+.einde-thumb {
+  display: block;
+  height: 84px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  background-color: rgba(155, 111, 207, .2);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+/* Logo-preview netjes passend i.p.v. bijgesneden */
+.einde-lijst--grid li:first-child .einde-thumb {
+  background-size: contain;
+  background-color: rgba(255, 255, 255, .06);
+}
 .einde-acties {
   display: flex;
   flex-wrap: wrap;
@@ -499,6 +518,9 @@ body.ticker-actief .sw-hint { bottom: calc(84px + env(safe-area-inset-bottom)); 
   .kompas-paneel { width: 96vw; bottom: 10px; }
   .wereld-ticker .clogo { height: 26px; }
   .wereld-ticker .logo-band { padding: 10px 0; }
+  .einde--breed { width: 94vw; }
+  .einde-lijst--grid { grid-template-columns: 1fr; }
+  .einde-thumb { height: 108px; }
 }
 
 /* ---------- Reduced motion ---------- */
