@@ -42,7 +42,7 @@ const GEBOUWEN = {
     still:  'assets/echt/train-binnen.webp',
     stillM: 'assets/echt/train-binnen-m.webp',
     cta: { label: 'Bekijk alle trainingen', href: '/academy/' },
-    cta2: { label: 'Trainingwijzer', href: '/#trainingwijzer-app' },
+    cta2: { label: 'Trainingwijzer', action: 'kompas' },
     sectie: {
       eyebrow: 'Train',
       title: 'Klein beginnen. Groot doorpakken.',
@@ -369,10 +369,17 @@ function vulEinde(gebouwId) {
     .join('');
   eindeCta.textContent = g.cta.label;
   eindeCta.href = g.cta.href;
-  // Optionele tweede CTA (bijv. Trainingwijzer → het Kompas)
+  // Optionele tweede CTA. action:'kompas' opent het Wegwijzer-vak in de wereld
+  // (terug naar het plein en dan het Kompas), anders een gewone link.
   if (g.cta2) {
     eindeCta2.textContent = g.cta2.label;
-    eindeCta2.href = g.cta2.href;
+    if (g.cta2.action === 'kompas') {
+      eindeCta2.href = '#';
+      eindeCta2.onclick = (e) => { e.preventDefault(); toHub(); openKompas(); };
+    } else {
+      eindeCta2.href = g.cta2.href;
+      eindeCta2.onclick = null;
+    }
     eindeCta2.hidden = false;
   } else {
     eindeCta2.hidden = true;
