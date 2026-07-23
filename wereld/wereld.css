@@ -410,6 +410,13 @@ body[data-state="verhaal"] #verhaal { display: block; }
 .einde--tegels .einde-titel,
 .einde--tegels .einde-acties { display: none; }
 .einde--tegels .einde-lijst { margin: 0; }
+/* Zodra de tegels zweven: de engine-sectiecopy (titel + eigen CTA) wegfaden,
+   zodat er écht alleen 4 tegels overblijven. */
+body.tegels-zichtbaar #world .sw-copy {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .4s ease;
+}
 
 /* Icoon-tegels: 4 semi-transparante glas-vierkanten naast elkaar, gecentreerd */
 .einde-lijst--tiles {

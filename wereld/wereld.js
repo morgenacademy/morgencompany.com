@@ -423,6 +423,7 @@ function toHub() {
   sluitKompas();
   wereldTicker.hidden = true;
   document.body.classList.remove('ticker-actief');
+  document.body.classList.remove('tegels-zichtbaar');
   setState('hub');
   window.scrollTo(0, 0);
   hubEl.focus({ preventScroll: true });
@@ -547,7 +548,11 @@ window.addEventListener('scroll', () => {
   if (document.body.dataset.state !== 'verhaal') return;
   const max = document.documentElement.scrollHeight - window.innerHeight;
   const p = max > 0 ? window.scrollY / max : 0;
-  eindePaneel.classList.toggle('is-zichtbaar', p > 0.72);
+  const zichtbaar = p > 0.72;
+  eindePaneel.classList.toggle('is-zichtbaar', zichtbaar);
+  // Tegel-modus (Inspire): laat de engine-sectiecopy weg zodra de tegels
+  // verschijnen, zodat écht alleen de 4 tegels zweven (transparant paneel).
+  document.body.classList.toggle('tegels-zichtbaar', zichtbaar && eindePaneel.classList.contains('einde--tegels'));
 }, { passive: true });
 
 /* ---------- Start ---------- */
