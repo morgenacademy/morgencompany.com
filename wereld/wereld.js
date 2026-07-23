@@ -134,11 +134,12 @@ const GEBOUWEN = {
     },
     einde: {
       titel: 'Verder verdiepen',
+      tiles: true,
       items: [
-        { kop: 'Keynotes', tekst: 'Voor events, directiedagen en teams die technologie willen duiden', href: '/inspiratie/' },
-        { kop: 'Podcast: How to get the work done (with AI)', tekst: 'Over slimmer werken in het MKB: direct merkbaar in tijd, kosten en rust', href: '/inspiratie/' },
-        { kop: 'Artikelen', tekst: 'Lezen op eigen tempo: besluitvorming, menselijkheid en leiderschap', href: '/inspiratie/' },
-        { kop: 'Boek: De Digitale Collega', tekst: 'AI als teamlid in jouw organisatie', href: '/inspiratie/' },
+        { kop: 'Keynotes', icon: 'keynote', href: '/inspiratie/#cp-keynote' },
+        { kop: 'Podcast', icon: 'podcast', href: '/inspiratie/#cp-podcast' },
+        { kop: 'Artikelen', icon: 'artikelen', href: '/inspiratie/#cp-artikelen' },
+        { kop: 'Boek: De Digitale Collega', icon: 'boek', href: '/inspiratie/#cp-boek' },
       ],
     },
   },
@@ -189,6 +190,14 @@ const GEBOUWEN = {
       ],
     },
   },
+};
+
+/* ---- Iconen voor tegel-panelen (statische, veilige SVG's) ---- */
+const ICONS = {
+  keynote: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0"/><path d="M12 17.5v4"/><path d="M8.5 21.5h7"/></svg>',
+  podcast: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13.5v-1a8 8 0 0 1 16 0v1"/><rect x="3" y="13" width="4" height="7" rx="1.6"/><rect x="17" y="13" width="4" height="7" rx="1.6"/></svg>',
+  artikelen: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l5 5v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v5h5"/><path d="M8.5 13h7"/><path d="M8.5 17h7"/><path d="M8.5 9h3"/></svg>',
+  boek: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5z"/><path d="M5 19.5A1.5 1.5 0 0 1 6.5 18H19v3H6.5A1.5 1.5 0 0 1 5 19.5z"/></svg>',
 };
 
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -344,15 +353,25 @@ function escHtml(s) {
 
 function vulEinde(gebouwId) {
   const g = GEBOUWEN[gebouwId];
-  const grid = !!g.einde.grid;   // showcase-grid met preview-foto's (Projecten)
+  const grid = !!g.einde.grid;    // showcase-grid met preview-foto's (Projecten)
+  const tiles = !!g.einde.tiles;  // vierkante icoon-tegels (Inspire)
   eindePaneel.setAttribute('aria-label', 'Einde van het ' + g.label + '-verhaal');
   eindePaneel.classList.toggle('einde--breed', grid);
   eindeEyebrow.textContent = g.label;
   eindeTitel.textContent = g.einde.titel;
   eindeLijst.classList.toggle('einde-lijst--grid', grid);
+  eindeLijst.classList.toggle('einde-lijst--tiles', tiles);
   eindeLijst.innerHTML = g.einde.items
     .map((it) => {
       const kop = escHtml(it.kop);
+      // Tegel: alleen icoon + label, klikbaar naar de juiste plek.
+      if (tiles) {
+        const icoon = ICONS[it.icon] || '';
+        const inner = '<span class="einde-icon" aria-hidden="true">' + icoon + '</span><strong>' + kop + '</strong>';
+        return it.href
+          ? '<li class="is-tile is-link"><a href="' + escHtml(it.href) + '">' + inner + '</a></li>'
+          : '<li class="is-tile">' + inner + '</li>';
+      }
       const tekst = escHtml(it.tekst);
       const thumb = it.img
         ? '<span class="einde-thumb" style="background-image:url(\'' + escHtml(it.img) + '\')" aria-hidden="true"></span>'
