@@ -139,12 +139,15 @@ body:not([data-state="verhaal"]) { overflow: hidden; height: 100vh; }
   transition: opacity .6s ease, visibility 0s linear .6s;
 }
 
-/* Hub zichtbaar in hub-state en (als onderlaag) tijdens de dive */
+/* Hub zichtbaar in hub-state en (als onderlaag) tijdens de dive.
+   Geen fade-IN: de hub staat meteen vol onder de cine, zodat alleen de
+   video eroverheen uitfadet (schone dissolve i.p.v. een donkere dip waar
+   beide lagen half-transparant zijn). Uitfaden gebeurt wel via .stage. */
 body[data-state="hub"] #hub,
 body[data-state="dive"] #hub {
   opacity: 1;
   visibility: visible;
-  transition: opacity .6s ease;
+  transition: none;
 }
 #hub { z-index: 30; background: radial-gradient(80% 60% at 50% 30%, rgba(91, 45, 142, .35), var(--w-bg) 75%); outline: none; }
 #cine { z-index: 40; background: var(--w-bg); }
