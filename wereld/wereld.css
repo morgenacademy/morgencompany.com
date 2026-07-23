@@ -413,7 +413,7 @@ body[data-state="verhaal"] #verhaal { display: block; }
 /* Zodra de tegels zweven: de engine-sectiecopy (titel + eigen CTA) wegfaden,
    zodat er écht alleen 4 tegels overblijven. */
 body.tegels-zichtbaar #world .sw-copy {
-  opacity: 0;
+  opacity: 0 !important;   /* wint van de inline scroll-opacity van de engine */
   pointer-events: none;
   transition: opacity .4s ease;
 }
