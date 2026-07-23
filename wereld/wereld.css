@@ -149,11 +149,12 @@ body[data-state="dive"] #hub {
 #hub { z-index: 30; background: radial-gradient(80% 60% at 50% 30%, rgba(91, 45, 142, .35), var(--w-bg) 75%); outline: none; }
 #cine { z-index: 40; background: var(--w-bg); }
 
-/* Cine fade pas in zodra de video echt beeld geeft */
+/* Cine fade pas in zodra de video echt beeld geeft. .6s = gelijk aan de
+   hub-fade, zodat de dive-inzoom net zo zacht overvloeit als intro->hub. */
 body[data-state="intro"] #cine,
 body[data-state="dive"] #cine {
   visibility: visible;
-  transition: opacity .45s ease;
+  transition: opacity .6s ease;
 }
 body[data-state="intro"] #cine.is-playing,
 body[data-state="dive"] #cine.is-playing { opacity: 1; }

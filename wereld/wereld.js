@@ -226,8 +226,10 @@ const tickerTrack = document.getElementById('ticker-track');
 
 /* ---------- Cinematics: 1 hergebruikt video-element ---------- */
 let cineDone = null;
+let cineCleanup = null;   // uitgestelde bron-opruiming (na de crossfade)
 
 function playCine(desktopSrc, mobileSrc, done) {
+  if (cineCleanup) { clearTimeout(cineCleanup); cineCleanup = null; }   // geen opruiming op de nieuwe clip
   cineDone = done;
   cine.classList.remove('is-playing');
   cineVideo.src = isMobile() ? mobileSrc : desktopSrc;
@@ -244,10 +246,18 @@ function finishCine() {
 
 function stopCine() {
   cineDone = null;
+  // Laatste frame BEVRIEZEN en laten staan: de state-wissel fadet #cine uit
+  // (crossfade naar hub-still of binnenwereld). De bron ruimen we pas ná die
+  // fade op, anders blankt de video naar zwart en zie je een harde sprong
+  // van animatie naar afbeelding.
   try { cineVideo.pause(); } catch (e) {}
-  cine.classList.remove('is-playing');
-  cineVideo.removeAttribute('src');
-  cineVideo.load();   // geeft decoder en geheugen vrij, voorkomt dubbel afspelen
+  if (cineCleanup) clearTimeout(cineCleanup);
+  cineCleanup = setTimeout(() => {
+    cine.classList.remove('is-playing');
+    cineVideo.removeAttribute('src');
+    cineVideo.load();   // geeft decoder en geheugen vrij, voorkomt dubbel afspelen
+    cineCleanup = null;
+  }, 750);   // iets langer dan de #cine-fade
 }
 
 cineVideo.addEventListener('playing', () => cine.classList.add('is-playing'));
