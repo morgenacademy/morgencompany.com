@@ -277,9 +277,11 @@ body[data-state="verhaal"] #verhaal { display: block; }
   transform: translate(-50%, -46%);
   z-index: 130;
   width: min(92vw, 540px);
-  max-height: calc(100vh - 120px);
-  max-height: calc(100dvh - 120px);
-  overflow-y: auto;
+  max-height: calc(100vh - 96px);
+  max-height: calc(100dvh - 96px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;   /* het paneel zelf scrollt niet; alleen de lijst */
   padding: clamp(22px, 4vw, 36px);
   border-radius: 28px;
   background: rgba(12, 8, 24, .72);
@@ -300,6 +302,7 @@ body[data-state="verhaal"] #verhaal { display: block; }
 }
 .einde-eyebrow {
   margin: 0;
+  flex: 0 0 auto;
   font-weight: 700;
   font-size: .8rem;
   letter-spacing: .16em;
@@ -308,6 +311,7 @@ body[data-state="verhaal"] #verhaal { display: block; }
 }
 .einde-titel {
   margin: 8px 0 0;
+  flex: 0 0 auto;
   font-weight: 900;
   font-size: clamp(1.6rem, 4vw, 2.2rem);
   line-height: 1.05;
@@ -318,6 +322,13 @@ body[data-state="verhaal"] #verhaal { display: block; }
   padding: 0;
   display: grid;
   gap: 12px;
+  /* Onzichtbaar scrollkader: de trainingen scrollen hierbinnen, terwijl
+     eyebrow/titel bovenaan en de CTA's onderaan blijven staan. */
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  /* ruimte zodat de laatste kaart niet onder de fade/rand valt */
+  padding-right: 4px;
 }
 .einde-lijst li {
   display: grid;
@@ -385,6 +396,7 @@ body[data-state="verhaal"] #verhaal { display: block; }
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 22px;
+  flex: 0 0 auto;   /* CTA-rij blijft onderaan staan, scrollt niet mee */
 }
 
 /* ---------- Engine-overrides voor de donkere huisstijl ---------- */

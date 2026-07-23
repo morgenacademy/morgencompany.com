@@ -14,7 +14,8 @@
 
 const STARTERS = [
   'We willen zelf een tool of prototype bouwen.',
-  'Ons team wil meer uit Claude Code halen.',
+  'Ons team wil meer uit AI halen.',
+  'We doen al veel met AI, maar willen het als team goed laten landen.',
   'We willen een proces laten automatiseren of iets laten bouwen.',
   'We willen projectmanagement slimmer aanpakken met AI.',
 ];

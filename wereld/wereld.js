@@ -42,7 +42,7 @@ const GEBOUWEN = {
     still:  'assets/echt/train-binnen.webp',
     stillM: 'assets/echt/train-binnen-m.webp',
     cta: { label: 'Bekijk alle trainingen', href: '/academy/' },
-    cta2: { label: 'Open de Trainingwijzer', href: '/#trainingwijzer-app' },
+    cta2: { label: 'Trainingwijzer', href: '/#trainingwijzer-app' },
     sectie: {
       eyebrow: 'Train',
       title: 'Klein beginnen. Groot doorpakken.',
@@ -182,7 +182,7 @@ const GEBOUWEN = {
     einde: {
       titel: 'Technologie als bedrijfskeuze',
       items: [
-        { kop: 'Meet the Humans', tekst: 'De mensen achter Morgen, rond het kampvuur', href: '/about/#about-inspiratie' },
+        { kop: 'Meet the Humans', tekst: 'De mensen achter Morgen', href: '/about/#about-inspiratie' },
         { kop: 'Van eerste ervaring naar echte toepassing', tekst: 'Het begint met zelf doen: je eerste assistent, tool of automatisering', href: '/about/#about-aanpak' },
         { kop: 'Dan wordt het concreet', tekst: 'Wat AI-integratie betekent voor werk, processen en je team', href: '/about/#about-aanpak' },
         { kop: 'Van inzicht naar praktijk', tekst: 'AI echt laten landen, niet iets wat je erbij doet', href: '/about/#about-aanpak' },
