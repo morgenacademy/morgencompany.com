@@ -319,16 +319,14 @@ body[data-state="verhaal"] #verhaal { display: block; }
 .einde-lijst {
   list-style: none;
   margin: 18px 0 0;
-  padding: 0;
+  padding: 0 4px 0 0;
   display: grid;
   gap: 12px;
-  /* Onzichtbaar scrollkader: de trainingen scrollen hierbinnen, terwijl
-     eyebrow/titel bovenaan en de CTA's onderaan blijven staan. */
-  flex: 1 1 auto;
-  min-height: 0;
+  /* Compact scrollkader: toont ~4 kaarten (even groot als de Build/Implement-
+     panelen), de rest scrollt hierbinnen. Eyebrow/titel blijven boven, de
+     CTA-rij onder. Het buitenste paneel groeit dus niet mee met een lange lijst. */
+  max-height: min(38vh, 300px);
   overflow-y: auto;
-  /* ruimte zodat de laatste kaart niet onder de fade/rand valt */
-  padding-right: 4px;
 }
 .einde-lijst li {
   display: grid;
@@ -375,7 +373,11 @@ body[data-state="verhaal"] #verhaal { display: block; }
 
 /* Showcase-grid (Projecten): 2 kaarten naast elkaar met preview-foto */
 .einde--breed { width: min(94vw, 720px); }
-.einde-lijst--grid { grid-template-columns: 1fr 1fr; }
+.einde-lijst--grid {
+  grid-template-columns: 1fr 1fr;
+  /* Showcase-kaarten zijn hoger; toon ~2 rijen en scroll de rest. */
+  max-height: min(56vh, 470px);
+}
 .einde-thumb {
   display: block;
   height: 84px;
