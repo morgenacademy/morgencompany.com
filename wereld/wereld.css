@@ -325,7 +325,7 @@ body[data-state="verhaal"] #verhaal { display: block; }
   /* Compact scrollkader: toont ~4 kaarten (even groot als de Build/Implement-
      panelen), de rest scrollt hierbinnen. Eyebrow/titel blijven boven, de
      CTA-rij onder. Het buitenste paneel groeit dus niet mee met een lange lijst. */
-  max-height: min(38vh, 300px);
+  max-height: min(40vh, 292px);   /* ~4 kaarten = zelfde hoogte als Build/Implement */
   overflow-y: auto;
 }
 .einde-lijst li {
