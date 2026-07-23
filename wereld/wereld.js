@@ -177,7 +177,7 @@ const GEBOUWEN = {
     sectie: {
       eyebrow: 'Over Morgen.',
       title: 'Technologie als bedrijfskeuze.',
-      body: 'Rond het kampvuur zitten de mensen van Morgen: aanpak, technologie en mensen. Zo groeit AI van eerste ervaring naar echte toepassing.',
+      body: 'De mensen van Morgen: aanpak, technologie en mensen. Zo groeit AI van eerste ervaring naar echte toepassing.',
       tags: ['Aanpak', 'Technologie', 'Mensen'],
     },
     einde: {
