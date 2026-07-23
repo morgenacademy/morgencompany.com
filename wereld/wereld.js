@@ -428,10 +428,6 @@ function startIntro() {
 }
 
 function toHub() {
-  // Kwam de bezoeker net uit de intro-vlucht? Dan de hub zacht laten uitzoomen
-  // (camera trekt terug tot het hele eiland in beeld staat) i.p.v. een harde
-  // zoom-sprong van full-screen video naar de bredere hub-still.
-  const vanIntro = document.body.dataset.state === 'intro';
   stopCine();
   stopAmbient();
   sluitKompas();
@@ -441,15 +437,6 @@ function toHub() {
   setState('hub');
   window.scrollTo(0, 0);
   hubEl.focus({ preventScroll: true });
-  if (vanIntro && !reduce) zoomHubIn();
-}
-
-function zoomHubIn() {
-  hubEl.classList.remove('hub-zoom');
-  void hubEl.offsetWidth;            // reflow: herstart de animatie betrouwbaar
-  hubEl.classList.add('hub-zoom');
-  const klaar = () => { hubEl.classList.remove('hub-zoom'); hubStill.removeEventListener('animationend', klaar); };
-  hubStill.addEventListener('animationend', klaar);
 }
 
 function startDive(gebouwId) {

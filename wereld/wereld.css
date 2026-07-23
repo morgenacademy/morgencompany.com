@@ -187,20 +187,7 @@ body[data-state="intro"] .skip-knop { display: block; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform-origin: 50% 42%;   /* zoom rond het plein-midden */
 }
-/* Uitzoom-onthulling na de intro: hub start ingezoomd (≈ het full-screen
-   videokader) en trekt terug tot het hele eiland in beeld staat. De hotspots
-   verschijnen pas als de camera tot rust komt. */
-@keyframes hubZoomOut {
-  from { transform: scale(1.22); }
-  to   { transform: scale(1); }
-}
-#hub.hub-zoom .hub-still {
-  animation: hubZoomOut 1s cubic-bezier(.22, .61, .36, 1) both;
-}
-.hotspots { transition: opacity .45s ease; }
-#hub.hub-zoom .hotspots { opacity: 0; pointer-events: none; }
 .hotspots { position: absolute; inset: 0; }
 .hotspot {
   position: absolute;
