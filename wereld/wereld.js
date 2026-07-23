@@ -15,7 +15,7 @@ const HOTSPOTS = [
   // still-binnenwereld (geen dive), de wegwijzer linkt naar het Kompas op de site.
   { id: 'projecten', label: 'Projecten',     x: 27, y: 51, xm: 27, ym: 52, enabled: true, sub: true },
   { id: 'overons',   label: 'Over Morgen.',  x: 70, y: 67, xm: 71, ym: 62, enabled: true, sub: true },
-  { id: 'kompas',    label: 'Kompas',        x: 52, y: 47, xm: 52, ym: 50, enabled: true, sub: true, kompas: true },
+  { id: 'kompas',    label: 'Wegwijzer',     x: 52, y: 47, xm: 52, ym: 50, enabled: true, sub: true, kompas: true },
 ];
 
 /* ---- Assetcontract (relatief aan /wereld/) ----
@@ -181,10 +181,10 @@ const GEBOUWEN = {
     einde: {
       titel: 'Technologie als bedrijfskeuze',
       items: [
+        { kop: 'Meet the Humans', tekst: 'De mensen achter Morgen, rond het kampvuur', href: '/about/#about-inspiratie' },
         { kop: 'Van eerste ervaring naar echte toepassing', tekst: 'Het begint met zelf doen: je eerste assistent, tool of automatisering', href: '/about/#about-aanpak' },
         { kop: 'Dan wordt het concreet', tekst: 'Wat AI-integratie betekent voor werk, processen en je team', href: '/about/#about-aanpak' },
         { kop: 'Van inzicht naar praktijk', tekst: 'AI echt laten landen, niet iets wat je erbij doet', href: '/about/#about-aanpak' },
-        { kop: 'Meet the Humans', tekst: 'De mensen achter Morgen', href: '/about/#about-inspiratie' },
       ],
     },
   },
