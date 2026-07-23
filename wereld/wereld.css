@@ -413,9 +413,10 @@ body[data-state="verhaal"] #verhaal { display: block; }
 /* Zodra de tegels zweven: de engine-sectiecopy (titel + eigen CTA) wegfaden,
    zodat er écht alleen 4 tegels overblijven. */
 body.tegels-zichtbaar #world .sw-copy {
-  opacity: 0 !important;   /* wint van de inline scroll-opacity van de engine */
+  /* De engine stuurt de opacity per frame aan; visibility raakt ze niet aan,
+     dus dat verbergt de sectiecopy betrouwbaar zodra de tegels zweven. */
+  visibility: hidden !important;
   pointer-events: none;
-  transition: opacity .4s ease;
 }
 
 /* Icoon-tegels: 4 semi-transparante glas-vierkanten naast elkaar, gecentreerd */
