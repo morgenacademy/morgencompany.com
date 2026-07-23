@@ -137,9 +137,9 @@ const GEBOUWEN = {
       tiles: true,
       items: [
         { kop: 'Keynotes', icon: 'keynote', href: '/inspiratie/#cp-keynote' },
-        { kop: 'Podcast', icon: 'podcast', href: '/inspiratie/#cp-podcast' },
-        { kop: 'Artikelen', icon: 'artikelen', href: '/inspiratie/#cp-artikelen' },
-        { kop: 'Boek: De Digitale Collega', icon: 'boek', href: '/inspiratie/#cp-boek' },
+        { kop: 'Podcast', icon: 'podcast', href: '/inspiratie/#cp-verdieping' },
+        { kop: 'Artikelen', icon: 'artikelen', href: '/inspiratie/#cp-verdieping' },
+        { kop: 'Boek: De Digitale Collega', icon: 'boek', href: '/inspiratie/#cp-verdieping' },
       ],
     },
   },
