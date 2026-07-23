@@ -394,26 +394,46 @@ body[data-state="verhaal"] #verhaal { display: block; }
   background-color: rgba(255, 255, 255, .06);
 }
 
-/* Icoon-tegels (Inspire): 4 semi-transparante vierkanten met icoon + label */
-.einde-lijst--tiles {
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  max-height: none;   /* 4 tegels passen zonder scroll */
+/* Inspire = uitzondering: geen kader/kop/CTA, alleen 4 zwevende tegels.
+   'Terug naar het plein' staat al los linksboven (#exit-verhaal). */
+.einde--tegels {
+  background: none;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  padding: 0;
+  width: min(96vw, 940px);
+  max-height: none;
   overflow: visible;
+}
+.einde--tegels .einde-eyebrow,
+.einde--tegels .einde-titel,
+.einde--tegels .einde-acties { display: none; }
+.einde--tegels .einde-lijst { margin: 0; }
+
+/* Icoon-tegels: 4 semi-transparante glas-vierkanten naast elkaar, gecentreerd */
+.einde-lijst--tiles {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  max-height: none;
+  overflow: visible;
+  padding: 0;
 }
 .einde-lijst--tiles li { padding: 0; background: none; border: none; position: relative; }
 .einde-lijst--tiles li.is-link > a,
 .einde-lijst--tiles li.is-tile:not(.is-link) {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 16px;
-  min-height: 116px;
-  padding: 16px 18px;
-  border-radius: 18px;
-  background: rgba(155, 111, 207, .13);
-  border: 1px solid rgba(155, 111, 207, .28);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 14px;
+  min-height: 150px;
+  padding: 22px 16px;
+  border-radius: 20px;
+  background: rgba(12, 8, 24, .5);
+  border: 1px solid rgba(155, 111, 207, .34);
+  backdrop-filter: blur(8px);
   color: inherit;
   text-decoration: none;
   transition: background .2s, border-color .2s, transform .2s;
@@ -423,19 +443,19 @@ body[data-state="verhaal"] #verhaal { display: block; }
 .einde-lijst--tiles li.is-link:focus-within { background: none; border: none; }
 .einde-lijst--tiles li.is-link > a:hover,
 .einde-lijst--tiles li.is-link > a:focus-visible {
-  background: rgba(91, 45, 142, .4);
+  background: rgba(91, 45, 142, .5);
   border-color: rgba(216, 254, 86, .55);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   outline: none;
 }
 .einde-lijst--tiles .einde-icon {
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   color: var(--w-paars-licht);
 }
-.einde-lijst--tiles li > a:hover .einde-icon { color: var(--w-accent); }
+.einde-lijst--tiles li.is-link > a:hover .einde-icon { color: var(--w-accent); }
 .einde-lijst--tiles .einde-icon svg { width: 100%; height: 100%; display: block; }
-.einde-lijst--tiles strong { font-size: 1rem; line-height: 1.2; }
+.einde-lijst--tiles strong { font-size: 1rem; line-height: 1.25; }
 .einde-acties {
   display: flex;
   flex-wrap: wrap;
@@ -578,6 +598,9 @@ body.ticker-actief .sw-hint { bottom: calc(84px + env(safe-area-inset-bottom)); 
   .einde--breed { width: 94vw; }
   .einde-lijst--grid { grid-template-columns: 1fr; }
   .einde-thumb { height: 108px; }
+  .einde--tegels { width: 94vw; }
+  .einde-lijst--tiles { grid-template-columns: 1fr 1fr; }   /* 2x2 op mobiel */
+  .einde-lijst--tiles li.is-link > a { min-height: 118px; padding: 16px 12px; }
 }
 
 /* ---------- Reduced motion ---------- */

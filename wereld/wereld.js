@@ -357,6 +357,8 @@ function vulEinde(gebouwId) {
   const tiles = !!g.einde.tiles;  // vierkante icoon-tegels (Inspire)
   eindePaneel.setAttribute('aria-label', 'Einde van het ' + g.label + '-verhaal');
   eindePaneel.classList.toggle('einde--breed', grid);
+  // Tegel-modus (Inspire): geen kader/kop/CTA's, alleen 4 zwevende tegels.
+  eindePaneel.classList.toggle('einde--tegels', tiles);
   eindeEyebrow.textContent = g.label;
   eindeTitel.textContent = g.einde.titel;
   eindeLijst.classList.toggle('einde-lijst--grid', grid);
