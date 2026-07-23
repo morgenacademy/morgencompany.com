@@ -163,7 +163,7 @@ const GEBOUWEN = {
         { kop: 'Solo Solis', tekst: 'Van 40+ handmatige stappen naar maximaal 6 controles', href: '/projecten/#case-solosolis', img: '/Afbeeldingen%20projecten/SoloSolis%20print-order%20automatisatie.png' },
         { kop: 'Gemeente Tilburg', tekst: 'Waardegedreven AI en procesdenken', href: '/projecten/#case-tilburg', img: '/Fotos/Harmen%20training%20Gemeente%20Tilburg%201.jpg' },
         { kop: 'Avans Hogeschool', tekst: 'Alle processen van een afdeling scherp in beeld', href: '/projecten/', img: '/docs/company/karin-ai-automation-01.jpg' },
-        { kop: 'OnView & PharmaPartners', tekst: 'Claude Code professioneel houden in developmentteams', placeholder: true, img: '/Fotos/Harmen%20Claude%20Code%20training%20avans.jpg' },
+        { kop: 'OnView & PharmaPartners', tekst: 'Claude Code professioneel houden in developmentteams', href: '/projecten/#case-onview', img: '/Fotos/Harmen%20Claude%20Code%20training%20avans.jpg' },
       ],
     },
   },
