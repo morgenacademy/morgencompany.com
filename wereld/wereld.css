@@ -481,6 +481,8 @@ body[data-state="verhaal"] #verhaal { display: block; }
   filter: brightness(0) invert(1);
   flex-shrink: 0;
 }
+/* Scroll-hint van de engine boven de ticker tillen zolang die loopt */
+body.ticker-actief .sw-hint { bottom: calc(84px + env(safe-area-inset-bottom)); }
 @keyframes wereldLogoScroll {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }

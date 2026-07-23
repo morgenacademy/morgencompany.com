@@ -179,12 +179,12 @@ const GEBOUWEN = {
       tags: ['Aanpak', 'Technologie', 'Mensen'],
     },
     einde: {
-      titel: 'Meet the humans',
+      titel: 'Technologie als bedrijfskeuze',
       items: [
-        { kop: 'Van ervaring naar toepassing', tekst: 'Het begint met zelf doen: je eerste assistent, tool of automatisering', href: '/about/#about-aanpak' },
-        { kop: 'Dan wordt het concreet', tekst: 'Keuzes over werk, processen en de plek van AI in de organisatie', href: '/about/#about-aanpak' },
-        { kop: 'Borging in het team', tekst: 'We werken met de mensen die het straks gebruiken', href: '/about/#about-aanpak' },
-        { kop: 'Morgen als partner', tekst: 'Academy, consultancy en technology onder één dak', href: '/about/#about-inspiratie' },
+        { kop: 'Van eerste ervaring naar echte toepassing', tekst: 'Het begint met zelf doen: je eerste assistent, tool of automatisering', href: '/about/#about-aanpak' },
+        { kop: 'Dan wordt het concreet', tekst: 'Wat AI-integratie betekent voor werk, processen en je team', href: '/about/#about-aanpak' },
+        { kop: 'Van inzicht naar praktijk', tekst: 'AI echt laten landen, niet iets wat je erbij doet', href: '/about/#about-aanpak' },
+        { kop: 'Meet the Humans', tekst: 'De mensen achter Morgen', href: '/about/#about-inspiratie' },
       ],
     },
   },
@@ -388,6 +388,7 @@ function toHub() {
   stopAmbient();
   sluitKompas();
   wereldTicker.hidden = true;
+  document.body.classList.remove('ticker-actief');
   setState('hub');
   window.scrollTo(0, 0);
   hubEl.focus({ preventScroll: true });
@@ -490,7 +491,10 @@ const TICKER_LOGOS = [
 })();
 
 function toonTicker(gebouwId) {
-  wereldTicker.hidden = (gebouwId !== 'projecten');
+  const aan = (gebouwId === 'projecten');
+  wereldTicker.hidden = !aan;
+  // Tilt de scroll-hint van de engine boven de ticker uit (engine zelf blijft ongemoeid)
+  document.body.classList.toggle('ticker-actief', aan);
 }
 
 /* ---------- Exits ---------- */
