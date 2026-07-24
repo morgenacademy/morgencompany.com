@@ -195,6 +195,50 @@ body[data-state="intro"] .skip-knop { display: block; }
   object-fit: cover;
 }
 .hotspots { position: absolute; inset: 0; }
+.hub-propositie {
+  position: absolute;
+  left: clamp(22px, 5vw, 72px);
+  bottom: calc(clamp(20px, 4vw, 48px) + env(safe-area-inset-bottom));
+  z-index: 3;
+  width: min(620px, calc(100vw - 44px));
+  color: var(--w-ink);
+  text-shadow: 0 3px 22px rgba(12, 8, 24, .98);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity .5s ease, transform .5s ease, visibility 0s linear .5s;
+  pointer-events: none;
+}
+.hub-propositie::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -28px -44px -30px;
+  background: radial-gradient(ellipse at 25% 60%, rgba(12, 8, 24, .9), rgba(12, 8, 24, 0) 72%);
+  pointer-events: none;
+}
+body[data-state="hub"] .hub-propositie {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition-delay: .2s;
+}
+.hub-propositie h1 {
+  max-width: 18ch;
+  margin: 0;
+  font-size: clamp(1.65rem, 3vw, 2.9rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -.025em;
+}
+.hub-propositie p {
+  margin: 10px 0 0;
+  max-width: 54ch;
+  color: var(--w-ink-zacht);
+  font-size: clamp(.92rem, 1.35vw, 1.15rem);
+  font-weight: 500;
+  line-height: 1.35;
+}
 .hotspot-map {
   position: absolute;
   inset: 0;
@@ -622,6 +666,14 @@ body.ticker-actief .sw-hint { bottom: calc(84px + env(safe-area-inset-bottom)); 
 
 /* ---------- Klein scherm ---------- */
 @media (max-width: 860px) {
+  .hub-propositie {
+    left: 18px;
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    width: calc(100vw - 36px);
+  }
+  .hub-propositie::before { inset: -22px -24px -24px; }
+  .hub-propositie h1 { max-width: 16ch; font-size: clamp(1.35rem, 6vw, 1.8rem); }
+  .hub-propositie p { max-width: 34ch; font-size: .9rem; }
   .hotspot { font-size: .85rem; padding: 9px 14px; }
   .hotspot.is-sub { font-size: .72rem; padding: 6px 11px; }
   .exit-knop { top: 62px; }
@@ -641,7 +693,7 @@ body.ticker-actief .sw-hint { bottom: calc(84px + env(safe-area-inset-bottom)); 
 
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
-  .stage, .einde, .knop-ghost, .knop-accent, .hotspot { transition: none; }
+  .stage, .einde, .knop-ghost, .knop-accent, .hotspot, .hub-propositie { transition: none; }
   .hotspot-dot { animation: none; }
 }
 

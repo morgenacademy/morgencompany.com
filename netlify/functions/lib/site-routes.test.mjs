@@ -180,7 +180,7 @@ test('het Kompas is modaal, kondigt status aan en begrenst gesprekshistorie', ()
 
 test('functionele wereldassets worden met dezelfde cacheversie geladen', () => {
   const wereldHtml = read('wereld/index.html');
-  assert.match(wereldHtml, /wereld\.css\?v=20260724-performance/);
+  assert.match(wereldHtml, /wereld\.css\?v=20260724-propositie/);
   assert.match(wereldHtml, /scrub-engine\.js\?v=20260724-performance/);
   assert.match(wereldHtml, /wereld\.js\?v=20260724-performance/);
   assert.match(wereldHtml, /chat\.css\?v=20260724-functional/);
@@ -196,7 +196,7 @@ test('de wereld is technisch voorbereid als root-homepage', () => {
   assert.match(redirects, /^\/wereld\/ \/ 301!$/m);
   assert.match(redirects, /^\/wereld\/index\.html \/ 301!$/m);
   assert.match(redirects, /^\/ \/wereld\/index\.html 200!$/m);
-  assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260724-performance"/);
+  assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260724-propositie"/);
   assert.match(wereldHtml, /src="\/wereld\/scrub-engine\.js\?v=20260724-performance"/);
   assert.match(wereldHtml, /src="\/wereld\/wereld\.js\?v=20260724-performance"/);
   assert.doesNotMatch(wereldHtml, /(?:href|src)="(?:wereld\.css|scrub-engine\.js|wereld\.js)/);
@@ -287,6 +287,19 @@ test('binnenvideo’s laden pas na de dive en oude engines worden opgeruimd', ()
   assert.match(engine, /window\.removeEventListener\('scroll', onScroll\)/);
   assert.match(engine, /URL\.revokeObjectURL\(s\.objectUrl\)/);
   assert.match(engine, /return \{ destroy \}/);
+});
+
+test('het plein toont de positionering als zichtbare hoofdkop', () => {
+  const wereldHtml = read('wereld/index.html');
+  const wereldCss = read('wereld/wereld.css');
+  assert.equal((wereldHtml.match(/<h1>/g) || []).length, 1);
+  assert.match(wereldHtml, /<h1>Maak AI onderdeel van het dagelijkse werk\.<\/h1>/);
+  assert.match(
+    wereldHtml,
+    /<p>Met trainingen, implementatie en maatwerksoftware voor organisaties\.<\/p>/
+  );
+  assert.doesNotMatch(wereldHtml, /<h1 class="sr-only">/);
+  assert.match(wereldCss, /body\[data-state="hub"\] \.hub-propositie/);
 });
 
 test('de projectcopy legt de visuele beeldtaal niet uit', () => {
