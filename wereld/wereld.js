@@ -49,14 +49,16 @@ const HOTSPOT_MAPS = {
   },
 };
 
-/* ---- Assetcontract (relatief aan /wereld/) ----
-   Mobiele mp4's wijzen tijdelijk naar de desktopclips totdat de natieve
-   9:16-keten gegenereerd is; de engine en cine-player croppen cover. */
+/* ---- Assetcontract onder /wereld/.
+   De mobiele mp4's zijn lichter en volgen dezelfde verticale cover-uitsnede
+   die voorheen in de browser op de desktopclips werd toegepast. */
 const ASSETS = {
-  hub:    'assets/echt/hub.webp',
-  hubM:   'assets/echt/hub-m.webp',
-  intro:  'assets/echt/vid/intro.mp4',
-  introM: 'assets/echt/vid/intro.mp4',
+  hub:     '/wereld/assets/echt/hub.webp',
+  hubM:    '/wereld/assets/echt/hub-m.webp',
+  intro:   '/wereld/assets/echt/vid/intro.mp4',
+  introM:  '/wereld/assets/echt/vid/intro-m.mp4',
+  poster:  '/wereld/assets/echt/intro-poster.jpg',
+  posterM: '/wereld/assets/echt/intro-poster-m.jpg',
 };
 
 /* ---- Per gebouw: assets, engine-sectie-copy en eindpaneel. ----
@@ -66,12 +68,12 @@ const ASSETS = {
 const GEBOUWEN = {
   train: {
     label: 'Train',
-    dive:   'assets/echt/vid/dive-train.mp4',
-    diveM:  'assets/echt/vid/dive-train.mp4',
-    leg:    'assets/echt/vid/leg-train.mp4',
-    legM:   'assets/echt/vid/leg-train.mp4',
-    still:  'assets/echt/train-binnen.webp',
-    stillM: 'assets/echt/train-binnen-m.webp',
+    dive:   '/wereld/assets/echt/vid/dive-train.mp4',
+    diveM:  '/wereld/assets/echt/vid/dive-train-m.mp4',
+    leg:    '/wereld/assets/echt/vid/leg-train.mp4',
+    legM:   '/wereld/assets/echt/vid/leg-train-m.mp4',
+    still:  '/wereld/assets/echt/train-binnen.webp',
+    stillM: '/wereld/assets/echt/train-binnen-m.webp',
     cta: { label: 'Bekijk alle trainingen', href: '/academy/' },
     cta2: { label: 'Wegwijzer', action: 'kompas' },
     sectie: {
@@ -100,12 +102,12 @@ const GEBOUWEN = {
   },
   implement: {
     label: 'Implement',
-    dive:   'assets/echt/vid/dive-implement.mp4',
-    diveM:  'assets/echt/vid/dive-implement.mp4',
-    leg:    'assets/echt/vid/leg-implement.mp4',
-    legM:   'assets/echt/vid/leg-implement.mp4',
-    still:  'assets/echt/implement-binnen.webp',
-    stillM: 'assets/echt/implement-binnen.webp',
+    dive:   '/wereld/assets/echt/vid/dive-implement.mp4',
+    diveM:  '/wereld/assets/echt/vid/dive-implement-m.mp4',
+    leg:    '/wereld/assets/echt/vid/leg-implement.mp4',
+    legM:   '/wereld/assets/echt/vid/leg-implement-m.mp4',
+    still:  '/wereld/assets/echt/implement-binnen.webp',
+    stillM: '/wereld/assets/echt/implement-binnen.webp',
     cta: { label: 'Bekijk consultancy', href: '/consultancy/' },
     sectie: {
       eyebrow: 'Implement',
@@ -125,12 +127,12 @@ const GEBOUWEN = {
   },
   build: {
     label: 'Build',
-    dive:   'assets/echt/vid/dive-build.mp4',
-    diveM:  'assets/echt/vid/dive-build.mp4',
-    leg:    'assets/echt/vid/leg-build.mp4',
-    legM:   'assets/echt/vid/leg-build.mp4',
-    still:  'assets/echt/build-binnen.webp',
-    stillM: 'assets/echt/build-binnen.webp',
+    dive:   '/wereld/assets/echt/vid/dive-build.mp4',
+    diveM:  '/wereld/assets/echt/vid/dive-build-m.mp4',
+    leg:    '/wereld/assets/echt/vid/leg-build.mp4',
+    legM:   '/wereld/assets/echt/vid/leg-build-m.mp4',
+    still:  '/wereld/assets/echt/build-binnen.webp',
+    stillM: '/wereld/assets/echt/build-binnen.webp',
     cta: { label: 'Bekijk maatwerk', href: '/technology/' },
     sectie: {
       eyebrow: 'Build',
@@ -150,12 +152,12 @@ const GEBOUWEN = {
   },
   inspire: {
     label: 'Inspire',
-    dive:   'assets/echt/vid/dive-inspire.mp4',
-    diveM:  'assets/echt/vid/dive-inspire.mp4',
-    leg:    'assets/echt/vid/leg-inspire.mp4',
-    legM:   'assets/echt/vid/leg-inspire.mp4',
-    still:  'assets/echt/inspire-binnen.webp',
-    stillM: 'assets/echt/inspire-binnen.webp',
+    dive:   '/wereld/assets/echt/vid/dive-inspire.mp4',
+    diveM:  '/wereld/assets/echt/vid/dive-inspire-m.mp4',
+    leg:    '/wereld/assets/echt/vid/leg-inspire.mp4',
+    legM:   '/wereld/assets/echt/vid/leg-inspire-m.mp4',
+    still:  '/wereld/assets/echt/inspire-binnen.webp',
+    stillM: '/wereld/assets/echt/inspire-binnen.webp',
     cta: { label: 'Bekijk inspiratie', href: '/inspiratie/' },
     sectie: {
       eyebrow: 'Inspire',
@@ -177,8 +179,8 @@ const GEBOUWEN = {
   projecten: {
     label: 'Projecten',
     dive: null, diveM: null, leg: null, legM: null,
-    still:  'assets/echt/projecten.webp',
-    stillM: 'assets/echt/projecten.webp',
+    still:  '/wereld/assets/echt/projecten.webp',
+    stillM: '/wereld/assets/echt/projecten.webp',
     cta: { label: 'Bekijk alle projecten', href: '/projecten/' },
     sectie: {
       eyebrow: 'Projecten',
@@ -202,8 +204,8 @@ const GEBOUWEN = {
   overons: {
     label: 'Over Morgen.',
     dive: null, diveM: null, leg: null, legM: null,
-    still:  'assets/echt/overons.webp',
-    stillM: 'assets/echt/overons.webp',
+    still:  '/wereld/assets/echt/overons.webp',
+    stillM: '/wereld/assets/echt/overons.webp',
     cta: { label: 'Lees over Morgen', href: '/about/' },
     sectie: {
       eyebrow: 'Over Morgen.',
@@ -319,6 +321,7 @@ function stopCine() {
   cineCleanup = setTimeout(() => {
     cine.classList.remove('is-playing');
     cineVideo.removeAttribute('src');
+    cineVideo.removeAttribute('poster');
     cineVideo.load();   // geeft decoder en geheugen vrij, voorkomt dubbel afspelen
     cineCleanup = null;
   }, 750);   // iets langer dan de #cine-fade
@@ -494,7 +497,12 @@ let huidigGebouw = null;
 
 function setState(s) { document.body.dataset.state = s; }
 
+function meetWereld(event, parameters = {}) {
+  if (typeof window.gtag === 'function') window.gtag('event', event, parameters);
+}
+
 function startIntro() {
+  cineVideo.poster = isMobile() ? ASSETS.posterM : ASSETS.poster;
   setState('intro');
   playCine(ASSETS.intro, ASSETS.introM, toHub);
 }
@@ -552,6 +560,7 @@ function toVerhaal(gebouwId) {
     mountWorld(gebouwId);         // idempotent: bestaande mount wordt hergebruikt
     toonWorld(gebouwId);
     vulEinde(gebouwId);
+    meetWereld('wereld_route_view', { wereld_target: gebouwId });
   }
   stopCine();
   setState('verhaal');
@@ -580,6 +589,7 @@ const hotspotButtons = new Map();
 function activeerHotspot(h, trigger) {
   trigger.classList.remove('is-object-hovered');
   if (!h.enabled) return;
+  meetWereld('wereld_hotspot_open', { wereld_target: h.id, wereld_label: h.label });
   if (h.kompas) { openKompas({ trigger }); return; }
   if (h.href) { window.location.href = h.href; return; }
   startDive(h.id);
@@ -637,6 +647,7 @@ function openKompas({ historyMode = 'push', pushed = true, trigger = document.ac
   kompasOpener = trigger instanceof HTMLElement ? trigger : null;
   kompasPaneel.hidden = false;
   zetKompasModal(true);
+  meetWereld('wereld_kompas_open');
   if (historyMode !== 'none') {
     zetWereldRoute('wegwijzer', {
       replace: historyMode === 'replace',
@@ -722,9 +733,27 @@ function toonTicker(gebouwId) {
 }
 
 /* ---------- Exits ---------- */
-skipKnop.addEventListener('click', () => toHub());
+skipKnop.addEventListener('click', () => {
+  meetWereld('wereld_intro_skip');
+  toHub();
+});
 exitKnop.addEventListener('click', terugNaarHub);
 eindeTerug.addEventListener('click', terugNaarHub);
+
+document.addEventListener('kompas:advies', (e) => {
+  meetWereld('wereld_kompas_advies', { training: e.detail?.training || 'onbekend' });
+});
+
+document.addEventListener('click', (e) => {
+  const link = e.target.closest(
+    '#world a[href], #verhaal-einde a[href], #kompas-paneel a[href], .wereld-huidige'
+  );
+  if (!link) return;
+  meetWereld('wereld_cta_click', {
+    wereld_label: link.textContent.trim().slice(0, 80),
+    wereld_href: link.getAttribute('href') || '',
+  });
+});
 
 // De engine rendert de secundaire CTA als <a href="#plein">: onderschep die klik.
 document.addEventListener('click', (e) => {

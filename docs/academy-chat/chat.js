@@ -277,6 +277,9 @@ function initKompas(mount) {
             state.log.push({ type: 'card', card: evt.card });
             saveHandoff(evt.card);
             prefillKompasForms(); // formulier op dezelfde pagina meteen voorinvullen
+            document.dispatchEvent(new CustomEvent('kompas:advies', {
+              detail: { training: evt.card?.training || '' },
+            }));
             drawLog();
           } else if (evt.type === 'error') {
             throw new Error(evt.message || 'chat error');

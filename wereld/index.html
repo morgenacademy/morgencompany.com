@@ -33,21 +33,34 @@
   {"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://morgencompany.com/#organization","name":"Morgen Company","legalName":"Harmen van Heist B.V.","url":"https://morgencompany.com/","logo":{"@type":"ImageObject","url":"https://morgencompany.com/favicon-company.svg"},"image":"https://morgencompany.com/wereld/assets/echt/share.jpg","description":"Morgen helpt organisaties AI toepassen in werk en processen met praktische trainingen, implementatiebegeleiding en maatwerksoftware.","email":"totmorgen@morgenacademy.nl","sameAs":["https://www.linkedin.com/company/morgencompany","https://www.youtube.com/@MorgenAcademy","https://www.instagram.com/morgenacademy.nl/"]},{"@type":"WebSite","@id":"https://morgencompany.com/#website","url":"https://morgencompany.com/","name":"MORGEN","publisher":{"@id":"https://morgencompany.com/#organization"},"inLanguage":"nl-NL"}]}
   </script>
 
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-5F0ELV239K"></script>
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-5F0ELV239K');
+    if (location.hostname === 'morgencompany.com' || location.hostname === 'www.morgencompany.com') {
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function(){ window.dataLayer.push(arguments); };
+      window.gtag('js', new Date());
+      window.gtag('config', 'G-5F0ELV239K');
+      const laadTracking = function(){
+        const ga = document.createElement('script');
+        ga.async = true;
+        ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-5F0ELV239K';
+        document.head.appendChild(ga);
+        const ahrefs = document.createElement('script');
+        ahrefs.async = true;
+        ahrefs.src = 'https://analytics.ahrefs.com/analytics.js';
+        ahrefs.dataset.key = 'jQ2PizbnpUs2qeoKjvs+Nw';
+        document.head.appendChild(ahrefs);
+      };
+      if ('requestIdleCallback' in window) window.requestIdleCallback(laadTracking, { timeout: 2500 });
+      else window.addEventListener('load', laadTracking, { once: true });
+    }
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="wereld.css?v=20260724-functional">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&amp;display=swap" rel="stylesheet"></noscript>
+  <link rel="stylesheet" href="/wereld/wereld.css?v=20260724-launch">
   <link rel="stylesheet" href="/docs/academy-chat/chat.css?v=20260724-functional">
-  <script src="https://analytics.ahrefs.com/analytics.js" data-key="jQ2PizbnpUs2qeoKjvs+Nw" async></script>
 </head>
 <body data-state="boot">
 
@@ -55,7 +68,7 @@
 
   <!-- Minimale nav-balk, boven alle states -->
   <nav class="wereld-nav" aria-label="Hoofdnavigatie">
-    <a class="wereld-merk" href="./" aria-label="Morgen wereld, terug naar start">MORGEN<span class="wereld-merk-punt" aria-hidden="true">.</span></a>
+    <a class="wereld-merk" href="/" aria-label="Morgen wereld, terug naar start">MORGEN<span class="wereld-merk-punt" aria-hidden="true">.</span></a>
     <a class="wereld-huidige" href="/organisatie/">Snel overzicht</a>
   </nav>
 
@@ -120,8 +133,8 @@
     </div>
   </noscript>
 
-  <script src="scrub-engine.js"></script>
-  <script src="wereld.js?v=20260724-functional"></script>
-  <script type="module" src="/docs/academy-chat/chat.js?v=20260724-functional"></script>
+  <script src="/wereld/scrub-engine.js?v=20260724-launch"></script>
+  <script src="/wereld/wereld.js?v=20260724-launch"></script>
+  <script type="module" src="/docs/academy-chat/chat.js?v=20260724-launch"></script>
 </body>
 </html>

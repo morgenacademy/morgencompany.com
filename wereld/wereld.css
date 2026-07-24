@@ -164,6 +164,7 @@ body[data-state="dive"] #cine {
   visibility: visible;
   transition: opacity .6s ease;
 }
+body[data-state="intro"] #cine { opacity: 1; }
 body[data-state="intro"] #cine.is-playing,
 body[data-state="dive"] #cine.is-playing { opacity: 1; }
 

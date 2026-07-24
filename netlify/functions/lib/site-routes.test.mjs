@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 
@@ -14,6 +14,7 @@ const bundles = [
   'inspiratie/index.html',
 ];
 const read = (relative) => readFileSync(new URL(relative, `file://${root}/`), 'utf8');
+const bytes = (relative) => statSync(new URL(relative, `file://${root}/`)).size;
 
 function block(contents, start, end) {
   const startAt = contents.indexOf(start);
@@ -40,7 +41,7 @@ test('alle bundles behouden projecthashes en sturen het logo naar de wereld', ()
   for (const bundle of bundles) {
     const contents = read(bundle);
     assert.match(contents, /nav\('assistenten',a,\{updateHistory:false\}\)/);
-    assert.match(contents, /function goToWorld\(\)\{\s+window\.location\.href='\/wereld\/';/);
+    assert.match(contents, /function goToWorld\(\)\{\s+window\.location\.href='\/';/);
     assert.doesNotMatch(contents, /onclick="nav\('home'\)"/);
   }
 });
@@ -139,7 +140,7 @@ test('formulierinzendingen komen terug op de juiste route met een bevestiging', 
     assert.match(contents, /container\.replaceChildren\(success\)/);
     assert.match(contents, /Aanvraag ontvangen/);
     assert.match(contents, /chat\.css\?v=20260724-functional/);
-    assert.match(contents, /chat\.js\?v=20260724-functional/);
+    assert.match(contents, /chat\.js\?v=20260724-launch/);
   }
 });
 
@@ -179,10 +180,92 @@ test('het Kompas is modaal, kondigt status aan en begrenst gesprekshistorie', ()
 
 test('functionele wereldassets worden met dezelfde cacheversie geladen', () => {
   const wereldHtml = read('wereld/index.html');
-  assert.match(wereldHtml, /wereld\.css\?v=20260724-functional/);
-  assert.match(wereldHtml, /wereld\.js\?v=20260724-functional/);
+  assert.match(wereldHtml, /wereld\.css\?v=20260724-launch/);
+  assert.match(wereldHtml, /scrub-engine\.js\?v=20260724-launch/);
+  assert.match(wereldHtml, /wereld\.js\?v=20260724-launch/);
   assert.match(wereldHtml, /chat\.css\?v=20260724-functional/);
-  assert.match(wereldHtml, /chat\.js\?v=20260724-functional/);
+  assert.match(wereldHtml, /chat\.js\?v=20260724-launch/);
+});
+
+test('de wereld is technisch voorbereid als root-homepage', () => {
+  const redirects = read('_redirects');
+  const wereldHtml = read('wereld/index.html');
+  const wereld = read('wereld/wereld.js');
+
+  assert.match(redirects, /^\/wereld \/ 301!$/m);
+  assert.match(redirects, /^\/wereld\/ \/ 301!$/m);
+  assert.match(redirects, /^\/wereld\/index\.html \/ 301!$/m);
+  assert.match(redirects, /^\/ \/wereld\/index\.html 200!$/m);
+  assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260724-launch"/);
+  assert.match(wereldHtml, /src="\/wereld\/scrub-engine\.js\?v=20260724-launch"/);
+  assert.match(wereldHtml, /src="\/wereld\/wereld\.js\?v=20260724-launch"/);
+  assert.doesNotMatch(wereldHtml, /(?:href|src)="(?:wereld\.css|scrub-engine\.js|wereld\.js)/);
+  assert.doesNotMatch(wereld, /:\s*'assets\//);
+  assert.match(wereldHtml, /class="wereld-merk" href="\/"/);
+});
+
+test('mobiele wereldvideo’s zijn aanwezig en substantieel lichter', () => {
+  const pairs = [
+    ['intro.mp4', 'intro-m.mp4'],
+    ['dive-train.mp4', 'dive-train-m.mp4'],
+    ['dive-implement.mp4', 'dive-implement-m.mp4'],
+    ['dive-build.mp4', 'dive-build-m.mp4'],
+    ['dive-inspire.mp4', 'dive-inspire-m.mp4'],
+    ['leg-train.mp4', 'leg-train-m.mp4'],
+    ['leg-implement.mp4', 'leg-implement-m.mp4'],
+    ['leg-build.mp4', 'leg-build-m.mp4'],
+    ['leg-inspire.mp4', 'leg-inspire-m.mp4'],
+  ];
+  let mobileTotal = 0;
+  for (const [desktop, mobile] of pairs) {
+    const desktopPath = `wereld/assets/echt/vid/${desktop}`;
+    const mobilePath = `wereld/assets/echt/vid/${mobile}`;
+    assert.ok(bytes(mobilePath) < bytes(desktopPath), `${mobile} is niet lichter dan ${desktop}`);
+    mobileTotal += bytes(mobilePath);
+  }
+  assert.ok(bytes('wereld/assets/echt/vid/intro-m.mp4') < 1_500_000);
+  assert.ok(mobileTotal < 13_500_000);
+  assert.ok(bytes('wereld/assets/echt/intro-poster.jpg') > 0);
+  assert.ok(bytes('wereld/assets/echt/intro-poster-m.jpg') > 0);
+
+  const wereld = read('wereld/wereld.js');
+  assert.equal((wereld.match(/(?:introM|diveM|legM):\s+'\/wereld\/assets\/echt\/vid\/[^']+-m\.mp4'/g) || []).length, 9);
+  assert.match(wereld, /poster:\s+'\/wereld\/assets\/echt\/intro-poster\.jpg'/);
+  assert.match(wereld, /posterM:\s+'\/wereld\/assets\/echt\/intro-poster-m\.jpg'/);
+});
+
+test('cache en preview-indexering blijven per Netlify-context correct', () => {
+  const config = read('netlify.toml');
+  const cache = read('netlify/headers/cache');
+  assert.match(config, /command = "cp netlify\/headers\/cache _headers"/);
+  assert.equal(
+    (config.match(/command = "cp netlify\/headers\/cache _headers && cat netlify\/headers\/noindex >> _headers"/g) || []).length,
+    2
+  );
+  assert.match(cache, /^\/wereld\/assets\/\*$/m);
+  assert.match(cache, /max-age=86400, stale-while-revalidate=604800/);
+  assert.match(cache, /^\/wereld\/wereld\.js$/m);
+  assert.match(cache, /max-age=2592000, stale-while-revalidate=604800/);
+});
+
+test('tracking laadt alleen op productie en meet de wereldfunnel', () => {
+  const wereldHtml = read('wereld/index.html');
+  const wereld = read('wereld/wereld.js');
+  const chat = read('docs/academy-chat/chat.js');
+  assert.match(wereldHtml, /location\.hostname === 'morgencompany\.com'/);
+  assert.match(wereldHtml, /document\.createElement\('script'\)/);
+  assert.doesNotMatch(wereldHtml, /<script async src="https:\/\/www\.googletagmanager\.com/);
+  for (const event of [
+    'wereld_route_view',
+    'wereld_hotspot_open',
+    'wereld_kompas_open',
+    'wereld_intro_skip',
+    'wereld_kompas_advies',
+    'wereld_cta_click',
+  ]) {
+    assert.match(wereld, new RegExp(`'${event}'`));
+  }
+  assert.match(chat, /new CustomEvent\('kompas:advies'/);
 });
 
 test('de projectcopy legt de visuele beeldtaal niet uit', () => {

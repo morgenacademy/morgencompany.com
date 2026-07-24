@@ -1,12 +1,13 @@
 [build]
   publish = "."
   functions = "netlify/functions"
+  command = "cp netlify/headers/cache _headers"
 
 [context.deploy-preview]
-  command = "cp netlify/headers/noindex _headers"
+  command = "cp netlify/headers/cache _headers && cat netlify/headers/noindex >> _headers"
 
 [context.branch-deploy]
-  command = "cp netlify/headers/noindex _headers"
+  command = "cp netlify/headers/cache _headers && cat netlify/headers/noindex >> _headers"
 
 [functions]
   node_bundler = "esbuild"
