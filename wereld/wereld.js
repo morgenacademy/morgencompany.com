@@ -18,6 +18,37 @@ const HOTSPOTS = [
   { id: 'kompas',    label: 'Wegwijzer',     x: 52, y: 47, xm: 52, ym: 50, enabled: true, sub: true, kompas: true },
 ];
 
+/* ---- Klikvlakken op de hub-still. ----
+   De SVG gebruikt exact dezelfde bronverhouding en cover-uitsnede als de still.
+   Daardoor volgen de transparante klikvlakken de gebouwen, ook als het scherm
+   breder of smaller wordt. De vlakken raken elkaar bewust niet. */
+const HOTSPOT_MAPS = {
+  desktop: {
+    viewBox: '0 0 1112 834',
+    paths: {
+      train: 'M132 185 324 165 398 213 403 330 371 374 205 395 137 354 113 272Z',
+      implement: 'M338 131 530 124 607 170 603 278 554 326 425 328 405 291 406 211Z',
+      build: 'M646 113 826 117 882 190 880 309 850 347 693 349 626 296 624 188Z',
+      inspire: 'M757 369 888 351 984 377 1012 468 978 524 831 531 717 482 710 399Z',
+      projecten: 'M73 414 181 401 395 407 420 450 413 505 376 560 197 600 94 541 68 468Z',
+      kompas: 'M433 350 544 333 686 371 702 442 645 518 505 525 435 471 424 394Z',
+      overons: 'M657 542 763 529 927 540 977 595 927 654 750 675 645 612Z',
+    },
+  },
+  mobile: {
+    viewBox: '0 0 720 1280',
+    paths: {
+      train: 'M128 424 218 405 281 438 282 497 258 540 154 548 111 521 109 466Z',
+      implement: 'M246 400 360 396 400 426 397 484 370 517 295 520 284 490 283 435Z',
+      build: 'M418 394 522 396 561 438 556 494 533 523 447 525 406 494 402 434Z',
+      inspire: 'M570 510 626 528 657 577 640 625 589 647 537 653 465 613 465 568 503 540Z',
+      projecten: 'M61 556 124 552 266 563 273 585 267 628 250 669 137 684 72 646 48 588Z',
+      kompas: 'M292 535 356 528 448 542 452 582 432 628 337 646 277 610 276 554Z',
+      overons: 'M426 670 495 658 607 665 651 690 625 735 540 760 462 755 411 710Z',
+    },
+  },
+};
+
 /* ---- Assetcontract (relatief aan /wereld/) ----
    Mobiele mp4's wijzen tijdelijk naar de desktopclips totdat de natieve
    9:16-keten gegenereerd is; de engine en cine-player croppen cover. */
@@ -531,10 +562,29 @@ function toVerhaal(gebouwId) {
 hubStill.src = isMobile() ? ASSETS.hubM : ASSETS.hub;
 hubStill.addEventListener('error', () => { hubStill.style.visibility = 'hidden'; });   // placeholder ontbreekt: donkere gradient blijft
 
+const hotspotMap = HOTSPOT_MAPS[isMobile() ? 'mobile' : 'desktop'];
+const hotspotSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+hotspotSvg.classList.add('hotspot-map');
+hotspotSvg.setAttribute('viewBox', hotspotMap.viewBox);
+hotspotSvg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+hotspotSvg.setAttribute('aria-hidden', 'true');
+hotspotSvg.setAttribute('focusable', 'false');
+hotspotLayer.appendChild(hotspotSvg);
+
+const hotspotButtons = new Map();
+function activeerHotspot(h, trigger) {
+  trigger.classList.remove('is-object-hovered');
+  if (!h.enabled) return;
+  if (h.kompas) { openKompas({ trigger }); return; }
+  if (h.href) { window.location.href = h.href; return; }
+  startDive(h.id);
+}
+
 HOTSPOTS.forEach((h) => {
   const b = document.createElement('button');
   b.type = 'button';
   b.className = 'hotspot' + (h.sub ? ' is-sub' : '') + (h.enabled ? '' : ' is-disabled');
+  b.dataset.hotspot = h.id;
   const x = (isMobile() && h.xm != null) ? h.xm : h.x;
   const y = (isMobile() && h.ym != null) ? h.ym : h.y;
   b.style.left = x + '%';
@@ -545,13 +595,22 @@ HOTSPOTS.forEach((h) => {
     '<span class="hotspot-dot" aria-hidden="true"></span>' +
     '<span class="hotspot-label">' + h.label + '</span>' +
     (h.enabled ? '' : '<span class="hotspot-badge">binnenkort</span>');
-  b.addEventListener('click', () => {
-    if (!h.enabled) return;
-    if (h.kompas) { openKompas({ trigger: b }); return; }
-    if (h.href) { window.location.href = h.href; return; }
-    startDive(h.id);
-  });
+  b.addEventListener('click', () => activeerHotspot(h, b));
   hotspotLayer.appendChild(b);
+  hotspotButtons.set(h.id, b);
+});
+
+HOTSPOTS.forEach((h) => {
+  const d = hotspotMap.paths[h.id];
+  const b = hotspotButtons.get(h.id);
+  if (!d || !b) return;
+  const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path.setAttribute('d', d);
+  path.dataset.hotspotHit = h.id;
+  path.addEventListener('pointerenter', () => b.classList.add('is-object-hovered'));
+  path.addEventListener('pointerleave', () => b.classList.remove('is-object-hovered'));
+  path.addEventListener('click', () => activeerHotspot(h, b));
+  hotspotSvg.appendChild(path);
 });
 
 /* ---------- het Kompas: vak onderaan op de hub ---------- */

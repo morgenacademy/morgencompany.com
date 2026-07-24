@@ -62,6 +62,23 @@ test('alle wereldkaarten hebben een bestaande, unieke bestemming', () => {
   }
 });
 
+test('alle plekken op het wereldplein hebben een transparant klikvlak', () => {
+  const wereld = read('wereld/wereld.js');
+  const wereldCss = read('wereld/wereld.css');
+  const hotspotMaps = block(wereld, 'const HOTSPOT_MAPS = {', '\n};');
+  const ids = ['train', 'implement', 'build', 'inspire', 'projecten', 'overons', 'kompas'];
+  for (const id of ids) {
+    assert.equal(
+      (hotspotMaps.match(new RegExp(`\\b${id}: 'M`, 'g')) || []).length,
+      2,
+      `${id} mist een desktop- of mobiel klikvlak`
+    );
+  }
+  assert.match(wereld, /setAttribute\('preserveAspectRatio', 'xMidYMid slice'\)/);
+  assert.match(wereld, /path\.dataset\.hotspotHit = h\.id/);
+  assert.match(wereldCss, /\.hotspot-map path\s*\{[^}]*pointer-events: fill/s);
+});
+
 test('kennismakingslinks blijven na de wereld-omschakeling bereikbaar', () => {
   assert.doesNotMatch(read('docs/academy-chat/chat.js'), /href="\/#home-aanvraag"/);
   assert.doesNotMatch(read('netlify/functions/lib/kb.mjs'), /href: '\/#home-aanvraag'/);
