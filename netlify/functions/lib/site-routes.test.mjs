@@ -154,6 +154,7 @@ test('het Kompas is modaal, kondigt status aan en begrenst gesprekshistorie', ()
   assert.match(wereld, /hubEl\.inert = open/);
   assert.match(wereld, /wereldNav\.inert = open/);
   assert.match(wereld, /if \(e\.key !== 'Tab'\) return/);
+  assert.equal((wereld.match(/sluitKompas\(\{ updateRoute: false, restoreFocus: false \}\)/g) || []).length, 3);
   assert.match(wereld, /if \(reduce \|\| !g\.dive\) \{ toVerhaal\(gebouwId\); return; \}/);
   assert.equal((wereld.match(/wereldPushed: pushed/g) || []).length, 4);
   assert.match(wereldCss, /\.sw-route \{ display: none; \}/);

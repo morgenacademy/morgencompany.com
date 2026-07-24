@@ -532,6 +532,7 @@ function terugNaarHub() {
 }
 
 function startDive(gebouwId, { updateRoute = true } = {}) {
+  sluitKompas({ updateRoute: false, restoreFocus: false });
   huidigGebouw = gebouwId;
   if (updateRoute) zetWereldRoute(ROUTE_BY_GEBOUW[gebouwId], { pushed: true });
   mountWorld(gebouwId);           // laadt het binnen-verhaal alvast tijdens de dive
@@ -545,6 +546,7 @@ function startDive(gebouwId, { updateRoute = true } = {}) {
 }
 
 function toVerhaal(gebouwId) {
+  sluitKompas({ updateRoute: false, restoreFocus: false });
   if (gebouwId) {
     huidigGebouw = gebouwId;
     mountWorld(gebouwId);         // idempotent: bestaande mount wordt hergebruikt
