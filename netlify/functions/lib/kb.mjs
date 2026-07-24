@@ -209,7 +209,7 @@ export const OFFERS = [
     training: 'Kennismakingsgesprek',
     startTypeLabel: 'Vrijblijvend gesprek',
     sectionLabel: 'Kennismaking',
-    href: '/#home-aanvraag',
+    href: '/organisatie/#home-aanvraag',
     duration: '45 minuten',
     description: 'Nog niet zeker welke kant op? In 45 minuten brengen we jullie situatie in kaart en krijg je een concreet advies voor een logische eerste stap.',
     bullets: [

@@ -42,7 +42,7 @@ const GEBOUWEN = {
     still:  'assets/echt/train-binnen.webp',
     stillM: 'assets/echt/train-binnen-m.webp',
     cta: { label: 'Bekijk alle trainingen', href: '/academy/' },
-    cta2: { label: 'Trainingwijzer', action: 'kompas' },
+    cta2: { label: 'Wegwijzer', action: 'kompas' },
     sectie: {
       eyebrow: 'Train',
       title: 'Klein beginnen. Groot doorpakken.',
@@ -160,10 +160,10 @@ const GEBOUWEN = {
       grid: true,
       items: [
         { kop: 'PinkRoccade Local Government', tekst: 'Workshops n8n, automatiseren met AI en agentic workflows', href: '/projecten/#case-pinkroccade', img: '/docs/logos/logo_localgovernment.png' },
-        { kop: 'Rabobank & AgriFood Capital', tekst: 'MKB Boost: ondernemers werken aan hun bedrijf', href: '/projecten/', img: '/Fotos/MKB%20Boost%20Kick%20off-14.jpg' },
+        { kop: 'Rabobank & AgriFood Capital', tekst: 'MKB Boost: ondernemers werken aan hun bedrijf', href: '/projecten/#case-mkb-boost', img: '/Fotos/MKB%20Boost%20Kick%20off-14.jpg' },
         { kop: 'Solo Solis', tekst: 'Van 40+ handmatige stappen naar maximaal 6 controles', href: '/projecten/#case-solosolis', img: '/Afbeeldingen%20projecten/SoloSolis%20print-order%20automatisatie.png' },
         { kop: 'Gemeente Tilburg', tekst: 'Waardegedreven AI en procesdenken', href: '/projecten/#case-tilburg', img: '/Fotos/Harmen%20training%20Gemeente%20Tilburg%201.jpg' },
-        { kop: 'Avans Hogeschool', tekst: 'Alle processen van een afdeling scherp in beeld', href: '/projecten/', img: '/docs/company/karin-ai-automation-01.jpg' },
+        { kop: 'Avans Hogeschool', tekst: 'Alle processen van een afdeling scherp in beeld', href: '/projecten/#case-avans-processen', img: '/docs/company/karin-ai-automation-01.jpg' },
         { kop: 'OnView & PharmaPartners', tekst: 'Claude Code professioneel houden in developmentteams', href: '/projecten/#case-onview', img: '/Fotos/Harmen%20Claude%20Code%20training%20avans.jpg' },
       ],
     },
@@ -203,6 +203,22 @@ const ICONS = {
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const coarse = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 const isMobile = () => coarse || window.innerWidth <= 860;
+const INTRO_SESSION_KEY = 'morgen-wereld-intro-gezien';
+const ROUTE_BY_GEBOUW = {
+  train: 'train',
+  implement: 'implement',
+  build: 'build',
+  inspire: 'inspire',
+  projecten: 'projecten',
+  overons: 'over-morgen',
+};
+const GEBOUW_BY_ROUTE = Object.fromEntries(
+  Object.entries(ROUTE_BY_GEBOUW).map(([gebouw, route]) => [route, gebouw])
+);
+const LEGACY_ROUTES = {
+  'home-aanvraag': '/organisatie/#home-aanvraag',
+  aanbod: '/organisatie/#aanbod',
+};
 
 const hubEl = document.getElementById('hub');
 const hubStill = document.getElementById('hub-still');
@@ -223,6 +239,22 @@ const kompasPaneel = document.getElementById('kompas-paneel');
 const kompasSluit = document.getElementById('kompas-sluit');
 const wereldTicker = document.getElementById('wereld-ticker');
 const tickerTrack = document.getElementById('ticker-track');
+
+function introGezien() {
+  try { return window.sessionStorage.getItem(INTRO_SESSION_KEY) === '1'; } catch (e) { return false; }
+}
+
+function markeerIntroGezien() {
+  try { window.sessionStorage.setItem(INTRO_SESSION_KEY, '1'); } catch (e) {}
+}
+
+function zetWereldRoute(route, { replace = false, pushed = false } = {}) {
+  const hash = route ? '#' + route : '';
+  const url = window.location.pathname + window.location.search + hash;
+  const state = { wereldRoute: route || 'plein', wereldPushed: pushed };
+  if (replace) window.history.replaceState(state, '', url);
+  else window.history.pushState(state, '', url);
+}
 
 /* ---------- Cinematics: 1 hergebruikt video-element ---------- */
 let cineDone = null;
@@ -406,7 +438,15 @@ function vulEinde(gebouwId) {
     eindeCta2.textContent = g.cta2.label;
     if (g.cta2.action === 'kompas') {
       eindeCta2.href = '#';
-      eindeCta2.onclick = (e) => { e.preventDefault(); toHub(); openKompas(); };
+      eindeCta2.onclick = (e) => {
+        e.preventDefault();
+        toonHub();
+        openKompas({
+          historyMode: 'replace',
+          pushed: window.history.state?.wereldPushed === true,
+          trigger: document.querySelector('[aria-label="Open Wegwijzer"]'),
+        });
+      };
     } else {
       eindeCta2.href = g.cta2.href;
       eindeCta2.onclick = null;
@@ -427,10 +467,11 @@ function startIntro() {
   playCine(ASSETS.intro, ASSETS.introM, toHub);
 }
 
-function toHub() {
+function toonHub() {
+  markeerIntroGezien();
   stopCine();
   stopAmbient();
-  sluitKompas();
+  sluitKompas({ updateRoute: false, restoreFocus: false });
   wereldTicker.hidden = true;
   document.body.classList.remove('ticker-actief');
   document.body.classList.remove('tegels-zichtbaar');
@@ -439,8 +480,26 @@ function toHub() {
   hubEl.focus({ preventScroll: true });
 }
 
-function startDive(gebouwId) {
+function toHub({ historyMode = 'base' } = {}) {
+  toonHub();
+  if (historyMode === 'none') return;
+  zetWereldRoute(historyMode === 'base' ? '' : 'plein', {
+    replace: historyMode !== 'push',
+    pushed: historyMode === 'push',
+  });
+}
+
+function terugNaarHub() {
+  if (window.history.state?.wereldPushed === true) {
+    window.history.back();
+    return;
+  }
+  toHub({ historyMode: 'replace' });
+}
+
+function startDive(gebouwId, { updateRoute = true } = {}) {
   huidigGebouw = gebouwId;
+  if (updateRoute) zetWereldRoute(ROUTE_BY_GEBOUW[gebouwId], { pushed: true });
   mountWorld(gebouwId);           // laadt het binnen-verhaal alvast tijdens de dive
   toonWorld(gebouwId);
   vulEinde(gebouwId);
@@ -488,7 +547,7 @@ HOTSPOTS.forEach((h) => {
     (h.enabled ? '' : '<span class="hotspot-badge">binnenkort</span>');
   b.addEventListener('click', () => {
     if (!h.enabled) return;
-    if (h.kompas) { openKompas(); return; }
+    if (h.kompas) { openKompas({ trigger: b }); return; }
     if (h.href) { window.location.href = h.href; return; }
     startDive(h.id);
   });
@@ -496,11 +555,31 @@ HOTSPOTS.forEach((h) => {
 });
 
 /* ---------- het Kompas: vak onderaan op de hub ---------- */
-function openKompas() {
+let kompasOpener = null;
+
+function openKompas({ historyMode = 'push', pushed = true, trigger = document.activeElement } = {}) {
+  kompasOpener = trigger instanceof HTMLElement ? trigger : null;
   kompasPaneel.hidden = false;
+  if (historyMode !== 'none') {
+    zetWereldRoute('wegwijzer', {
+      replace: historyMode === 'replace',
+      pushed,
+    });
+  }
+  requestAnimationFrame(() => {
+    const input = kompasPaneel.querySelector('.ac-input');
+    (input || kompasSluit).focus({ preventScroll: true });
+  });
 }
-function sluitKompas() {
+
+function sluitKompas({ updateRoute = true, restoreFocus = true } = {}) {
+  if (kompasPaneel.hidden) return;
   kompasPaneel.hidden = true;
+  if (restoreFocus && kompasOpener?.isConnected) kompasOpener.focus({ preventScroll: true });
+  if (updateRoute) {
+    if (window.history.state?.wereldPushed === true) window.history.back();
+    else zetWereldRoute('plein', { replace: true });
+  }
 }
 kompasSluit.addEventListener('click', sluitKompas);
 document.addEventListener('keydown', (e) => {
@@ -543,14 +622,14 @@ function toonTicker(gebouwId) {
 }
 
 /* ---------- Exits ---------- */
-skipKnop.addEventListener('click', toHub);
-exitKnop.addEventListener('click', toHub);
-eindeTerug.addEventListener('click', toHub);
+skipKnop.addEventListener('click', () => toHub());
+exitKnop.addEventListener('click', terugNaarHub);
+eindeTerug.addEventListener('click', terugNaarHub);
 
 // De engine rendert de secundaire CTA als <a href="#plein">: onderschep die klik.
 document.addEventListener('click', (e) => {
   const a = e.target.closest('a[href="#plein"]');
-  if (a) { e.preventDefault(); toHub(); }
+  if (a) { e.preventDefault(); terugNaarHub(); }
 });
 
 /* ---------- Eind-paneel: tonen tegen het einde van de sectie ---------- */
@@ -565,9 +644,42 @@ window.addEventListener('scroll', () => {
   document.body.classList.toggle('tegels-zichtbaar', zichtbaar && eindePaneel.classList.contains('einde--tegels'));
 }, { passive: true });
 
-/* ---------- Start ---------- */
-if (reduce) {
-  toHub();          // reduced motion: intro volledig overslaan
-} else {
-  startIntro();
+/* ---------- URL-routes, browsergeschiedenis en start ---------- */
+function pasWereldRouteToe() {
+  const route = window.location.hash.slice(1);
+  if (LEGACY_ROUTES[route]) {
+    window.location.replace(LEGACY_ROUTES[route]);
+    return true;
+  }
+  if (route === 'wegwijzer') {
+    toonHub();
+    openKompas({ historyMode: 'none', pushed: false });
+    window.history.replaceState({ wereldRoute: route, wereldPushed: false }, '', window.location.href);
+    return true;
+  }
+  const gebouwId = GEBOUW_BY_ROUTE[route];
+  if (gebouwId) {
+    toVerhaal(gebouwId);
+    window.history.replaceState({ wereldRoute: route, wereldPushed: false }, '', window.location.href);
+    return true;
+  }
+  if (route === 'plein') {
+    toHub({ historyMode: 'none' });
+    window.history.replaceState({ wereldRoute: route, wereldPushed: false }, '', window.location.href);
+    return true;
+  }
+  return false;
 }
+
+if (!pasWereldRouteToe()) {
+  zetWereldRoute('', { replace: true });
+  if (reduce || introGezien()) {
+    toHub();          // reduced motion of terugkeer in dezelfde sessie: intro overslaan
+  } else {
+    startIntro();
+  }
+}
+
+window.addEventListener('popstate', () => {
+  if (!pasWereldRouteToe()) toHub({ historyMode: 'none' });
+});

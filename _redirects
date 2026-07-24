@@ -28,4 +28,4 @@ https://www.morgencompany.com/* https://morgencompany.com/:splat 301!
 /inspiratie/ /inspiratie/index.html 200
 /spraaktool /spraaktool/index.html 200
 /spraaktool/ /spraaktool/index.html 200
-/* /index.html 200
+/* /404.html 404

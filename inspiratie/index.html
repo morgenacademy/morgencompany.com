@@ -57,7 +57,7 @@
   </div>
 </div>
 <nav id="mainNav">
-  <button class="logo-btn" onclick="nav('home')">MORGEN<em>.</em></button>
+  <button class="logo-btn" onclick="goToWorld()">MORGEN<em>.</em></button>
   <button class="nav-toggle" type="button" onclick="toggleNav()" aria-label="Open menu">
     <span></span><span></span><span></span>
   </button>
@@ -74,7 +74,7 @@
     <li><a href="/consultancy/" onclick="if(event.metaKey||event.ctrlKey||event.shiftKey||event.button===1)return;event.preventDefault();nav('consultancy')" data-page="consultancy">IMPLEMENT</a></li>
     <li><a href="/technology/" onclick="if(event.metaKey||event.ctrlKey||event.shiftKey||event.button===1)return;event.preventDefault();nav('technology')" data-page="technology">BUILD</a></li>
     <li><a href="/inspiratie/" onclick="if(event.metaKey||event.ctrlKey||event.shiftKey||event.button===1)return;event.preventDefault();nav('company')" data-page="company">GET INSPIRED</a></li>
-    <li><a href="/#home-aanvraag" onclick="if(event.metaKey||event.ctrlKey||event.shiftKey||event.button===1)return;event.preventDefault();nav('home','home-aanvraag')" class="btn-nav">Kennismaking</a></li>
+    <li><a href="/organisatie/#home-aanvraag" class="btn-nav">Kennismaking</a></li>
   </ul>
 </nav>
 <div class="page active" id="page-home">
@@ -333,7 +333,7 @@
 <footer>
   <div class="ft">
     <div>
-      <button class="logo-btn" onclick="nav('home')">MORGEN<em>.</em></button>
+      <button class="logo-btn" onclick="goToWorld()">MORGEN<em>.</em></button>
       <p class="fbrand">Technologiepartner voor bedrijven: van AI-inzicht naar training, implementatie en werkende oplossingen.</p>
       <div class="fsoc">
         <a href="https://www.linkedin.com/company/morgencompany" target="_blank" aria-label="LinkedIn" title="LinkedIn Morgen Company">LI</a>
@@ -651,7 +651,7 @@
 <footer>
   <div class="ft">
     <div>
-      <button class="logo-btn" onclick="nav('home')">MORGEN<em>.</em></button>
+      <button class="logo-btn" onclick="goToWorld()">MORGEN<em>.</em></button>
       <p class="fbrand">Technologiepartner voor bedrijven: van AI-inzicht naar training, implementatie en werkende oplossingen.</p>
       <div class="fsoc">
         <a href="https://www.linkedin.com/company/morgencompany" target="_blank" aria-label="LinkedIn" title="LinkedIn Morgen Company">LI</a>
@@ -825,7 +825,7 @@
 <footer>
   <div class="ft">
     <div>
-      <button class="logo-btn" onclick="nav('home')">MORGEN<em>.</em></button>
+      <button class="logo-btn" onclick="goToWorld()">MORGEN<em>.</em></button>
       <p class="fbrand">Technologiepartner voor bedrijven: van AI-inzicht naar training, implementatie en werkende oplossingen.</p>
       <div class="fsoc">
         <a href="https://www.linkedin.com/company/morgencompany" target="_blank" aria-label="LinkedIn" title="LinkedIn Morgen Company">LI</a>
@@ -1005,7 +1005,7 @@
 <footer>
   <div class="ft">
     <div>
-      <button class="logo-btn" onclick="nav('home')">MORGEN<em>.</em></button>
+      <button class="logo-btn" onclick="goToWorld()">MORGEN<em>.</em></button>
       <p class="fbrand">Technologiepartner voor bedrijven: van AI-inzicht naar training, implementatie en werkende oplossingen.</p>
       <div class="fsoc">
         <a href="https://www.linkedin.com/company/morgencompany" target="_blank" aria-label="LinkedIn" title="LinkedIn Morgen Company">LI</a>
@@ -1061,13 +1061,21 @@
 </div>
 
 <section class="project-overview" id="projecten-overzicht">
+  <div class="project-filters" role="group" aria-label="Filter projecten op type">
+    <button type="button" class="pfilter is-active" data-filter="all" aria-pressed="true">Alles</button>
+    <button type="button" class="pfilter" data-filter="training" aria-pressed="false">Training</button>
+    <button type="button" class="pfilter" data-filter="automatisering" aria-pressed="false">Automatisering</button>
+    <button type="button" class="pfilter" data-filter="software" aria-pressed="false">Software &amp; apps</button>
+    <button type="button" class="pfilter" data-filter="proces" aria-pressed="false">Proces &amp; strategie</button>
+  </div>
+
   <div class="project-list">
-    <article class="project-card reveal">
+    <article class="project-card reveal" data-theme="automatisering">
       <div class="project-image"><img loading="lazy" src="/Afbeeldingen%20projecten/Logistiek%20project%20trappenfabriek.jpg" alt="Projectfoto van logistieke planning bij een trappenfabriek"></div>
       <div class="project-copy">
         <div class="project-meta">Maakbedrijf &#183; Planning en transport</div>
         <a class="project-client" href="https://www.vermeulen-trappen.nl" target="_blank" rel="noopener noreferrer">Trappenfabriek Vermeulen</a>
-        <h3>Logistieke AI-planning voor een trappenfabriek.</h3>
+        <h3 id="case-trappenfabriek">Logistieke AI-planning voor een trappenfabriek.</h3>
         <p>Het plannings- en transportproces was handmatig, foutgevoelig en afhankelijk van veel variabelen. Door het proces eerst goed te begrijpen en daarna te automatiseren, plant AI nu sneller en accurater.</p>
         <ul class="project-wins">
           <li>Handmatige fouten in planning en transport sterk teruggebracht.</li>
@@ -1077,7 +1085,7 @@
       </div>
     </article>
 
-    <article class="project-card reveal">
+    <article id="case-pinkroccade" class="project-card reveal" data-theme="training">
       <div class="project-image project-image-contain"><img loading="lazy" src="/docs/logos/logo_localgovernment.png" alt="PinkRoccade Local Government logo"></div>
       <div class="project-copy">
         <div class="project-meta">Training &#183; n8n en agentic workflows</div>
@@ -1093,7 +1101,7 @@
       </div>
     </article>
 
-    <article class="project-card reveal">
+    <article id="case-solosolis" class="project-card reveal" data-theme="automatisering">
       <div class="project-image project-image-contain"><img loading="lazy" src="/Afbeeldingen%20projecten/SoloSolis%20print-order%20automatisatie.png" alt="Screenshot van geautomatiseerde print-order automatisatie voor Solo Solis"></div>
       <div class="project-copy">
         <div class="project-meta">Groothandel &#183; Orderflow en klantinteractie</div>
@@ -1108,7 +1116,7 @@
       </div>
     </article>
 
-    <article class="project-card reveal">
+    <article id="case-tilburg" class="project-card reveal" data-theme="training proces">
       <div class="project-image"><img loading="lazy" src="/Fotos/Harmen%20training%20Gemeente%20Tilburg%201.jpg" alt="Harmen geeft een interactieve keynote bij Gemeente Tilburg, met op het scherm de titel AI vraagt geen toolkeuzes, maar waardekeuzes"></div>
       <div class="project-copy">
         <div class="project-meta">Overheid &#183; Waardegedreven AI en procesdenken</div>
@@ -1123,13 +1131,16 @@
       </div>
     </article>
 
-    <article class="project-card reveal">
+    <article id="case-mkb-boost" class="project-card reveal" data-theme="proces">
       <div class="project-image"><img loading="lazy" src="/Fotos/MKB%20Boost%20Kick%20off-14.jpg" alt="MKB Boost sessie met ondernemers en begeleiders"></div>
       <div class="project-copy">
         <div class="project-meta">MKB &#183; Procesbegeleiding en ondernemerschap</div>
-        <a class="project-client" href="https://www.rabobank.nl/particulieren" target="_blank" rel="noopener noreferrer">Rabobank</a>
-        <h3>MKB Boost met Rabobank: werken aan je bedrijf.</h3>
-        <p>Voor Rabobank begeleidden we MKB Boost: een traject van tien wekelijkse sessies waarin ondernemers ruimte maken om aan hun bedrijf te werken. Niet alleen op de dagelijkse operatie, maar op doelen, strategie, processen en slimme manieren om die doelen te behalen.</p>
+        <div class="project-clients">
+          <a class="project-client" href="https://www.rabobank.nl/particulieren" target="_blank" rel="noopener noreferrer">Rabobank</a>
+          <a class="project-client" href="https://www.agrifoodcapital.nl" target="_blank" rel="noopener noreferrer">AgriFood Capital</a>
+        </div>
+        <h3>MKB Boost met Rabobank en AgriFood Capital: werken aan je bedrijf.</h3>
+        <p>Voor Rabobank en AgriFood Capital begeleidden we MKB Boost: een traject van tien wekelijkse sessies waarin ondernemers ruimte maken om aan hun bedrijf te werken. Niet alleen op de dagelijkse operatie, maar op doelen, strategie, processen en slimme manieren om die doelen te behalen.</p>
         <div class="project-facts">
           <div><span>Rol</span>Faciliteren, modereren en procesbegeleiding tijdens het traject.</div>
           <div><span>Focus</span>Ondernemers helpen richting, prioriteit en vervolgstappen scherp te krijgen.</div>
@@ -1138,7 +1149,27 @@
       </div>
     </article>
 
-    <article class="project-card reveal">
+    <article id="case-onview" class="project-card reveal" data-theme="training proces">
+      <div class="project-image"><img loading="lazy" src="/Fotos/Harmen%20Claude%20Code%20training%20avans.jpg" alt="Harmen tijdens een Claude Code-training over samenwerken met AI"></div>
+      <div class="project-copy">
+        <div class="project-meta">Training &#183; Claude Code, merge-realiteit en kaders</div>
+        <div class="project-clients">
+          <a class="project-client" href="https://pharmapartners.nl" target="_blank" rel="noopener noreferrer">PharmaPartners</a>
+          <a class="project-client" href="https://www.onview.nl" target="_blank" rel="noopener noreferrer">OnView</a>
+          <a class="project-client" href="https://www.avans.nl" target="_blank" rel="noopener noreferrer">Avans</a>
+        </div>
+        <h3>Claude Code professioneel houden: snelheid zonder kwaliteit te verliezen.</h3>
+        <p>Voor developmentteams die al met Claude Code werken, gaat het al snel niet meer over de basis, maar over de vraag hoe je AI-snelheid verenigbaar houdt met kwaliteitsstandaarden, beheerbaarheid en procedures. We zoomden in op de merge-realiteit: grotere AI-changes geven grotere pull requests, en review wordt de nieuwe flessenhals. Daar tegenover zetten we concrete remedies: klein en vaak integreren, niet op dezelfde plek bouwen, een stevige review-poort, en AI die conflicten oplost onder toezicht. Vervolgens keken we naar kaders en proces: drie loops voor productontwikkeling, een casus waarin een niet-developer een werkende tool bouwde ("schalen we 'm?"), en een checklist om zo'n prototype eerlijk te beoordelen. De sessie eindigde met concrete werkafspraken en geborgde skills, zodat het team AI-snelheid kan laten opleveren zonder productie en beheer te ondermijnen.</p>
+        <p><strong>&#8220;Ik wil jullie nog even hartelijk danken voor de gegeven training. Er wordt door de collega's ook vandaag nog enthousiast op gereageerd. Vooral complimenten voor de opzet en de ruimte die jullie de collega's hebben gegeven om Claude verder te leren ontdekken.&#8221;</strong><br><span style="color:var(--orange);font-size:.82rem;letter-spacing:.04em">Ronald van Erven, Directeur Onview</span></p>
+        <div class="project-facts">
+          <div><span>Merge-realiteit</span>Grotere AI-changes, grotere pull requests: review als nieuwe flessenhals, met concrete remedies.</div>
+          <div><span>Kaders</span>Drie loops voor productontwikkeling en een checklist om AI-gebouwde prototypes eerlijk te beoordelen.</div>
+          <div><span>Borging</span>Werkafspraken en geborgde skills, zodat snelheid en professionaliteit samen overeind blijven.</div>
+        </div>
+      </div>
+    </article>
+
+    <article class="project-card reveal" data-theme="training">
       <div class="project-image"><img src="/Fotos/Karin%20Training%20bij%20VML.jpeg" alt="Karin als dagvoorzitter van het VLM zomerevent voor een volle zaal, met op het podium het VLM-logo." loading="lazy"></div>
       <div class="project-copy">
         <div class="project-meta">Logistiek &#183; AI-training en dagvoorzitterschap</div>
@@ -1153,7 +1184,7 @@
       </div>
     </article>
 
-    <article class="project-card reveal">
+    <article id="case-avans-processen" class="project-card reveal" data-theme="proces">
       <div class="project-image"><img src="/docs/company/karin-ai-automation-01.jpg" alt="Karin presenteert een AI-procesautomatisering tijdens een training." loading="lazy"></div>
       <div class="project-copy">
         <div class="project-meta">Onderwijs &#183; Business process management</div>
@@ -1168,7 +1199,7 @@
       </div>
     </article>
 
-    <article class="project-card reveal">
+    <article class="project-card reveal" data-theme="software">
       <div class="project-image project-image-contain project-image-slider" data-interval="4200" aria-label="Screenshots van het House of Eve boekings- en betalingsplatform">
         <div class="project-slide"><img loading="lazy" src="/Afbeeldingen%20projecten/Boekingen%201%20-%20beheer.jpg" alt="Screenshot van het admin-beheer van House of Eve"></div>
         <div class="project-slide"><img loading="lazy" src="/Afbeeldingen%20projecten/Boekingen%202%20-%20roles.jpg" alt="Screenshot van het rollenbeheer met Eigenaar, Manager en Medewerker"></div>
@@ -1194,7 +1225,7 @@
       </div>
     </article>
 
-    <article class="project-card reveal">
+    <article class="project-card reveal" data-theme="software">
       <div class="project-image project-image-contain"><img loading="lazy" src="/Afbeeldingen%20projecten/Healt%20App.png" alt="Screenshot van een AI personal coach app voor health en lifestyle"></div>
       <div class="project-copy">
         <div class="project-meta">Health &amp; lifestyle &#183; AI-app en MVP</div>
@@ -1209,12 +1240,12 @@
       </div>
     </article>
 
-    <article class="project-card reveal">
+    <article class="project-card reveal" data-theme="training">
       <div class="project-image"><img src="/docs/company/fc-den-bosch-ai-training-01.jpg" alt="Karin geeft een basistraining AI bij FC Den Bosch, met op het scherm een AI prompt cheat-sheet." loading="lazy"></div>
       <div class="project-copy">
         <div class="project-meta">Betaald voetbal &#183; Basistraining AI in het werk</div>
         <a class="project-client" href="https://www.fcdenbosch.nl" target="_blank" rel="noopener noreferrer">FC Den Bosch</a>
-        <h3>Basistraining AI bij FC Den Bosch.</h3>
+        <h3 id="case-fcdenbosch">Basistraining AI bij FC Den Bosch.</h3>
         <p>FC Den Bosch wil dat het team AI praktisch inzet in het dagelijkse werk. In een basistraining ging de organisatie zelf aan de slag: prompten oefenen, een AI prompt cheat-sheet als houvast en direct toepassen op eigen taken in communicatie, marketing en kantoor.</p>
         <div class="project-facts">
           <div><span>Doel</span>Medewerkers AI laten gebruiken in hun eigen, dagelijkse taken.</div>
@@ -1224,7 +1255,7 @@
       </div>
     </article>
 
-    <article class="project-card reveal">
+    <article class="project-card reveal" data-theme="automatisering">
       <div class="project-image project-image-contain"><img loading="lazy" src="/docs/assistenten/screenshots/gijs-screenshot-1.png" alt="Screenshot van een AI-renderflow voor interieurbouwers"></div>
       <div class="project-copy">
         <div class="project-meta">Interieurbouw &#183; Visualisatie en materiaalkeuze</div>
@@ -1239,7 +1270,7 @@
       </div>
     </article>
 
-    <article class="project-card reveal">
+    <article class="project-card reveal" data-theme="software">
       <div class="project-image project-image-contain project-image-slider" data-interval="4200" aria-label="Screenshots van het Morgen Dashboard met overview, projecten en finance">
         <div class="project-slide"><img loading="lazy" src="/Afbeeldingen%20projecten/Dashboard%201%20-%20dashboard.jpg" alt="Screenshot van het Morgen Dashboard overview met doelen, pipeline en omzet per maand"></div>
         <div class="project-slide"><img loading="lazy" src="/Afbeeldingen%20projecten/Dashboard%202%20-%20projecten.jpg" alt="Screenshot van de projectenpagina met pipeline-stages, waarde en volgende acties"></div>
@@ -1263,7 +1294,7 @@
       </div>
     </article>
 
-    <article class="project-card reveal">
+    <article class="project-card reveal" data-theme="software">
       <div class="project-image project-image-contain project-image-slider" data-interval="4200" aria-label="Screenshots van managementupdates en vergaderstructuur">
         <div class="project-slide"><img loading="lazy" src="/Afbeeldingen%20projecten/Update%20en%20vergadertool%201.png" alt="Screenshot van de update- en vergadertool met overzicht van inkomstenstromen"></div>
         <div class="project-slide"><img loading="lazy" src="/Afbeeldingen%20projecten/Update%20en%20vergadertool%202.png" alt="Screenshot van de update- en vergadertool met dashboard en voortgang"></div>
@@ -1287,7 +1318,7 @@
       </div>
     </article>
 
-    <article class="project-card reveal">
+    <article class="project-card reveal" data-theme="software">
       <div class="project-image project-image-contain"><img loading="lazy" src="/Afbeeldingen%20projecten/Jolijn%20menuplanner.jpeg" alt="Screenshot van de menuplanner voor private chef Jolijn van Opstal"></div>
       <div class="project-copy">
         <div class="project-meta">Private chef &#183; Menuplanning en boodschappenlijst</div>
@@ -1302,7 +1333,7 @@
       </div>
     </article>
 
-    <article class="project-card reveal">
+    <article class="project-card reveal" data-theme="automatisering">
       <div class="project-image project-image-contain"><img loading="lazy" src="/docs/assistenten/screenshots/corne-screenshot.png" alt="Screenshot van een digitaal onderhoudsadvies op basis van documentatie"></div>
       <div class="project-copy">
         <div class="project-meta">Maakbedrijf &#183; Support en productdocumentatie</div>
@@ -1317,7 +1348,7 @@
       </div>
     </article>
 
-    <article class="project-card reveal">
+    <article class="project-card reveal" data-theme="training software">
       <div class="project-image project-image-contain"><img loading="lazy" src="/Afbeeldingen%20projecten/Klantportaal.png" alt="Screenshot van een klantportaal voor training en opvolging"></div>
       <div class="project-copy">
         <div class="project-meta">Klantportaal &#183; Training, workshop en opvolging</div>
@@ -1332,7 +1363,7 @@
       </div>
     </article>
 
-    <article class="project-card reveal">
+    <article class="project-card reveal" data-theme="software automatisering">
       <div class="project-image project-image-contain project-image-slider" data-interval="4200" aria-label="Screenshots van website en systeemintegratie">
         <div class="project-slide"><img loading="lazy" src="/Afbeeldingen%20projecten/Website%20als%20digitaal%20hart%20van%20het%20bedrijf..001.jpeg" alt="Screenshot van een websitepagina met aanbod en trajecten"></div>
         <div class="project-slide"><img loading="lazy" src="/Afbeeldingen%20projecten/Website%20als%20digitaal%20hart%20van%20het%20bedrijf..002.jpeg" alt="Screenshot van automatiseringen binnen een website-ecosysteem"></div>
@@ -1356,7 +1387,7 @@
       </div>
     </article>
 
-    <article class="project-card reveal">
+    <article class="project-card reveal" data-theme="software">
       <div class="project-image project-image-soft-focus"><img loading="lazy" src="/Afbeeldingen%20projecten/retail%20bestuurbaar.png" alt="Screenshot van een retailplatform dat bestuurbaar is in gewone taal"></div>
       <div class="project-copy">
         <div class="project-meta">Online retail &#183; Platform en interface</div>
@@ -1371,7 +1402,7 @@
       </div>
     </article>
 
-    <article class="project-card reveal">
+    <article class="project-card reveal" data-theme="automatisering">
       <div class="project-image project-image-contain"><img loading="lazy" src="/docs/assistenten/screenshots/joris-screenshot.png" alt="Screenshot van een geautomatiseerd leadkwalificatieproces"></div>
       <div class="project-copy">
         <div class="project-meta">Sales &#183; Leadkwalificatie en opvolging</div>
@@ -1386,7 +1417,7 @@
       </div>
     </article>
 
-    <article class="project-card reveal">
+    <article class="project-card reveal" data-theme="training software">
       <div class="project-image project-image-contain"><img loading="lazy" src="/docs/assistenten/screenshots/bernard-screenshot-1.png" alt="Screenshot van een AI-examentrainer met oefenvragen en feedback"></div>
       <div class="project-copy">
         <div class="project-meta">Opleiding &#183; Examentraining en kennisvalidatie</div>
@@ -1402,6 +1433,31 @@
     </article>
   </div>
 </section>
+<script>
+(function(){
+  var bar=document.querySelector('.project-overview .project-filters');
+  if(!bar)return;
+  var cards=[].slice.call(document.querySelectorAll('.project-overview .project-card'));
+  function apply(f){
+    bar.querySelectorAll('.pfilter').forEach(function(b){
+      var on=b.getAttribute('data-filter')===f;
+      b.classList.toggle('is-active',on); b.setAttribute('aria-pressed',on?'true':'false');
+    });
+    cards.forEach(function(c){
+      var themes=(c.getAttribute('data-theme')||'').split(' ');
+      var show=(f==='all')||themes.indexOf(f)>-1;
+      c.style.display=show?'':'none';
+      if(show)c.classList.add('visible');
+    });
+  }
+  bar.addEventListener('click',function(e){
+    var btn=e.target.closest('.pfilter'); if(btn)apply(btn.getAttribute('data-filter'));
+  });
+  var qp=new URLSearchParams(location.search).get('pf');
+  if(qp&&['training','automatisering','software','proces'].indexOf(qp)>-1)apply(qp);
+})();
+</script>
+
 
 <section class="cta-s" id="project-bespreken"><div class="corb1"></div><div class="corb2"></div><div class="cta-in reveal">
   <div class="cta-ey">Project bespreken &#183; proces, maatwerk, AI-oplossing</div>
@@ -1415,7 +1471,7 @@
 <footer>
   <div class="ft">
     <div>
-      <button class="logo-btn" onclick="nav('home')">MORGEN<em>.</em></button>
+      <button class="logo-btn" onclick="goToWorld()">MORGEN<em>.</em></button>
       <p class="fbrand">Technologiepartner voor bedrijven: van AI-inzicht naar training, implementatie en werkende oplossingen.</p>
       <div class="fsoc">
         <a href="https://www.linkedin.com/company/morgencompany" target="_blank" aria-label="LinkedIn" title="LinkedIn Morgen Company">LI</a>
@@ -1566,7 +1622,7 @@
 <footer>
   <div class="ft">
     <div>
-      <button class="logo-btn" onclick="nav('home')">MORGEN<em>.</em></button>
+      <button class="logo-btn" onclick="goToWorld()">MORGEN<em>.</em></button>
       <p class="fbrand">Technologiepartner voor bedrijven: van AI-inzicht naar training, implementatie en werkende oplossingen.</p>
       <div class="fsoc">
         <a href="https://www.linkedin.com/company/morgencompany" target="_blank" aria-label="LinkedIn" title="LinkedIn Morgen Company">LI</a>
@@ -1647,7 +1703,7 @@
   <article class="about-stage reveal">
     <div class="about-stage-mark" aria-hidden="true"></div>
     <h3>Dan wordt het concreet.</h3>
-    <p>En dat is een erg interessant moment in <a href="/#aanbod">deze trajecten</a>: doordat je instrumenten en trainingen inzet ga je mogelijkheden zien. En daarmee raak je al snel aan waar het misschien wel echt over gaat: hoe je als organisatie wilt werken en veranderen. Wat dit betekent voor je dienstverlening, je werk en je processen.</p>
+    <p>En dat is een erg interessant moment in <a href="/organisatie/#aanbod">deze trajecten</a>: doordat je instrumenten en trainingen inzet ga je mogelijkheden zien. En daarmee raak je al snel aan waar het misschien wel echt over gaat: hoe je als organisatie wilt werken en veranderen. Wat dit betekent voor je dienstverlening, je werk en je processen.</p>
     <p>Wat betekent dit voor je team? Voor je manier van werken? Voor rollen en verantwoordelijkheden? Voor veiligheid en controle? Waar gebruik je AI wel voor, en waar juist niet? Wat kunnen we onze klanten, met deze nieuwe mogelijkheden, allemaal bieden?</p>
     <p>Als je AI serieus gaat integreren, raakt dat mogelijk aan alles. Dat vraagt om keuzes. Je aanbod, je processen, je samenwerkingen en je team: Hoe krijgen we ons team mee en wat doet dat met hun werk? Hoe stimuleer je innovatie en behoud je overzicht en structuur?</p>
     <p>Want AI implementeren gaat niet alleen over tools. Het gaat over keuzes:</p>
@@ -1748,7 +1804,7 @@
 <footer>
   <div class="ft">
     <div>
-      <button class="logo-btn" onclick="nav('home')">MORGEN<em>.</em></button>
+      <button class="logo-btn" onclick="goToWorld()">MORGEN<em>.</em></button>
       <p class="fbrand">Technologiepartner voor bedrijven: van AI-inzicht naar training, implementatie en werkende oplossingen.</p>
       <div class="fsoc">
         <a href="https://www.linkedin.com/company/morgencompany" target="_blank" aria-label="LinkedIn" title="LinkedIn Morgen Company">LI</a>
@@ -2016,7 +2072,7 @@
 <footer>
   <div class="ft">
     <div>
-      <button class="logo-btn" onclick="nav('home')">MORGEN<em>.</em></button>
+      <button class="logo-btn" onclick="goToWorld()">MORGEN<em>.</em></button>
       <p class="fbrand">Technologiepartner voor bedrijven: van AI-inzicht naar training, implementatie en werkende oplossingen.</p>
       <div class="fsoc">
         <a href="https://www.linkedin.com/company/morgencompany" target="_blank" aria-label="LinkedIn" title="LinkedIn Morgen Company">LI</a>
@@ -2170,6 +2226,10 @@ const academyLinks={
   online:'https://academy.morgencompany.com',
   quickscan:'https://academy.morgencompany.com/quickscan'
 };
+
+function goToWorld(){
+  window.location.href='/wereld/';
+}
 
 function goToAcademy(destination='home'){
   const target=academyLinks[destination] || academyLinks.home;
@@ -2853,7 +2913,8 @@ function applyRouteFromPath(){
     return true;
   }
   if(segments[0]==='projecten'){
-    nav('assistenten',undefined,{updateHistory:false});
+    const a=window.location.hash?window.location.hash.slice(1):undefined;
+    nav('assistenten',a,{updateHistory:false});
     return true;
   }
   if(segments[0]==='assistenten' && segments[1]){

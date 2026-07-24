@@ -104,10 +104,10 @@ function cardHtml(card) {
   const vervolg = (card.vervolg || [])
     .map(
       (v) =>
-        `<div class="ac-followup" onclick="location.href='${v.href}'">
+        `<a class="ac-followup" href="${esc(v.href)}">
            <div class="ac-followup-title">${esc(v.training)}</div>
            <div class="ac-followup-desc">${esc(v.description)}</div>
-         </div>`
+         </a>`
     )
     .join('');
 
@@ -133,7 +133,7 @@ function fallbackHtml() {
     <div class="ac-fallback">
       <p>Het Kompas is even niet bereikbaar. Je kunt direct een gesprek aanvragen of ons mailen. We reageren meestal binnen een werkdag.</p>
       <div class="ac-card-cta">
-        <a href="/#home-aanvraag" class="ac-btn ac-btn-primary">Plan een kennismakingsgesprek</a>
+        <a href="/organisatie/#home-aanvraag" class="ac-btn ac-btn-primary">Plan een kennismakingsgesprek</a>
         <a href="mailto:totmorgen@morgenacademy.nl" class="ac-btn ac-btn-secondary">Stuur ons een bericht</a>
       </div>
     </div>`;
