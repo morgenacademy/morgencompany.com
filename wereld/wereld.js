@@ -362,7 +362,7 @@ function mountWorld(gebouwId) {
         tags: g.sectie.tags,
         cta: {
           primary: { label: g.cta.label, href: g.cta.href },
-          secondary: { label: 'Terug naar start', href: '#plein' },
+          secondary: { label: 'Terug naar plein', href: '#plein' },
         },
       },
     ],

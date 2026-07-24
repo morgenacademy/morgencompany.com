@@ -103,8 +103,10 @@ test('de projectcopy legt de visuele beeldtaal niet uit', () => {
   );
   assert.match(wereld, /titel: 'Projecten in de praktijk'/);
   assert.doesNotMatch(wereld, /title: 'Maquettes|body: 'Elke stolp/);
-  assert.doesNotMatch(wereld, /label: 'Terug naar het plein'/);
-  assert.doesNotMatch(wereldHtml, />Terug naar het plein<\/button>/);
+  assert.match(wereld, /label: 'Terug naar plein', href: '#plein'/);
+  assert.equal((wereldHtml.match(/>Terug naar plein<\/button>/g) || []).length, 2);
+  assert.doesNotMatch(wereld, /label: 'Terug naar (?:het plein|start)'/);
+  assert.doesNotMatch(wereldHtml, />Terug naar (?:het plein|start)<\/button>/);
 });
 
 test('kennismakingslinks blijven na de wereld-omschakeling bereikbaar', () => {
