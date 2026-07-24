@@ -79,6 +79,10 @@ function mountScrollWorld(container, config) {
   const CROSSFADE = (config.crossfade != null) ? config.crossfade : 0.12;  // seam dissolve width (vh)
   const N = SECTIONS.length;
   if (!N) return;
+  const clipRequests = new AbortController();
+  let destroyed = false;
+  let loopFrame = 0;
+  let readFrame = 0;
 
   injectCSS();
   container.classList.add('sw-root');
@@ -100,6 +104,7 @@ function mountScrollWorld(container, config) {
     }
   });
   const NSEG = SEGMENTS.length;
+  const hasScrubbableClip = !reduce && SEGMENTS.some((s) => s.clip);
 
   // ---- DOM ----
   const sky = el('div', 'sw-sky');
@@ -136,9 +141,10 @@ function mountScrollWorld(container, config) {
   [sky, scrollbar, topbar, stage, copylayer, route, hint, track].forEach(n => container.appendChild(n));
 
   // segment scenes
-  SEGMENTS.forEach(s => {
+  SEGMENTS.forEach((s, i) => {
     const scene = el('div', 'sw-scene'); scene.style.setProperty('--sw-accent', s.accent || '');
-    const img = el('img', 'sw-scene__still'); img.alt = ''; img.decoding = 'async'; img.loading = 'lazy';
+    const img = el('img', 'sw-scene__still'); img.alt = ''; img.decoding = 'async';
+    img.loading = i === 0 ? 'eager' : 'lazy';
     const poster = (isMobile() && s.stillM) ? s.stillM : s.still;
     if (poster) img.src = poster;
     scene.appendChild(img); stage.appendChild(scene);
@@ -180,6 +186,7 @@ function mountScrollWorld(container, config) {
   let laidOutW = window.innerWidth;   // width the current layout was computed at (see onResize)
 
   function layout() {
+    if (destroyed) return;
     vh = window.innerHeight;
     laidOutW = window.innerWidth;
     stageX = window.innerWidth > 860 ? 4 : 0;
@@ -198,28 +205,43 @@ function mountScrollWorld(container, config) {
   function loadClip(s) {
     // Under prefers-reduced-motion we never load the clips at all — the stills stay up
     // and simply cross-dissolve as you scroll. No scrubbed video motion, no decode cost.
-    if (reduce || s.loading || !s.clip) return;
+    if (reduce || s.loading || !s.clip || (config.canLoadClips && !config.canLoadClips())) return;
     s.loading = true;
     // Serve the lighter mobile encode on phones when one was provided.
     const url = (isMobile() && s.clipM) ? s.clipM : s.clip;
-    fetch(url).then(r => r.ok ? r.blob() : Promise.reject(new Error('404')))
+    fetch(url, { signal: clipRequests.signal }).then(r => r.ok ? r.blob() : Promise.reject(new Error('404')))
       .then(blob => {
+        if (destroyed) return;
         const v = document.createElement('video');
         v.className = 'sw-scene__video';
         v.muted = true; v.playsInline = true; v.preload = 'auto';
         v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
-        v.src = URL.createObjectURL(blob);
-        v.addEventListener('loadedmetadata', () => { s.ready = true; read(); });
+        s.objectUrl = URL.createObjectURL(blob);
+        v.src = s.objectUrl;
+        v.addEventListener('loadedmetadata', () => {
+          if (destroyed) return;
+          s.ready = true;
+          read();
+        });
         // Reveal the video (hide the still poster) only once a real frame has
         // painted — on iOS a seeked-but-never-played muted video stays blank, so
         // hiding the still on metadata alone would flash an empty scene.
-        v.addEventListener('seeked', () => { s.el.classList.add('has-clip'); }, { once: true });
-        v.addEventListener('loadeddata', () => { try { v.pause(); } catch (e) {} if (userReady) primeVideo(v); });
+        v.addEventListener('seeked', () => {
+          if (!destroyed) s.el.classList.add('has-clip');
+        }, { once: true });
+        v.addEventListener('loadeddata', () => {
+          if (destroyed) return;
+          try { v.pause(); } catch (e) {}
+          if (userReady) primeVideo(v);
+        });
         s.el.appendChild(v); s.video = v; s.hasClip = true;
-      }).catch(() => { s.loading = false; });
+      }).catch(() => {
+        if (!destroyed) s.loading = false;
+      });
   }
 
   function read() {
+    if (destroyed) return;
     const y = window.scrollY || window.pageYOffset;
     const fade = CROSSFADE * vh;
     let ci = 0;
@@ -268,9 +290,11 @@ function mountScrollWorld(container, config) {
     hint.style.opacity = clamp(1 - y / (0.5 * vh));
     if (particles) particles.style.transform = `translate3d(0, ${-y * 0.05}px, 0)`;
     ticking = false;
+    readFrame = 0;
   }
 
   function raf() {
+    if (destroyed) return;
     const eps = isMobile() ? 0.02 : 0.008;   // coarser seek step on phones = fewer decodes
     for (let i = 0; i < NSEG; i++) {
       const s = SEGMENTS[i];
@@ -285,7 +309,7 @@ function mountScrollWorld(container, config) {
       const t = clamp(s.cur, 0, 0.999) * dur;
       if (Math.abs(s.video.currentTime - t) > eps) { try { s.video.currentTime = t; } catch (e) {} }
     }
-    requestAnimationFrame(raf);
+    loopFrame = requestAnimationFrame(raf);
   }
 
   // iOS needs a user gesture before a muted video will decode/paint reliably. On the
@@ -299,7 +323,7 @@ function mountScrollWorld(container, config) {
     catch (e) {}
   }
   function onFirstGesture() {
-    if (userReady) return;
+    if (destroyed || userReady) return;
     userReady = true;
     SEGMENTS.forEach(s => primeVideo(s.video));
   }
@@ -308,7 +332,12 @@ function mountScrollWorld(container, config) {
 
   // Particles are a per-frame cost we can't afford alongside video scrubbing on a phone.
   seedParticles(particles, reduce || coarse);
-  window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(read); } }, { passive: true });
+  function onScroll() {
+    if (destroyed || ticking) return;
+    ticking = true;
+    readFrame = requestAnimationFrame(read);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
   // Mobile browsers fire `resize` every time the URL bar slides in/out. Re-running
   // layout() there rebuilds the track height and yanks the scroll position, so on
   // touch we ignore height-only changes and only relayout when the width actually
@@ -322,7 +351,36 @@ function mountScrollWorld(container, config) {
   window.addEventListener('orientationchange', layout);
   window.addEventListener('load', layout);
   layout();
-  requestAnimationFrame(raf);
+  if (hasScrubbableClip) loopFrame = requestAnimationFrame(raf);
+
+  function destroy() {
+    if (destroyed) return;
+    destroyed = true;
+    clipRequests.abort();
+    cancelAnimationFrame(loopFrame);
+    cancelAnimationFrame(readFrame);
+    window.removeEventListener('pointerdown', onFirstGesture);
+    window.removeEventListener('touchstart', onFirstGesture);
+    window.removeEventListener('scroll', onScroll);
+    window.removeEventListener('resize', onResize);
+    window.removeEventListener('orientationchange', layout);
+    window.removeEventListener('load', layout);
+    SEGMENTS.forEach((s) => {
+      if (s.video) {
+        try { s.video.pause(); } catch (e) {}
+        s.video.removeAttribute('src');
+        try { s.video.load(); } catch (e) {}
+      }
+      if (s.objectUrl) {
+        URL.revokeObjectURL(s.objectUrl);
+        s.objectUrl = null;
+      }
+    });
+    container.replaceChildren();
+    container.classList.remove('sw-root');
+  }
+
+  return { destroy };
 
   // ---- helpers ----
   function el(tag, cls) { const n = document.createElement(tag); if (cls) n.className = cls; return n; }

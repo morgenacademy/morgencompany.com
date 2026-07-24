@@ -331,23 +331,31 @@ cineVideo.addEventListener('playing', () => cine.classList.add('is-playing'));
 cineVideo.addEventListener('ended', finishCine);
 cineVideo.addEventListener('error', () => finishCine());   // asset ontbreekt of kapot: flow gaat door
 
-/* ---------- Binnen-verhalen (scrub-engine, 1 sectie per gebouw) ----------
-   Elke engine-mount is permanent (de engine kent geen unmount), dus we
-   mounten per gebouw precies één keer in een eigen host-div en togglen
-   daarna alleen display. Terug naar de hub en opnieuw klikken hergebruikt
-   de bestaande mount: geen dubbele mounts, geen lek. */
-const worldHosts = {};   // gebouwId -> host-element met gemounte engine
+/* ---------- Binnen-verhalen (scrub-engine, maximaal 1 actieve mount) ---------- */
+const worldHosts = {};
+let activeWorld = null;
+
+function unmountWorld() {
+  stopAmbient();
+  if (!activeWorld) return;
+  activeWorld.engine?.destroy();
+  activeWorld.host.remove();
+  delete worldHosts[activeWorld.id];
+  activeWorld = null;
+}
 
 function mountWorld(gebouwId) {
   if (worldHosts[gebouwId]) return;
+  unmountWorld();
   const g = GEBOUWEN[gebouwId];
   const host = document.createElement('div');
   host.id = 'world-' + gebouwId;
   host.style.display = 'none';
   worldEl.appendChild(host);
   worldHosts[gebouwId] = host;
-  mountScrollWorld(host, {
+  const engine = mountScrollWorld(host, {
     nav: false,
+    canLoadClips: () => document.body.dataset.state === 'verhaal',
     hint: 'Scroll om rond te kijken',
     sections: [
       {
@@ -372,6 +380,7 @@ function mountWorld(gebouwId) {
     ],
     connectors: [],
   });
+  activeWorld = { id: gebouwId, host, engine };
 }
 
 function toonWorld(gebouwId) {
@@ -385,42 +394,53 @@ function toonWorld(gebouwId) {
    bij scroll; tot die tijd spelen we de sectie-video gedempt en vertraagd af.
    Zodra de bezoeker scrolt neemt de scrub-engine het over (die zet currentTime
    bij elke scroll-tick), dus hier alleen pauzeren en luisteraars opruimen.
-   Bewust buiten de engine om: scrub-engine.js blijft byte-identiek. */
+   Deze rustige autoplaylaag blijft bewust los van de scrollbesturing. */
 let ambientStop = null;
 
-function stopAmbient() { if (ambientStop) ambientStop(); }
+function stopAmbient() {
+  const stop = ambientStop;
+  ambientStop = null;
+  if (stop) stop();
+}
 
 function startAmbient(gebouwId) {
   stopAmbient();
   const host = worldHosts[gebouwId];
   if (!host) return;
   let pogingen = 0;
+  let timer = null;
+  let video = null;
+  let gestopt = false;
+  const stop = () => {
+    if (gestopt) return;
+    gestopt = true;
+    if (timer) clearTimeout(timer);
+    window.removeEventListener('scroll', stop);
+    window.removeEventListener('wheel', stop);
+    window.removeEventListener('touchmove', stop);
+    if (ambientStop === stop) ambientStop = null;
+    try { video?.pause(); } catch (e) {}
+  };
+  ambientStop = stop;
   const zoek = () => {
-    const v = host.querySelector('video');
-    if (!v) {
+    if (gestopt) return;
+    video = host.querySelector('video');
+    if (!video) {
       // engine maakt het video-element async aan; even nawachten
-      if (++pogingen < 10) setTimeout(zoek, 250);
+      if (++pogingen < 10) timer = setTimeout(zoek, 250);
       return;
     }
-    const stop = () => {
-      window.removeEventListener('scroll', stop);
-      window.removeEventListener('wheel', stop);
-      window.removeEventListener('touchmove', stop);
-      if (ambientStop === stop) ambientStop = null;
-      try { v.pause(); } catch (e) {}
-    };
-    ambientStop = stop;
     window.addEventListener('scroll', stop, { passive: true });
     window.addEventListener('wheel', stop, { passive: true });
     window.addEventListener('touchmove', stop, { passive: true });
-    v.muted = true;
-    v.playbackRate = 0.45;
-    const p = v.play();
+    video.muted = true;
+    video.playbackRate = 0.45;
+    const p = video.play();
     if (p && p.catch) p.catch(() => {});   // autoplay geweigerd: still blijft staan, scrub werkt gewoon
   };
   // Niet meteen: de scrollTo(0,0) van toVerhaal vuurt nog een scroll-event
   // na deze aanroep; met een korte adempauze vangt de stop-listener die niet.
-  setTimeout(zoek, 400);
+  timer = setTimeout(zoek, 400);
 }
 
 /* ---------- Generiek eindpaneel, per gebouw gevuld ---------- */
@@ -510,7 +530,7 @@ function startIntro() {
 function toonHub() {
   markeerIntroGezien();
   stopCine();
-  stopAmbient();
+  unmountWorld();
   sluitKompas({ updateRoute: false, restoreFocus: false });
   wereldTicker.hidden = true;
   document.body.classList.remove('ticker-actief');
@@ -543,13 +563,13 @@ function startDive(gebouwId, { updateRoute = true } = {}) {
   sluitKompas({ updateRoute: false, restoreFocus: false });
   huidigGebouw = gebouwId;
   if (updateRoute) zetWereldRoute(ROUTE_BY_GEBOUW[gebouwId], { pushed: true });
-  mountWorld(gebouwId);           // laadt het binnen-verhaal alvast tijdens de dive
-  toonWorld(gebouwId);
-  vulEinde(gebouwId);
   const g = GEBOUWEN[gebouwId];
   // Reduced motion of een plek zonder dive-cinematic: direct het verhaal in.
   if (reduce || !g.dive) { toVerhaal(gebouwId); return; }
   setState('dive');
+  mountWorld(gebouwId);           // laadt de still, maar nog niet de leg-video
+  toonWorld(gebouwId);
+  vulEinde(gebouwId);
   playCine(g.dive, g.diveM, () => toVerhaal(gebouwId));
 }
 

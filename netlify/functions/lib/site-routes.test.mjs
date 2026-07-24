@@ -180,9 +180,9 @@ test('het Kompas is modaal, kondigt status aan en begrenst gesprekshistorie', ()
 
 test('functionele wereldassets worden met dezelfde cacheversie geladen', () => {
   const wereldHtml = read('wereld/index.html');
-  assert.match(wereldHtml, /wereld\.css\?v=20260724-launch/);
-  assert.match(wereldHtml, /scrub-engine\.js\?v=20260724-launch/);
-  assert.match(wereldHtml, /wereld\.js\?v=20260724-launch/);
+  assert.match(wereldHtml, /wereld\.css\?v=20260724-performance/);
+  assert.match(wereldHtml, /scrub-engine\.js\?v=20260724-performance/);
+  assert.match(wereldHtml, /wereld\.js\?v=20260724-performance/);
   assert.match(wereldHtml, /chat\.css\?v=20260724-functional/);
   assert.match(wereldHtml, /chat\.js\?v=20260724-launch/);
 });
@@ -196,9 +196,9 @@ test('de wereld is technisch voorbereid als root-homepage', () => {
   assert.match(redirects, /^\/wereld\/ \/ 301!$/m);
   assert.match(redirects, /^\/wereld\/index\.html \/ 301!$/m);
   assert.match(redirects, /^\/ \/wereld\/index\.html 200!$/m);
-  assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260724-launch"/);
-  assert.match(wereldHtml, /src="\/wereld\/scrub-engine\.js\?v=20260724-launch"/);
-  assert.match(wereldHtml, /src="\/wereld\/wereld\.js\?v=20260724-launch"/);
+  assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260724-performance"/);
+  assert.match(wereldHtml, /src="\/wereld\/scrub-engine\.js\?v=20260724-performance"/);
+  assert.match(wereldHtml, /src="\/wereld\/wereld\.js\?v=20260724-performance"/);
   assert.doesNotMatch(wereldHtml, /(?:href|src)="(?:wereld\.css|scrub-engine\.js|wereld\.js)/);
   assert.doesNotMatch(wereld, /:\s*'assets\//);
   assert.match(wereldHtml, /class="wereld-merk" href="\/"/);
@@ -266,6 +266,27 @@ test('tracking laadt alleen op productie en meet de wereldfunnel', () => {
     assert.match(wereld, new RegExp(`'${event}'`));
   }
   assert.match(chat, /new CustomEvent\('kompas:advies'/);
+});
+
+test('binnenvideo’s laden pas na de dive en oude engines worden opgeruimd', () => {
+  const wereld = read('wereld/wereld.js');
+  const engine = read('wereld/scrub-engine.js');
+  const startDive = block(wereld, 'function startDive(', '\n}\n\nfunction toVerhaal');
+
+  assert.match(startDive, /setState\('dive'\);\s+mountWorld\(gebouwId\)/);
+  assert.match(wereld, /canLoadClips: \(\) => document\.body\.dataset\.state === 'verhaal'/);
+  assert.match(engine, /\(config\.canLoadClips && !config\.canLoadClips\(\)\)/);
+  assert.match(engine, /img\.loading = i === 0 \? 'eager' : 'lazy'/);
+  assert.match(wereld, /activeWorld\.engine\?\.destroy\(\)/);
+  assert.match(wereld, /activeWorld\.host\.remove\(\)/);
+  assert.match(wereld, /if \(timer\) clearTimeout\(timer\)/);
+  assert.match(engine, /const clipRequests = new AbortController\(\)/);
+  assert.match(engine, /clipRequests\.abort\(\)/);
+  assert.match(engine, /cancelAnimationFrame\(loopFrame\)/);
+  assert.match(engine, /if \(hasScrubbableClip\) loopFrame = requestAnimationFrame\(raf\)/);
+  assert.match(engine, /window\.removeEventListener\('scroll', onScroll\)/);
+  assert.match(engine, /URL\.revokeObjectURL\(s\.objectUrl\)/);
+  assert.match(engine, /return \{ destroy \}/);
 });
 
 test('de projectcopy legt de visuele beeldtaal niet uit', () => {
