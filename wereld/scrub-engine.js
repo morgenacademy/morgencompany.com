@@ -83,6 +83,7 @@ function mountScrollWorld(container, config) {
   let destroyed = false;
   let loopFrame = 0;
   let readFrame = 0;
+  let scrubbing = true;
 
   injectCSS();
   container.classList.add('sw-root');
@@ -294,7 +295,8 @@ function mountScrollWorld(container, config) {
   }
 
   function raf() {
-    if (destroyed) return;
+    loopFrame = 0;
+    if (destroyed || !scrubbing) return;
     const eps = isMobile() ? 0.02 : 0.008;   // coarser seek step on phones = fewer decodes
     for (let i = 0; i < NSEG; i++) {
       const s = SEGMENTS[i];
@@ -309,7 +311,30 @@ function mountScrollWorld(container, config) {
       const t = clamp(s.cur, 0, 0.999) * dur;
       if (Math.abs(s.video.currentTime - t) > eps) { try { s.video.currentTime = t; } catch (e) {} }
     }
+    ensureLoop();
+  }
+
+  function ensureLoop() {
+    if (destroyed || !scrubbing || !hasScrubbableClip || loopFrame) return;
     loopFrame = requestAnimationFrame(raf);
+  }
+
+  function setScrubbing(enabled) {
+    const next = !!enabled;
+    if (destroyed || scrubbing === next) return;
+    scrubbing = next;
+    if (!scrubbing) {
+      cancelAnimationFrame(loopFrame);
+      loopFrame = 0;
+      return;
+    }
+    if (readFrame) {
+      cancelAnimationFrame(readFrame);
+      readFrame = 0;
+      ticking = false;
+    }
+    read();
+    ensureLoop();
   }
 
   // iOS needs a user gesture before a muted video will decode/paint reliably. On the
@@ -351,7 +376,7 @@ function mountScrollWorld(container, config) {
   window.addEventListener('orientationchange', layout);
   window.addEventListener('load', layout);
   layout();
-  if (hasScrubbableClip) loopFrame = requestAnimationFrame(raf);
+  ensureLoop();
 
   function destroy() {
     if (destroyed) return;
@@ -380,7 +405,7 @@ function mountScrollWorld(container, config) {
     container.classList.remove('sw-root');
   }
 
-  return { destroy };
+  return { destroy, setScrubbing };
 
   // ---- helpers ----
   function el(tag, cls) { const n = document.createElement(tag); if (cls) n.className = cls; return n; }

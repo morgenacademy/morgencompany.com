@@ -181,24 +181,38 @@ test('het Kompas is modaal, kondigt status aan en begrenst gesprekshistorie', ()
 test('functionele wereldassets worden met dezelfde cacheversie geladen', () => {
   const wereldHtml = read('wereld/index.html');
   assert.match(wereldHtml, /wereld\.css\?v=20260724-propositie2/);
-  assert.match(wereldHtml, /scrub-engine\.js\?v=20260724-performance/);
-  assert.match(wereldHtml, /wereld\.js\?v=20260724-performance/);
+  assert.match(wereldHtml, /scrub-engine\.js\?v=20260724-ambient/);
+  assert.match(wereldHtml, /wereld\.js\?v=20260724-ambient/);
   assert.match(wereldHtml, /chat\.css\?v=20260724-functional/);
   assert.match(wereldHtml, /chat\.js\?v=20260724-launch/);
 });
 
 test('de wereld is technisch voorbereid als root-homepage', () => {
   const redirects = read('_redirects');
+  const redirectRules = redirects.trim().split('\n');
   const wereldHtml = read('wereld/index.html');
   const wereld = read('wereld/wereld.js');
 
   assert.match(redirects, /^\/wereld \/ 301!$/m);
   assert.match(redirects, /^\/wereld\/ \/ 301!$/m);
   assert.match(redirects, /^\/wereld\/index\.html \/ 301!$/m);
+  assert.match(redirects, /^\/index\.html \/ 301!$/m);
   assert.match(redirects, /^\/ \/wereld\/index\.html 200!$/m);
+  assert.ok(
+    redirectRules.indexOf('/index.html / 301!') < redirectRules.indexOf('/ /wereld/index.html 200!'),
+    'de directe index-redirect moet vóór de root-rewrite staan'
+  );
+  assert.deepEqual(
+    redirectRules.filter((rule) => rule.startsWith('/organisatie')),
+    [
+      '/organisatie /index.html 200',
+      '/organisatie/ /index.html 200',
+      '/organisatie/* /index.html 200',
+    ]
+  );
   assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260724-propositie2"/);
-  assert.match(wereldHtml, /src="\/wereld\/scrub-engine\.js\?v=20260724-performance"/);
-  assert.match(wereldHtml, /src="\/wereld\/wereld\.js\?v=20260724-performance"/);
+  assert.match(wereldHtml, /src="\/wereld\/scrub-engine\.js\?v=20260724-ambient"/);
+  assert.match(wereldHtml, /src="\/wereld\/wereld\.js\?v=20260724-ambient"/);
   assert.doesNotMatch(wereldHtml, /(?:href|src)="(?:wereld\.css|scrub-engine\.js|wereld\.js)/);
   assert.doesNotMatch(wereld, /:\s*'assets\//);
   assert.match(wereldHtml, /class="wereld-merk" href="\/"/);
@@ -283,10 +297,42 @@ test('binnenvideo’s laden pas na de dive en oude engines worden opgeruimd', ()
   assert.match(engine, /const clipRequests = new AbortController\(\)/);
   assert.match(engine, /clipRequests\.abort\(\)/);
   assert.match(engine, /cancelAnimationFrame\(loopFrame\)/);
-  assert.match(engine, /if \(hasScrubbableClip\) loopFrame = requestAnimationFrame\(raf\)/);
+  assert.match(engine, /if \(destroyed \|\| !scrubbing \|\| !hasScrubbableClip \|\| loopFrame\) return/);
   assert.match(engine, /window\.removeEventListener\('scroll', onScroll\)/);
   assert.match(engine, /URL\.revokeObjectURL\(s\.objectUrl\)/);
-  assert.match(engine, /return \{ destroy \}/);
+  assert.match(engine, /return \{ destroy, setScrubbing \}/);
+});
+
+test('ambient binnenvideo en scroll-scrub nemen de videoklok niet tegelijk over', () => {
+  const wereld = read('wereld/wereld.js');
+  const engine = read('wereld/scrub-engine.js');
+  const ambient = block(
+    wereld,
+    'function startAmbient(',
+    '\n}\n\n/* ---------- Generiek eindpaneel'
+  );
+
+  assert.match(engine, /function ensureLoop\(\)/);
+  assert.match(engine, /if \(destroyed \|\| !scrubbing \|\| !hasScrubbableClip \|\| loopFrame\) return/);
+  assert.match(engine, /loopFrame = 0;\s+if \(destroyed \|\| !scrubbing\) return/);
+  assert.match(engine, /function setScrubbing\(enabled\)/);
+  assert.match(engine, /if \(destroyed \|\| scrubbing === next\) return/);
+  assert.match(engine, /cancelAnimationFrame\(loopFrame\);\s+loopFrame = 0/);
+  assert.match(engine, /read\(\);\s+ensureLoop\(\)/);
+
+  assert.match(ambient, /engine\?\.setScrubbing\(false\);\s+zoek\(\);/);
+  assert.match(ambient, /engine\?\.setScrubbing\(true\);/);
+  assert.match(
+    ambient,
+    /window\.addEventListener\('scroll', stop, \{ passive: true \}\);\s+engine\?\.setScrubbing\(false\);\s+zoek\(\);/
+  );
+  assert.ok(
+    ambient.indexOf("window.addEventListener('wheel', stop") < ambient.indexOf('const zoek'),
+    'wheel-listener moet vóór de videopolling actief zijn'
+  );
+  assert.match(ambient, /if \(\+\+pogingen < 10\) \{[\s\S]*?return;\s+\}\s+stop\(\)/);
+  assert.match(ambient, /p\.catch\(\(\) => stop\(\)\)/);
+  assert.match(ambient, /catch \(e\) \{\s+stop\(\);/);
 });
 
 test('het plein toont de positionering als zichtbare hoofdkop', () => {

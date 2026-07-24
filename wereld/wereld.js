@@ -406,10 +406,12 @@ function stopAmbient() {
 function startAmbient(gebouwId) {
   stopAmbient();
   const host = worldHosts[gebouwId];
-  if (!host) return;
+  const engine = activeWorld?.id === gebouwId ? activeWorld.engine : null;
+  if (!host || reduce || !GEBOUWEN[gebouwId]?.leg) return;
   let pogingen = 0;
   let timer = null;
   let video = null;
+  let onPlaying = null;
   let gestopt = false;
   const stop = () => {
     if (gestopt) return;
@@ -419,28 +421,52 @@ function startAmbient(gebouwId) {
     window.removeEventListener('wheel', stop);
     window.removeEventListener('touchmove', stop);
     if (ambientStop === stop) ambientStop = null;
+    if (video && onPlaying) video.removeEventListener('playing', onPlaying);
     try { video?.pause(); } catch (e) {}
+    engine?.setScrubbing(true);
   };
   ambientStop = stop;
+  // Wheel en touchmove zijn altijd echte gebruikersinteracties en kunnen dus
+  // meteen luisteren zonder de voorafgaande scrollTo(0, 0) te onderscheppen.
+  window.addEventListener('wheel', stop, { passive: true });
+  window.addEventListener('touchmove', stop, { passive: true });
   const zoek = () => {
+    timer = null;
     if (gestopt) return;
     video = host.querySelector('video');
     if (!video) {
       // engine maakt het video-element async aan; even nawachten
-      if (++pogingen < 10) timer = setTimeout(zoek, 250);
+      if (++pogingen < 10) {
+        timer = setTimeout(zoek, 250);
+        return;
+      }
+      stop();   // geen video: geef de scrollbesturing altijd weer vrij
+      return;
+    }
+    onPlaying = () => video.closest('.sw-scene')?.classList.add('has-clip');
+    video.addEventListener('playing', onPlaying, { once: true });
+    video.muted = true;
+    video.playbackRate = 0.45;
+    try {
+      const p = video.play();
+      if (p && p.catch) p.catch(() => stop());
+    } catch (e) {
+      stop();
+    }
+  };
+  // Niet meteen: de scrollTo(0,0) van toVerhaal vuurt nog een scroll-event
+  // na deze aanroep. Daarna staat de scroll-listener vóór de eerste videopoll.
+  timer = setTimeout(() => {
+    timer = null;
+    if (gestopt) return;
+    if ((window.scrollY || window.pageYOffset) > 2) {
+      stop();   // bezoeker scrolde al tijdens de korte overgang
       return;
     }
     window.addEventListener('scroll', stop, { passive: true });
-    window.addEventListener('wheel', stop, { passive: true });
-    window.addEventListener('touchmove', stop, { passive: true });
-    video.muted = true;
-    video.playbackRate = 0.45;
-    const p = video.play();
-    if (p && p.catch) p.catch(() => {});   // autoplay geweigerd: still blijft staan, scrub werkt gewoon
-  };
-  // Niet meteen: de scrollTo(0,0) van toVerhaal vuurt nog een scroll-event
-  // na deze aanroep; met een korte adempauze vangt de stop-listener die niet.
-  timer = setTimeout(zoek, 400);
+    engine?.setScrubbing(false);
+    zoek();
+  }, 400);
 }
 
 /* ---------- Generiek eindpaneel, per gebouw gevuld ---------- */

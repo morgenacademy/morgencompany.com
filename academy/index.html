@@ -69,7 +69,7 @@
         <li><a href="/academy/" onclick="if(event.metaKey||event.ctrlKey||event.shiftKey||event.button===1)return;event.preventDefault();nav('academy')">Incompany training</a></li>
         <li><a href="https://academy.morgencompany.com">Online trainingen</a></li>
         <li><a href="https://academy.morgencompany.com/#live-agenda">Live agenda</a></li>
-        <li><a href="https://academy.morgencompany.com/ai-accelerator">AI Accelerator</a></li>
+        <li><a href="https://academy.morgencompany.com/ai-accelerator/">AI Accelerator</a></li>
       </ul>
     </li>
     <li><a href="/consultancy/" onclick="if(event.metaKey||event.ctrlKey||event.shiftKey||event.button===1)return;event.preventDefault();nav('consultancy')" data-page="consultancy">IMPLEMENT</a></li>
@@ -399,6 +399,7 @@
     </div>
   </div>
 </header>
+<div class="logo-band" data-logo-band-clone onclick="nav('assistenten')" tabindex="0" role="link" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();nav('assistenten');}" aria-label="Bekijk onze projecten en klanten" style="cursor:pointer"></div>
 <section class="ac-route-section">
   <div class="ac-route-inner reveal">
     <h2 class="ac-route-title">Vind de training die bij jou of jullie team past</h2>
@@ -1244,6 +1245,21 @@
       </div>
     </article>
 
+    <article class="project-card reveal" data-theme="proces">
+      <div class="project-image"><img loading="lazy" src="/Afbeeldingen%20projecten/Velo%20Vital%20subsidieaanvraag.jpg" alt="Wielrensters in Velo Vital-tenue vieren een geslaagde rit op een stadsplein"></div>
+      <div class="project-copy">
+        <div class="project-meta">Maatschappelijk initiatief &#183; Subsidie en fondsenwerving</div>
+        <span class="project-client">Velo Vital</span>
+        <h3>Van idee naar toegekende subsidie.</h3>
+        <p>Voor Velo Vital onderzochten we hoe AI helpt bij het vinden, structureren en schrijven van subsidieaanvragen. Samen brachten we het initiatief terug tot een helder verhaal: maatschappelijk belang, doelgroep, verwachte impact en aansluiting op de regeling. AI versnelde de analyse, leverde tekstvoorstellen en scherpte de argumentatie aan, terwijl de inhoudelijke keuzes en eindredactie mensenwerk bleven.</p>
+        <ul class="project-wins">
+          <li>De eerste subsidieaanvraag is toegekend.</li>
+          <li>Kansrijke regelingen sneller gevonden en beter onderbouwd.</li>
+          <li>Belang, doelgroep en impact scherp en op één lijn met de regeling.</li>
+        </ul>
+      </div>
+    </article>
+
     <article class="project-card reveal" data-theme="software">
       <div class="project-image project-image-contain"><img loading="lazy" src="/Afbeeldingen%20projecten/Healt%20App.png" alt="Screenshot van een AI personal coach app voor health en lifestyle"></div>
       <div class="project-copy">
@@ -1501,7 +1517,7 @@
     <div>
       <div class="fcol-t">Academy</div>
       <ul class="flinks">
-        <li><a onclick="nav('academy','trainingwijzer-app')">Trainingwijzer</a></li>
+        <li><a onclick="nav('academy','trainingwijzer-app')">Kompas</a></li>
         <li><a onclick="nav('academy','ac-trainingen')">AI-trainingen</a></li>
         <li><a onclick="goToAcademy('online')">Online trainingen</a></li>
         <li><a onclick="nav('academy','ac-ai-act')">EU AI Act conform</a></li>
@@ -2104,7 +2120,7 @@
       <ul class="flinks">
         <li><a onclick="goToAcademy('online')">Online trainingen</a></li>
         <li><a onclick="nav('academy','ac-trainingen')">AI-trainingen</a></li>
-        <li><a onclick="nav('academy','trainingwijzer-app')">Trainingwijzer</a></li>
+        <li><a onclick="nav('academy','trainingwijzer-app')">Kompas</a></li>
         <li><a onclick="nav('academy','ac-ai-act')">EU AI Act conform</a></li>
       </ul>
     </div>
@@ -2261,11 +2277,12 @@ function goToAcademy(destination='home'){
 
 function nav(page,anchor,options={}){
   const {updateHistory=true,replaceHistory=false,customPath=null,activeNav=null}=options;
+  const wasActive=document.getElementById('page-'+page)?.classList.contains('active');
   updateRouteMeta(page);
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const t=document.getElementById('page-'+page);
   if(t)t.classList.add('active');
-  window.scrollTo(0,0);
+  if(!wasActive)window.scrollTo(0,0);
   document.querySelectorAll('.nav-links a[data-page]').forEach(a=>a.classList.remove('active'));
   const al=document.querySelector('.nav-links a[data-page="'+(activeNav||page)+'"]');
   if(al)al.classList.add('active');
@@ -2279,7 +2296,7 @@ function nav(page,anchor,options={}){
       window.history.pushState({},'',nextUrl);
     }
   }
-  if(anchor){setTimeout(()=>{const el=document.getElementById(anchor);if(el)el.scrollIntoView({behavior:'smooth'});},80);}
+  if(anchor){setTimeout(()=>{const el=document.getElementById(anchor);if(!el)return;el.scrollIntoView({behavior:'smooth'});setTimeout(()=>el.scrollIntoView({behavior:'smooth'}),450);},80);}
   closeNav();
   setTimeout(()=>{initReveal();updateAboutJourney();},100);
 }
