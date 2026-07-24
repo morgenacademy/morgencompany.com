@@ -203,10 +203,10 @@ body[data-state="intro"] .skip-knop { display: block; }
   width: min(620px, calc(100vw - 44px));
   color: var(--w-ink);
   text-shadow: 0 3px 22px rgba(12, 8, 24, .98);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(10px);
-  transition: opacity .5s ease, transform .5s ease, visibility 0s linear .5s;
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity .35s ease, transform .35s ease;
   pointer-events: none;
 }
 .hub-propositie::before {
@@ -217,11 +217,10 @@ body[data-state="intro"] .skip-knop { display: block; }
   background: radial-gradient(ellipse at 25% 60%, rgba(12, 8, 24, .9), rgba(12, 8, 24, 0) 72%);
   pointer-events: none;
 }
-body[data-state="hub"] .hub-propositie {
-  opacity: 1;
-  visibility: visible;
-  transform: none;
-  transition-delay: .2s;
+body[data-state="dive"] .hub-propositie {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
 }
 .hub-propositie h1 {
   max-width: 18ch;

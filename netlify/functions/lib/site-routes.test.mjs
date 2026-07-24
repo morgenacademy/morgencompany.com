@@ -180,7 +180,7 @@ test('het Kompas is modaal, kondigt status aan en begrenst gesprekshistorie', ()
 
 test('functionele wereldassets worden met dezelfde cacheversie geladen', () => {
   const wereldHtml = read('wereld/index.html');
-  assert.match(wereldHtml, /wereld\.css\?v=20260724-propositie/);
+  assert.match(wereldHtml, /wereld\.css\?v=20260724-propositie2/);
   assert.match(wereldHtml, /scrub-engine\.js\?v=20260724-performance/);
   assert.match(wereldHtml, /wereld\.js\?v=20260724-performance/);
   assert.match(wereldHtml, /chat\.css\?v=20260724-functional/);
@@ -196,7 +196,7 @@ test('de wereld is technisch voorbereid als root-homepage', () => {
   assert.match(redirects, /^\/wereld\/ \/ 301!$/m);
   assert.match(redirects, /^\/wereld\/index\.html \/ 301!$/m);
   assert.match(redirects, /^\/ \/wereld\/index\.html 200!$/m);
-  assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260724-propositie"/);
+  assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260724-propositie2"/);
   assert.match(wereldHtml, /src="\/wereld\/scrub-engine\.js\?v=20260724-performance"/);
   assert.match(wereldHtml, /src="\/wereld\/wereld\.js\?v=20260724-performance"/);
   assert.doesNotMatch(wereldHtml, /(?:href|src)="(?:wereld\.css|scrub-engine\.js|wereld\.js)/);
@@ -299,7 +299,7 @@ test('het plein toont de positionering als zichtbare hoofdkop', () => {
     /<p>Met trainingen, implementatie en maatwerksoftware voor organisaties\.<\/p>/
   );
   assert.doesNotMatch(wereldHtml, /<h1 class="sr-only">/);
-  assert.match(wereldCss, /body\[data-state="hub"\] \.hub-propositie/);
+  assert.match(wereldCss, /body\[data-state="dive"\] \.hub-propositie/);
 });
 
 test('de projectcopy legt de visuele beeldtaal niet uit', () => {
