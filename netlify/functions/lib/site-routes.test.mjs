@@ -180,9 +180,9 @@ test('het Kompas is modaal, kondigt status aan en begrenst gesprekshistorie', ()
 
 test('functionele wereldassets worden met dezelfde cacheversie geladen', () => {
   const wereldHtml = read('wereld/index.html');
-  assert.match(wereldHtml, /wereld\.css\?v=20260724-propositie2/);
+  assert.match(wereldHtml, /wereld\.css\?v=20260725-inspire-echt/);
   assert.match(wereldHtml, /scrub-engine\.js\?v=20260724-ambient/);
-  assert.match(wereldHtml, /wereld\.js\?v=20260724-ambient/);
+  assert.match(wereldHtml, /wereld\.js\?v=20260725-inspire-echt/);
   assert.match(wereldHtml, /chat\.css\?v=20260724-functional/);
   assert.match(wereldHtml, /chat\.js\?v=20260724-launch/);
 });
@@ -210,9 +210,9 @@ test('de wereld is technisch voorbereid als root-homepage', () => {
       '/organisatie/* /index.html 200',
     ]
   );
-  assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260724-propositie2"/);
+  assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260725-inspire-echt"/);
   assert.match(wereldHtml, /src="\/wereld\/scrub-engine\.js\?v=20260724-ambient"/);
-  assert.match(wereldHtml, /src="\/wereld\/wereld\.js\?v=20260724-ambient"/);
+  assert.match(wereldHtml, /src="\/wereld\/wereld\.js\?v=20260725-inspire-echt"/);
   assert.doesNotMatch(wereldHtml, /(?:href|src)="(?:wereld\.css|scrub-engine\.js|wereld\.js)/);
   assert.doesNotMatch(wereld, /:\s*'assets\//);
   assert.match(wereldHtml, /class="wereld-merk" href="\/"/);
@@ -228,7 +228,7 @@ test('mobiele wereldvideo’s zijn aanwezig en substantieel lichter', () => {
     ['leg-train.mp4', 'leg-train-m.mp4'],
     ['leg-implement.mp4', 'leg-implement-m.mp4'],
     ['leg-build.mp4', 'leg-build-m.mp4'],
-    ['leg-inspire.mp4', 'leg-inspire-m.mp4'],
+    ['inspire-keynote.mp4', 'inspire-keynote-m.mp4'],
   ];
   let mobileTotal = 0;
   for (const [desktop, mobile] of pairs) {
@@ -243,7 +243,7 @@ test('mobiele wereldvideo’s zijn aanwezig en substantieel lichter', () => {
   assert.ok(bytes('wereld/assets/echt/intro-poster-m.jpg') > 0);
 
   const wereld = read('wereld/wereld.js');
-  assert.equal((wereld.match(/(?:introM|diveM|legM):\s+'\/wereld\/assets\/echt\/vid\/[^']+-m\.mp4'/g) || []).length, 9);
+  assert.equal((wereld.match(/(?:introM|diveM|legM|videoM):\s+'\/wereld\/assets\/echt\/vid\/[^']+-m\.mp4'/g) || []).length, 9);
   assert.match(wereld, /poster:\s+'\/wereld\/assets\/echt\/intro-poster\.jpg'/);
   assert.match(wereld, /posterM:\s+'\/wereld\/assets\/echt\/intro-poster-m\.jpg'/);
 });
@@ -309,7 +309,7 @@ test('ambient binnenvideo en scroll-scrub nemen de videoklok niet tegelijk over'
   const ambient = block(
     wereld,
     'function startAmbient(',
-    '\n}\n\n/* ---------- Generiek eindpaneel'
+    '\n}\n\n/* ---------- Inspire: van papercraft'
   );
 
   assert.match(engine, /function ensureLoop\(\)/);
@@ -333,6 +333,47 @@ test('ambient binnenvideo en scroll-scrub nemen de videoklok niet tegelijk over'
   assert.match(ambient, /if \(\+\+pogingen < 10\) \{[\s\S]*?return;\s+\}\s+stop\(\)/);
   assert.match(ambient, /p\.catch\(\(\) => stop\(\)\)/);
   assert.match(ambient, /catch \(e\) \{\s+stop\(\);/);
+});
+
+test('Inspire kruist lui en toegankelijk van papercraft naar echt keynotebeeld', () => {
+  const wereldHtml = read('wereld/index.html');
+  const wereld = read('wereld/wereld.js');
+  const wereldCss = read('wereld/wereld.css');
+  const start = block(
+    wereld,
+    'function startInspireEcht()',
+    '\n}\n\ninspireEchtVideo.addEventListener'
+  );
+
+  assert.match(
+    wereldHtml,
+    /<video id="inspire-echt-video" muted playsinline loop preload="none"><\/video>/
+  );
+  assert.doesNotMatch(wereldHtml, /id="inspire-echt-video"[^>]+(?:src|poster)=/);
+  assert.match(wereld, /video:\s+'\/wereld\/assets\/echt\/vid\/inspire-keynote\.mp4'/);
+  assert.match(wereld, /videoM:\s+'\/wereld\/assets\/echt\/vid\/inspire-keynote-m\.mp4'/);
+  assert.match(wereld, /poster:\s+'\/docs\/company\/film-poster\.jpg'/);
+  assert.match(wereld, /label: 'Inspire',[\s\S]*?leg:\s+null,\s+legM:\s+null,/);
+  assert.match(start, /if \(reduce\) return;/);
+  assert.match(start, /inspireEchtVideo\.src = bron;\s+inspireEchtVideo\.load\(\)/);
+  assert.match(wereld, /if \(actiefGebouw === 'inspire'\) startInspireEcht\(\);\s+else startAmbient\(actiefGebouw\);/);
+  assert.match(wereld, /inspireEchtVideo\.removeAttribute\('src'\)/);
+  assert.match(wereld, /inspireEchtVideo\.removeAttribute\('poster'\)/);
+  assert.match(wereld, /if \(activeWorld\?\.id === 'inspire'\) activeWorld\.engine\?\.setScrubbing\(false\)/);
+  assert.match(wereldCss, /\.inspire-echt\s*\{[^}]*z-index: 15/s);
+  assert.match(
+    wereldCss,
+    /@media \(max-width: 860px\) and \(orientation: portrait\)[\s\S]*?\.inspire-echt video\s*\{[^}]*object-fit: contain/s
+  );
+  assert.match(wereldCss, /prefers-reduced-motion: reduce[\s\S]*?\.inspire-echt \{ transition: none;/);
+
+  const desktop = bytes('wereld/assets/echt/vid/inspire-keynote.mp4');
+  const mobile = bytes('wereld/assets/echt/vid/inspire-keynote-m.mp4');
+  const legacy = bytes('docs/company/Filmpje Harmen Daan Karin.mp4');
+  assert.ok(desktop < legacy, 'de wereldvariant moet lichter zijn dan de legacy-hero');
+  assert.ok(desktop < 3_500_000, 'de desktop-keynotevariant is te zwaar');
+  assert.ok(mobile < desktop, 'de mobiele keynotevariant moet lichter zijn');
+  assert.ok(mobile < 2_000_000, 'de mobiele keynotevariant is te zwaar');
 });
 
 test('het plein toont de positionering als zichtbare hoofdkop', () => {

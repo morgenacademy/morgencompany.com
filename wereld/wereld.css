@@ -329,6 +329,42 @@ body[data-state="dive"] .hub-propositie {
 #verhaal { display: none; }
 body[data-state="verhaal"] #verhaal { display: block; }
 
+/* Inspire maakt na de papercraft-dive de stap naar echt keynotebeeld.
+   De laag staat boven de engine-scene (z10), maar onder copy, hint en acties. */
+.inspire-echt {
+  position: fixed;
+  inset: 0;
+  z-index: 15;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--w-bg);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .8s ease, visibility 0s linear .8s;
+}
+.inspire-echt.is-zichtbaar {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity .8s ease;
+}
+.inspire-echt video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: brightness(.82) saturate(.94);
+}
+.inspire-echt::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(12, 8, 24, .82) 0%, rgba(12, 8, 24, .54) 32%, rgba(12, 8, 24, .08) 68%),
+    linear-gradient(0deg, rgba(12, 8, 24, .5) 0%, transparent 42%);
+}
+
 .exit-knop {
   position: fixed;
   top: 68px;
@@ -690,9 +726,30 @@ body.ticker-actief .sw-hint { bottom: calc(84px + env(safe-area-inset-bottom)); 
   .einde-lijst--tiles li.is-link > a { min-height: 92px; padding: 14px 10px; }
 }
 
+@media (max-width: 860px) and (orientation: portrait) {
+  .inspire-echt video {
+    inset: clamp(108px, 14dvh, 124px) 0 auto;
+    width: 100%;
+    height: auto;
+    max-height: 48dvh;
+    object-fit: contain;
+    filter: brightness(.9) saturate(.94);
+  }
+  .inspire-echt::after {
+    background:
+      linear-gradient(0deg, var(--w-bg) 8%, rgba(12, 8, 24, .94) 34%, rgba(12, 8, 24, .18) 63%, rgba(12, 8, 24, .32) 100%);
+  }
+  .einde--tegels {
+    top: 64%;
+    bottom: auto;
+    transform: translate(-50%, calc(-50% + 6px));
+  }
+  .einde--tegels.is-zichtbaar { transform: translate(-50%, -50%); }
+}
+
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
-  .stage, .einde, .knop-ghost, .knop-accent, .hotspot, .hub-propositie { transition: none; }
+  .stage, .einde, .knop-ghost, .knop-accent, .hotspot, .hub-propositie, .inspire-echt { transition: none; }
   .hotspot-dot { animation: none; }
 }
 

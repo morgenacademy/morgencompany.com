@@ -59,7 +59,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&amp;display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="/wereld/wereld.css?v=20260724-propositie2">
+  <link rel="stylesheet" href="/wereld/wereld.css?v=20260725-inspire-echt">
   <link rel="stylesheet" href="/docs/academy-chat/chat.css?v=20260724-functional">
 </head>
 <body data-state="boot">
@@ -89,6 +89,11 @@
   <!-- Binnen-verhaal: scroll-gescrubd via de scrub-engine -->
   <div id="verhaal">
     <div id="world"></div>
+    <!-- Inspire kruist hier van de papercraftwereld naar echt keynotebeeld.
+         Bron en poster worden pas door wereld.js gezet zodra Inspire opent. -->
+    <div id="inspire-echt" class="inspire-echt" aria-hidden="true">
+      <video id="inspire-echt-video" muted playsinline loop preload="none"></video>
+    </div>
     <button id="exit-verhaal" class="knop-ghost exit-knop" type="button">Terug naar plein</button>
     <aside id="verhaal-einde" class="einde" aria-label="Einde van het verhaal">
       <!-- Generiek eindpaneel: wordt per gebouw gevuld door wereld.js -->
@@ -136,7 +141,7 @@
   </noscript>
 
   <script src="/wereld/scrub-engine.js?v=20260724-ambient"></script>
-  <script src="/wereld/wereld.js?v=20260724-ambient"></script>
+  <script src="/wereld/wereld.js?v=20260725-inspire-echt"></script>
   <script type="module" src="/docs/academy-chat/chat.js?v=20260724-launch"></script>
 </body>
 </html>
