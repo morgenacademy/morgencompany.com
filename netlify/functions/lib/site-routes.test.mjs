@@ -79,6 +79,15 @@ test('alle plekken op het wereldplein hebben een transparant klikvlak', () => {
   assert.match(wereldCss, /\.hotspot-map path\s*\{[^}]*pointer-events: fill/s);
 });
 
+test('de wereld biedt een rustige route naar de overzichtspagina', () => {
+  const wereldHtml = read('wereld/index.html');
+  assert.match(
+    wereldHtml,
+    /class="wereld-huidige" href="\/organisatie\/">Liever een overzicht\?<\/a>/
+  );
+  assert.doesNotMatch(wereldHtml, />Bekijk het aanbod<\/a>/);
+});
+
 test('kennismakingslinks blijven na de wereld-omschakeling bereikbaar', () => {
   assert.doesNotMatch(read('docs/academy-chat/chat.js'), /href="\/#home-aanvraag"/);
   assert.doesNotMatch(read('netlify/functions/lib/kb.mjs'), /href: '\/#home-aanvraag'/);
