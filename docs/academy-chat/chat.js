@@ -17,7 +17,6 @@ const STARTERS = [
   'Ons team wil meer uit AI halen.',
   'We doen al veel met AI, nu als team borgen.',
   'We willen iets laten bouwen of een proces automatiseren.',
-  'We willen projectmanagement slimmer met AI.',
 ];
 
 const esc = (s) =>
