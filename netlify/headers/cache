@@ -1,0 +1,17 @@
+/wereld/assets/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+/wereld/wereld.css
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=604800
+
+/wereld/wereld.js
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=604800
+
+/wereld/scrub-engine.js
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=604800
+
+/docs/academy-chat/chat.css
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=604800
+
+/docs/academy-chat/chat.js
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=604800

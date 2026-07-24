@@ -14,10 +14,13 @@
 
 const STARTERS = [
   'We willen zelf een tool of prototype bouwen.',
-  'Ons team wil meer uit Claude Code halen.',
-  'We willen een proces laten automatiseren of iets laten bouwen.',
-  'We willen projectmanagement slimmer aanpakken met AI.',
+  'Ons team wil meer uit AI halen.',
+  'We doen al veel met AI, nu als team borgen.',
+  'We willen iets laten bouwen of een proces automatiseren.',
 ];
+const MAX_HISTORY_MESSAGES = 20;
+const MAX_MESSAGE_LENGTH = 2000;
+const CHAT_TIMEOUT_MS = 60000;
 
 const esc = (s) =>
   String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -40,7 +43,9 @@ function itemHtml(item) {
     return `<div class="ac-msg ac-msg-user">${esc(item.text)}</div>`;
   }
   if (item.type === 'bot') {
-    return `<div class="ac-msg ac-msg-bot">${md(item.text)}</div>`;
+    return `<div class="ac-msg ac-msg-bot">${
+      item.text ? md(item.text) : '<span class="ac-typing" role="status">Het Kompas denkt mee…</span>'
+    }</div>`;
   }
   if (item.type === 'card') return cardHtml(item.card);
   if (item.type === 'fallback') return fallbackHtml();
@@ -101,13 +106,14 @@ function mailtoHref(card) {
 }
 
 function cardHtml(card) {
+  const heeftFormulierHandoff = card.samenvatting && String(card.href).startsWith('/');
   const vervolg = (card.vervolg || [])
     .map(
       (v) =>
-        `<div class="ac-followup" onclick="location.href='${v.href}'">
+        `<a class="ac-followup" href="${esc(v.href)}">
            <div class="ac-followup-title">${esc(v.training)}</div>
            <div class="ac-followup-desc">${esc(v.description)}</div>
-         </div>`
+         </a>`
     )
     .join('');
 
@@ -123,7 +129,7 @@ function cardHtml(card) {
         <a href="${card.href}" class="ac-btn ac-btn-primary">${esc(card.ctaLabel || 'Vraag dit aan')}</a>
         <a href="${mailtoHref(card)}" class="ac-btn ac-btn-secondary">Stuur ons een bericht</a>
       </div>
-      ${card.samenvatting ? '<p class="ac-card-handoff">Je verhaal staat alvast in het aanvraagformulier.</p>' : ''}
+      ${heeftFormulierHandoff ? '<p class="ac-card-handoff">Je verhaal staat alvast in het aanvraagformulier.</p>' : ''}
       ${vervolg ? `<div class="ac-followups"><p class="ac-followups-intro">Logische vervolgstappen</p><div class="ac-followups-grid">${vervolg}</div></div>` : ''}
     </div>`;
 }
@@ -133,7 +139,7 @@ function fallbackHtml() {
     <div class="ac-fallback">
       <p>Het Kompas is even niet bereikbaar. Je kunt direct een gesprek aanvragen of ons mailen. We reageren meestal binnen een werkdag.</p>
       <div class="ac-card-cta">
-        <a href="/#home-aanvraag" class="ac-btn ac-btn-primary">Plan een kennismakingsgesprek</a>
+        <a href="/organisatie/#home-aanvraag" class="ac-btn ac-btn-primary">Plan een kennismakingsgesprek</a>
         <a href="mailto:totmorgen@morgenacademy.nl" class="ac-btn ac-btn-secondary">Stuur ons een bericht</a>
       </div>
     </div>`;
@@ -145,11 +151,11 @@ function initKompas(mount) {
   function render() {
     mount.innerHTML = `
       <div class="ac-chat">
-        <div class="ac-chat-log"></div>
+        <div class="ac-chat-log" role="log" aria-live="polite" aria-relevant="additions text" aria-busy="${state.busy}"></div>
         ${state.log.length === 0 ? renderStarters() : ''}
         <div class="ac-input-row">
-          <input class="ac-input" type="text" placeholder="Stel je vraag of beschrijf je situatie…" ${state.busy ? 'disabled' : ''} />
-          <button class="ac-send" ${state.busy ? 'disabled' : ''}>Verstuur</button>
+          <input class="ac-input" type="text" maxlength="${MAX_MESSAGE_LENGTH}" aria-label="Stel je vraag of beschrijf je situatie" placeholder="Stel je vraag of beschrijf je situatie…" ${state.busy ? 'disabled' : ''} />
+          <button class="ac-send" type="button" ${state.busy ? 'disabled' : ''}>Verstuur</button>
         </div>
       </div>`;
     drawLog();
@@ -158,7 +164,7 @@ function initKompas(mount) {
 
   function renderStarters() {
     return `<div class="ac-starters">${STARTERS.map(
-      (s, i) => `<button class="ac-starter" data-starter="${i}">${esc(s)}</button>`
+      (s, i) => `<button class="ac-starter" type="button" data-starter="${i}">${esc(s)}</button>`
     ).join('')}</div>`;
   }
 
@@ -166,7 +172,16 @@ function initKompas(mount) {
     const log = mount.querySelector('.ac-chat-log');
     if (!log) return;
     log.innerHTML = state.log.map(itemHtml).join('');
-    log.scrollTop = log.scrollHeight;
+    requestAnimationFrame(() => {
+      const panel = mount.closest('.kompas-paneel');
+      if (panel) panel.scrollTop = panel.scrollHeight;
+      else log.lastElementChild?.scrollIntoView({ block: 'nearest' });
+    });
+  }
+
+  function trimMessages() {
+    state.messages = state.messages.slice(-MAX_HISTORY_MESSAGES);
+    if (state.messages[0]?.role === 'assistant') state.messages.shift();
   }
 
   function wire() {
@@ -185,12 +200,13 @@ function initKompas(mount) {
   }
 
   async function submit(text) {
-    const value = (text || '').trim();
+    const value = (text || '').trim().slice(0, MAX_MESSAGE_LENGTH);
     if (!value || state.busy) return;
 
     state.touched = true;
     state.log.push({ type: 'user', text: value });
     state.messages.push({ role: 'user', content: value });
+    trimMessages();
     state.busy = true;
     render();
 
@@ -212,7 +228,8 @@ function initKompas(mount) {
         const i = state.log.indexOf(botItem);
         if (i !== -1) state.log.splice(i, 1);
       } else {
-        state.messages.push({ role: 'assistant', content: botItem.text });
+        state.messages.push({ role: 'assistant', content: botItem.text.slice(0, MAX_MESSAGE_LENGTH) });
+        trimMessages();
       }
       if (errored) state.log.push({ type: 'fallback' });
       state.busy = false;
@@ -221,39 +238,56 @@ function initKompas(mount) {
   }
 
   async function streamReply(botItem) {
-    const res = await fetch('/api/chat', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ messages: state.messages }),
-    });
-    if (!res.ok || !res.body) throw new Error('chat unavailable');
+    const controller = new AbortController();
+    let timeout;
+    const bewaakVerbinding = () => {
+      window.clearTimeout(timeout);
+      timeout = window.setTimeout(() => controller.abort(), CHAT_TIMEOUT_MS);
+    };
 
-    const reader = res.body.getReader();
-    const decoder = new TextDecoder();
-    let buffer = '';
+    bewaakVerbinding();
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ messages: state.messages }),
+        signal: controller.signal,
+      });
+      if (!res.ok || !res.body) throw new Error('chat unavailable');
 
-    for (;;) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      buffer += decoder.decode(value, { stream: true });
-      const frames = buffer.split('\n\n');
-      buffer = frames.pop();
-      for (const frame of frames) {
-        const line = frame.trim();
-        if (!line.startsWith('data:')) continue;
-        const evt = JSON.parse(line.slice(5).trim());
-        if (evt.type === 'text') {
-          botItem.text += evt.text;
-          drawLog();
-        } else if (evt.type === 'advies') {
-          state.log.push({ type: 'card', card: evt.card });
-          saveHandoff(evt.card);
-          prefillKompasForms(); // formulier op dezelfde pagina meteen voorinvullen
-          drawLog();
-        } else if (evt.type === 'error') {
-          throw new Error(evt.message || 'chat error');
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        bewaakVerbinding();
+        buffer += decoder.decode(value, { stream: true });
+        const frames = buffer.split('\n\n');
+        buffer = frames.pop();
+        for (const frame of frames) {
+          const line = frame.trim();
+          if (!line.startsWith('data:')) continue;
+          const evt = JSON.parse(line.slice(5).trim());
+          if (evt.type === 'text') {
+            botItem.text += evt.text;
+            drawLog();
+          } else if (evt.type === 'advies') {
+            state.log.push({ type: 'card', card: evt.card });
+            saveHandoff(evt.card);
+            prefillKompasForms(); // formulier op dezelfde pagina meteen voorinvullen
+            document.dispatchEvent(new CustomEvent('kompas:advies', {
+              detail: { training: evt.card?.training || '' },
+            }));
+            drawLog();
+          } else if (evt.type === 'error') {
+            throw new Error(evt.message || 'chat error');
+          }
         }
       }
+    } finally {
+      window.clearTimeout(timeout);
     }
   }
 

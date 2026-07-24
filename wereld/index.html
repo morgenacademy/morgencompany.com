@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>AI-training, implementatie en maatwerk | MORGEN</title>
+  <meta name="description" content="Morgen helpt organisaties AI toepassen in werk en processen met praktische trainingen, implementatiebegeleiding en maatwerksoftware.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="theme-color" content="#0C0818">
+
+  <link rel="canonical" href="https://morgencompany.com/">
+  <link rel="icon" href="/favicon-company.svg" type="image/svg+xml">
+
+  <meta property="og:locale" content="nl_NL">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="MORGEN">
+  <meta property="og:title" content="MORGEN: AI-training, implementatie en maatwerk">
+  <meta property="og:description" content="Ontdek hoe Morgen AI laat werken in teams en processen met training, implementatie en maatwerksoftware.">
+  <meta property="og:url" content="https://morgencompany.com/">
+  <meta property="og:image" content="https://morgencompany.com/wereld/assets/echt/share.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="De wereld van Morgen met Train, Implement, Build en Inspire">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MORGEN: AI-training, implementatie en maatwerk">
+  <meta name="twitter:description" content="Ontdek hoe Morgen AI laat werken in teams en processen met training, implementatie en maatwerksoftware.">
+  <meta name="twitter:image" content="https://morgencompany.com/wereld/assets/echt/share.jpg">
+  <meta name="twitter:image:alt" content="De wereld van Morgen met Train, Implement, Build en Inspire">
+
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://morgencompany.com/#organization","name":"Morgen Company","legalName":"Harmen van Heist B.V.","url":"https://morgencompany.com/","logo":{"@type":"ImageObject","url":"https://morgencompany.com/favicon-company.svg"},"image":"https://morgencompany.com/wereld/assets/echt/share.jpg","description":"Morgen helpt organisaties AI toepassen in werk en processen met praktische trainingen, implementatiebegeleiding en maatwerksoftware.","email":"totmorgen@morgenacademy.nl","sameAs":["https://www.linkedin.com/company/morgencompany","https://www.youtube.com/@MorgenAcademy","https://www.instagram.com/morgenacademy.nl/"]},{"@type":"WebSite","@id":"https://morgencompany.com/#website","url":"https://morgencompany.com/","name":"MORGEN","publisher":{"@id":"https://morgencompany.com/#organization"},"inLanguage":"nl-NL"}]}
+  </script>
+
+  <script>
+    if (location.hostname === 'morgencompany.com' || location.hostname === 'www.morgencompany.com') {
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function(){ window.dataLayer.push(arguments); };
+      window.gtag('js', new Date());
+      window.gtag('config', 'G-5F0ELV239K');
+      const laadTracking = function(){
+        const ga = document.createElement('script');
+        ga.async = true;
+        ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-5F0ELV239K';
+        document.head.appendChild(ga);
+        const ahrefs = document.createElement('script');
+        ahrefs.async = true;
+        ahrefs.src = 'https://analytics.ahrefs.com/analytics.js';
+        ahrefs.dataset.key = 'jQ2PizbnpUs2qeoKjvs+Nw';
+        document.head.appendChild(ahrefs);
+      };
+      if ('requestIdleCallback' in window) window.requestIdleCallback(laadTracking, { timeout: 2500 });
+      else window.addEventListener('load', laadTracking, { once: true });
+    }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&amp;display=swap" rel="stylesheet"></noscript>
+  <link rel="stylesheet" href="/wereld/wereld.css?v=20260724-propositie2">
+  <link rel="stylesheet" href="/docs/academy-chat/chat.css?v=20260724-functional">
+</head>
+<body data-state="boot">
+
+  <!-- Minimale nav-balk, boven alle states -->
+  <nav class="wereld-nav" aria-label="Hoofdnavigatie">
+    <a class="wereld-merk" href="/" aria-label="Morgen wereld, terug naar start">MORGEN<span class="wereld-merk-punt" aria-hidden="true">.</span></a>
+    <a class="wereld-huidige" href="/organisatie/">Snel overzicht</a>
+  </nav>
+
+  <!-- Hub: het plein met de vier gebouwen -->
+  <section id="hub" class="stage" tabindex="-1" aria-label="Het Morgen-plein">
+    <img id="hub-still" class="hub-still" alt="Overzicht van het Morgen-plein met vier gebouwen">
+    <div id="hotspots" class="hotspots"></div>
+    <div class="hub-propositie">
+      <h1>Maak AI onderdeel van het dagelijkse werk.</h1>
+      <p>Met trainingen, implementatie en maatwerksoftware voor organisaties.</p>
+    </div>
+  </section>
+
+  <!-- Cinematics: intro-vlucht en dive delen 1 video-element -->
+  <section id="cine" class="stage" aria-label="Vlucht door de wereld">
+    <video id="cine-video" muted playsinline preload="auto"></video>
+    <button id="skip-intro" class="knop-ghost skip-knop" type="button">Sla intro over</button>
+  </section>
+
+  <!-- Binnen-verhaal: scroll-gescrubd via de scrub-engine -->
+  <div id="verhaal">
+    <div id="world"></div>
+    <button id="exit-verhaal" class="knop-ghost exit-knop" type="button">Terug naar plein</button>
+    <aside id="verhaal-einde" class="einde" aria-label="Einde van het verhaal">
+      <!-- Generiek eindpaneel: wordt per gebouw gevuld door wereld.js -->
+      <p class="einde-eyebrow" id="einde-eyebrow"></p>
+      <h2 class="einde-titel" id="einde-titel"></h2>
+      <ul class="einde-lijst" id="einde-lijst"></ul>
+      <div class="einde-acties">
+        <a class="knop-accent" id="einde-cta" href="/academy/"></a>
+        <a class="knop-ghost" id="einde-cta2" href="#" hidden></a>
+        <button class="knop-ghost" id="einde-terug" type="button">Terug naar plein</button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- het Kompas: opent als vak onderaan (bij de brug) vanaf de hub -->
+  <aside id="kompas-paneel" class="kompas-paneel" role="dialog" aria-modal="true" aria-labelledby="kompas-titel" aria-describedby="kompas-sub" hidden>
+    <button id="kompas-sluit" class="kompas-sluit" type="button" aria-label="Sluit het Kompas">&#215;</button>
+    <p class="kompas-eyebrow">Wegwijzer</p>
+    <h2 class="kompas-titel" id="kompas-titel">Waar kunnen we je mee helpen?</h2>
+    <p class="kompas-sub" id="kompas-sub">Beschrijf je situatie, wij wijzen je de eerste stap.</p>
+    <div data-kompas></div>
+  </aside>
+
+  <!-- Logo-ticker, loopt onderin tijdens het Projecten-verhaal -->
+  <div id="wereld-ticker" class="wereld-ticker" aria-label="Klanten en projecten" hidden>
+    <div class="logo-band">
+      <div class="logo-track" id="ticker-track"></div>
+    </div>
+  </div>
+
+  <noscript>
+    <div class="noscript-melding">
+      <div>
+        <h2>Train. Implement. Build. Inspire.</h2>
+        <p>Praktische AI-training, begeleiding bij implementatie en maatwerksoftware voor werk en processen.</p>
+        <p>
+          <a href="/academy/">Bekijk trainingen</a>
+          <a href="/consultancy/">Bekijk consultancy</a>
+          <a href="/technology/">Bekijk maatwerk</a>
+          <a href="/inspiratie/">Bekijk inspiratie</a>
+        </p>
+        <p>Deze wereld heeft JavaScript nodig. Je kunt ook direct <a href="/organisatie/#aanbod">het aanbod bekijken</a>.</p>
+      </div>
+    </div>
+  </noscript>
+
+  <script src="/wereld/scrub-engine.js?v=20260724-ambient"></script>
+  <script src="/wereld/wereld.js?v=20260724-ambient"></script>
+  <script type="module" src="/docs/academy-chat/chat.js?v=20260724-launch"></script>
+</body>
+</html>

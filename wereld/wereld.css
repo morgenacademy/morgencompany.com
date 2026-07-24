@@ -1,0 +1,710 @@
+/* ============================================================
+   Morgen-wereld (PoC), eigen styling bovenop de scrub-engine.
+   Donker-first: #0C0818, paars #5B2D8E / #9B6FCF, accent #D8FE56.
+   ============================================================ */
+
+:root {
+  --w-bg: #0C0818;
+  --w-paars: #5B2D8E;
+  --w-paars-licht: #9B6FCF;
+  --w-accent: #D8FE56;
+  --w-ink: #F4F0FA;
+  --w-ink-zacht: #BCAEDB;
+
+  /* Vars die de Kompas-widget (docs/academy-chat/chat.css + chat.js) verwacht,
+     hier gemapt op de Morgen-huisstijl zodat de widget standalone klopt. */
+  --purple: #5B2D8E;
+  --purple-light: #9B6FCF;
+  --accent: #D8FE56;
+  --pink: #D8FE56;
+  --white: #FFFFFF;
+  --text-primary: #F0ECF5;
+  --text-secondary: #D8CCEC;
+  --text-muted: #7A6B8E;
+  --bg-dark: #0C0818;
+  --glass-border: rgba(255, 255, 255, .18);
+}
+
+/* Theming van de scrub-engine (unlayered, wint van de @layer sw defaults) */
+:root, .sw-root {
+  --sw-bg: #0C0818;
+  --sw-ink: #F4F0FA;
+  --sw-ink-soft: #BCAEDB;
+  --sw-accent: #D8FE56;
+  --sw-font-display: 'Barlow', system-ui, sans-serif;
+  --sw-font-body: 'Barlow', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+html, body {
+  margin: 0;
+  background: var(--w-bg);
+  color: var(--w-ink);
+  font-family: 'Barlow', system-ui, sans-serif;
+}
+
+/* Buiten het binnen-verhaal mag de pagina niet scrollen */
+body:not([data-state="verhaal"]) { overflow: hidden; height: 100vh; }
+
+/* ---------- Nav-balk (boven alle states) ---------- */
+.wereld-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px clamp(18px, 4vw, 48px);
+  pointer-events: none;
+}
+.wereld-nav a { pointer-events: auto; }
+.wereld-merk {
+  font-weight: 900;
+  font-size: 1.35rem;
+  letter-spacing: .04em;
+  color: var(--w-ink);
+  text-decoration: none;
+  text-shadow: 0 2px 18px rgba(12, 8, 24, .9);
+}
+.wereld-merk-punt { color: var(--w-accent); }
+.wereld-huidige {
+  font-weight: 600;
+  font-size: .9rem;
+  color: var(--w-ink);
+  text-decoration: none;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(244, 240, 250, .3);
+  background: rgba(12, 8, 24, .5);
+  backdrop-filter: blur(8px);
+  transition: border-color .25s, box-shadow .25s;
+}
+.wereld-huidige:hover, .wereld-huidige:focus-visible {
+  border-color: var(--w-accent);
+  box-shadow: 0 0 0 3px rgba(91, 45, 142, .45);
+}
+body[data-state="boot"] .wereld-huidige,
+body[data-state="dive"] .wereld-huidige,
+body[data-state="verhaal"] .wereld-huidige {
+  display: none;
+}
+
+/* ---------- Gedeelde knoppen ---------- */
+.knop-ghost {
+  font: 600 .9rem 'Barlow', system-ui, sans-serif;
+  color: var(--w-ink);
+  background: rgba(12, 8, 24, .55);
+  border: 1px solid rgba(244, 240, 250, .3);
+  border-radius: 999px;
+  padding: 10px 20px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: border-color .25s, box-shadow .25s, transform .2s;
+  text-decoration: none;
+}
+.knop-ghost:hover, .knop-ghost:focus-visible {
+  border-color: var(--w-accent);
+  box-shadow: 0 0 0 3px rgba(91, 45, 142, .45);
+  transform: translateY(-1px);
+}
+.knop-accent {
+  display: inline-block;
+  font: 700 .95rem 'Barlow', system-ui, sans-serif;
+  color: #0C0818;
+  background: var(--w-accent);
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 24px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform .2s, box-shadow .25s;
+}
+.knop-accent:hover, .knop-accent:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(216, 254, 86, .25);
+}
+
+/* ---------- Fullscreen states ---------- */
+.stage {
+  position: fixed;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .6s ease, visibility 0s linear .6s;
+}
+
+/* Hub zichtbaar in hub-state en (als onderlaag) tijdens de dive.
+   Geen fade-IN: de hub staat meteen vol onder de cine, zodat alleen de
+   video eroverheen uitfadet (schone dissolve i.p.v. een donkere dip waar
+   beide lagen half-transparant zijn). Uitfaden gebeurt wel via .stage. */
+body[data-state="hub"] #hub,
+body[data-state="dive"] #hub {
+  opacity: 1;
+  visibility: visible;
+  transition: none;
+}
+#hub { z-index: 30; background: radial-gradient(80% 60% at 50% 30%, rgba(91, 45, 142, .35), var(--w-bg) 75%); outline: none; }
+#cine { z-index: 40; background: var(--w-bg); }
+
+/* Cine fade pas in zodra de video echt beeld geeft. .6s = gelijk aan de
+   hub-fade, zodat de dive-inzoom net zo zacht overvloeit als intro->hub. */
+body[data-state="intro"] #cine,
+body[data-state="dive"] #cine {
+  visibility: visible;
+  transition: opacity .6s ease;
+}
+body[data-state="intro"] #cine { opacity: 1; }
+body[data-state="intro"] #cine.is-playing,
+body[data-state="dive"] #cine.is-playing { opacity: 1; }
+
+#cine-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: var(--w-bg);
+}
+
+.skip-knop {
+  position: absolute;
+  right: clamp(18px, 4vw, 48px);
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  z-index: 5;
+  display: none;
+}
+body[data-state="intro"] .skip-knop { display: block; }
+
+/* ---------- Hub ---------- */
+.hub-still {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hotspots { position: absolute; inset: 0; }
+.hub-propositie {
+  position: absolute;
+  left: clamp(22px, 5vw, 72px);
+  bottom: calc(clamp(20px, 4vw, 48px) + env(safe-area-inset-bottom));
+  z-index: 3;
+  width: min(620px, calc(100vw - 44px));
+  color: var(--w-ink);
+  text-shadow: 0 3px 22px rgba(12, 8, 24, .98);
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity .35s ease, transform .35s ease;
+  pointer-events: none;
+}
+.hub-propositie::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -28px -44px -30px;
+  background: radial-gradient(ellipse at 25% 60%, rgba(12, 8, 24, .9), rgba(12, 8, 24, 0) 72%);
+  pointer-events: none;
+}
+body[data-state="dive"] .hub-propositie {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+}
+.hub-propositie h1 {
+  max-width: 18ch;
+  margin: 0;
+  font-size: clamp(1.65rem, 3vw, 2.9rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -.025em;
+}
+.hub-propositie p {
+  margin: 10px 0 0;
+  max-width: 54ch;
+  color: var(--w-ink-zacht);
+  font-size: clamp(.92rem, 1.35vw, 1.15rem);
+  font-weight: 500;
+  line-height: 1.35;
+}
+.hotspot-map {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.hotspot-map path {
+  fill: rgba(216, 254, 86, .001);
+  pointer-events: fill;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.hotspot {
+  position: absolute;
+  z-index: 1;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font: 700 .95rem 'Barlow', system-ui, sans-serif;
+  letter-spacing: .02em;
+  color: var(--w-ink);
+  background: rgba(12, 8, 24, .55);
+  border: 1.5px solid rgba(216, 254, 86, .35);
+  border-radius: 999px;
+  padding: 10px 18px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: border-color .25s, box-shadow .25s, transform .2s;
+}
+.hotspot:hover, .hotspot:focus-visible, .hotspot.is-object-hovered {
+  border-color: var(--w-accent);
+  box-shadow:
+    0 0 0 5px rgba(91, 45, 142, .5),
+    0 14px 44px rgba(12, 8, 24, .85);
+  transform: translate(-50%, -50%) scale(1.05);
+  outline: none;
+}
+.hotspot-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--w-accent);
+  box-shadow: 0 0 12px rgba(216, 254, 86, .8);
+  animation: hotspot-puls 2.2s ease-in-out infinite;
+}
+@keyframes hotspot-puls {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.35); opacity: .7; }
+}
+.hotspot.is-disabled { cursor: default; opacity: .6; }
+.hotspot.is-disabled .hotspot-dot { background: var(--w-paars-licht); box-shadow: none; animation: none; }
+.hotspot.is-disabled:hover, .hotspot.is-disabled:focus-visible {
+  transform: translate(-50%, -50%);
+  border-color: rgba(155, 111, 207, .5);
+  box-shadow: 0 0 0 4px rgba(91, 45, 142, .35);
+}
+/* Secundaire plekken (Projecten, Over Morgen., Kompas): kleiner en stiller,
+   de vier hoofdgebouwen houden het volle geel-groene accent. */
+.hotspot.is-sub {
+  font-size: .8rem;
+  font-weight: 600;
+  gap: 7px;
+  padding: 7px 13px;
+  border-color: rgba(155, 111, 207, .4);
+  background: rgba(12, 8, 24, .45);
+}
+.hotspot.is-sub .hotspot-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--w-paars-licht);
+  box-shadow: 0 0 8px rgba(155, 111, 207, .7);
+  animation: none;
+}
+.hotspot.is-sub:hover, .hotspot.is-sub:focus-visible, .hotspot.is-sub.is-object-hovered {
+  border-color: var(--w-accent);
+}
+.hotspot-badge {
+  font: 600 .68rem 'Barlow', system-ui, sans-serif;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--w-ink-zacht);
+  background: rgba(91, 45, 142, .4);
+  border-radius: 999px;
+  padding: 3px 9px;
+}
+/* ---------- Binnen-verhaal ---------- */
+#verhaal { display: none; }
+body[data-state="verhaal"] #verhaal { display: block; }
+
+.exit-knop {
+  position: fixed;
+  top: 68px;
+  left: clamp(18px, 4vw, 48px);
+  z-index: 150;
+}
+
+/* Eind-paneel: verschijnt tegen het einde van de sectie */
+.einde {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -46%);
+  z-index: 130;
+  width: min(92vw, 540px);
+  max-height: calc(100vh - 96px);
+  max-height: calc(100dvh - 96px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;   /* het paneel zelf scrollt niet; alleen de lijst */
+  padding: clamp(22px, 4vw, 36px);
+  border-radius: 28px;
+  background: rgba(12, 8, 24, .72);
+  border: 1px solid rgba(155, 111, 207, .35);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 30px 80px rgba(12, 8, 24, .7);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .5s ease, transform .5s ease, visibility 0s linear .5s;
+}
+.einde.is-zichtbaar {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, -50%);
+  transition: opacity .5s ease, transform .5s ease;
+}
+.einde-eyebrow {
+  margin: 0;
+  flex: 0 0 auto;
+  font-weight: 700;
+  font-size: .8rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--w-accent);
+}
+.einde-titel {
+  margin: 8px 0 0;
+  flex: 0 0 auto;
+  font-weight: 900;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  line-height: 1.05;
+}
+.einde-lijst {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0 4px 0 0;
+  display: grid;
+  gap: 12px;
+  /* Compact scrollkader: toont ~4 kaarten (even groot als de Build/Implement-
+     panelen), de rest scrollt hierbinnen. Eyebrow/titel blijven boven, de
+     CTA-rij onder. Het buitenste paneel groeit dus niet mee met een lange lijst. */
+  max-height: min(40vh, 292px);   /* ~4 kaarten = zelfde hoogte als Build/Implement */
+  overflow-y: auto;
+}
+.einde-lijst li {
+  display: grid;
+  gap: 2px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(91, 45, 142, .22);
+  border: 1px solid rgba(155, 111, 207, .25);
+}
+/* Klikbare kaart: hele li is een link */
+.einde-lijst li.is-link { padding: 0; }
+.einde-lijst li.is-link > a {
+  display: grid;
+  gap: 2px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  color: inherit;
+  text-decoration: none;
+  transition: background .2s, border-color .2s;
+}
+.einde-lijst li.is-link > a::after {
+  content: '→';
+  position: absolute;
+  right: 14px;
+  opacity: 0;
+  transition: opacity .2s, transform .2s;
+  color: var(--w-accent);
+}
+.einde-lijst li.is-link { position: relative; }
+.einde-lijst li.is-link:hover,
+.einde-lijst li.is-link:focus-within {
+  background: rgba(91, 45, 142, .4);
+  border-color: rgba(216, 254, 86, .5);
+}
+.einde-lijst li.is-link:hover > a::after,
+.einde-lijst li.is-link:focus-within > a::after { opacity: 1; }
+.einde-lijst li.is-placeholder { opacity: .6; }
+.einde-lijst li.is-placeholder .einde-badge {
+  font-size: .64rem; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--w-ink-zacht);
+}
+.einde-lijst strong { font-weight: 700; font-size: .98rem; }
+.einde-lijst span { font-size: .88rem; color: var(--w-ink-zacht); }
+
+/* Showcase-grid (Projecten): 2 kaarten naast elkaar met preview-foto */
+.einde--breed { width: min(94vw, 720px); }
+.einde-lijst--grid {
+  grid-template-columns: 1fr 1fr;
+  /* Showcase-kaarten zijn hoger; toon ~2 rijen en scroll de rest. */
+  max-height: min(56vh, 470px);
+}
+.einde-thumb {
+  display: block;
+  height: 84px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  background-color: rgba(155, 111, 207, .2);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+/* Logo-preview netjes passend i.p.v. bijgesneden */
+.einde-lijst--grid li:first-child .einde-thumb {
+  background-size: contain;
+  background-color: rgba(255, 255, 255, .06);
+}
+
+/* Inspire = uitzondering: geen kader/kop/CTA, alleen 4 zwevende tegels.
+   'Terug naar het plein' staat al los linksboven (#exit-verhaal). */
+.einde--tegels {
+  background: none;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  padding: 0;
+  width: min(96vw, 940px);
+  max-height: none;
+  overflow: visible;
+  top: 64%;   /* iets lager: onder de spreker i.p.v. er middenvoor */
+}
+.einde--tegels .einde-eyebrow,
+.einde--tegels .einde-titel,
+.einde--tegels .einde-acties { display: none; }
+.einde--tegels .einde-lijst { margin: 0; }
+/* Zodra de tegels zweven: de engine-sectiecopy (titel + eigen CTA) wegfaden,
+   zodat er écht alleen 4 tegels overblijven. */
+body.tegels-zichtbaar #world .sw-copy {
+  /* De engine stuurt de opacity per frame aan; visibility raakt ze niet aan,
+     dus dat verbergt de sectiecopy betrouwbaar zodra de tegels zweven. */
+  visibility: hidden !important;
+  pointer-events: none;
+}
+
+/* Icoon-tegels: 4 semi-transparante glas-vierkanten naast elkaar, gecentreerd */
+.einde-lijst--tiles {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  max-height: none;
+  overflow: visible;
+  padding: 0;
+}
+.einde-lijst--tiles li { padding: 0; background: none; border: none; position: relative; }
+.einde-lijst--tiles li.is-link > a,
+.einde-lijst--tiles li.is-tile:not(.is-link) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+  min-height: 104px;
+  padding: 16px 14px;
+  border-radius: 18px;
+  background: rgba(12, 8, 24, .5);
+  border: 1px solid rgba(155, 111, 207, .34);
+  backdrop-filter: blur(8px);
+  color: inherit;
+  text-decoration: none;
+  transition: background .2s, border-color .2s, transform .2s;
+}
+.einde-lijst--tiles li.is-link > a::after { content: none; }   /* geen pijl op tegels */
+.einde-lijst--tiles li.is-link:hover,
+.einde-lijst--tiles li.is-link:focus-within { background: none; border: none; }
+.einde-lijst--tiles li.is-link > a:hover,
+.einde-lijst--tiles li.is-link > a:focus-visible {
+  background: rgba(91, 45, 142, .5);
+  border-color: rgba(216, 254, 86, .55);
+  transform: translateY(-3px);
+  outline: none;
+}
+.einde-lijst--tiles .einde-icon {
+  width: 34px;
+  height: 34px;
+  color: var(--w-paars-licht);
+}
+.einde-lijst--tiles li.is-link > a:hover .einde-icon { color: var(--w-accent); }
+.einde-lijst--tiles .einde-icon svg { width: 100%; height: 100%; display: block; }
+.einde-lijst--tiles strong { font-size: 1rem; line-height: 1.25; }
+.einde-acties {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+  flex: 0 0 auto;   /* CTA-rij blijft onderaan staan, scrollt niet mee */
+}
+
+/* ---------- Engine-overrides voor de donkere huisstijl ---------- */
+.sw-copy__title { font-weight: 900; }
+.sw-btn--primary { background: var(--w-accent); color: #0C0818; }
+.sw-btn--primary:hover { box-shadow: 0 10px 30px rgba(216, 254, 86, .25); }
+.sw-btn--ghost { color: var(--w-ink); border-color: rgba(244, 240, 250, .35); }
+.sw-copy__tags li {
+  background: rgba(91, 45, 142, .35);
+  border-color: rgba(216, 254, 86, .4);
+  color: #E9FBA9;
+}
+.sw-route { display: none; }
+.sw-route__label { background: rgba(12, 8, 24, .8); color: var(--w-ink); }
+.sw-topbar { pointer-events: none; }
+
+/* ---------- het Kompas: vak onderaan (bij de brug) ---------- */
+.kompas-paneel {
+  position: fixed;
+  left: 50%;
+  bottom: clamp(16px, 4vh, 40px);
+  transform: translate(-50%, 12px);
+  z-index: 160;
+  width: min(94vw, 620px);
+  max-height: min(78vh, 620px);
+  max-height: min(78dvh, 620px);
+  overflow-y: auto;
+  padding: clamp(18px, 3.5vw, 28px);
+  border-radius: 26px;
+  background: rgba(12, 8, 24, .82);
+  border: 1px solid rgba(155, 111, 207, .38);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 30px 80px rgba(12, 8, 24, .75);
+  opacity: 0;
+  transition: opacity .35s ease, transform .35s ease;
+}
+.kompas-paneel:not([hidden]) { opacity: 1; transform: translate(-50%, 0); }
+#hub[inert],
+.wereld-nav[inert] { pointer-events: none; }
+.kompas-eyebrow {
+  margin: 0;
+  font-weight: 700;
+  font-size: .74rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--w-accent);
+}
+.kompas-titel {
+  margin: 6px 0 0;
+  font-weight: 900;
+  font-size: clamp(1.4rem, 3.4vw, 1.9rem);
+  line-height: 1.05;
+}
+.kompas-sub {
+  margin: 6px 0 14px;
+  font-size: .95rem;
+  color: var(--w-ink-zacht);
+}
+.kompas-sluit {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(155, 111, 207, .4);
+  background: rgba(12, 8, 24, .6);
+  color: var(--w-ink);
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+}
+.kompas-sluit:hover { border-color: var(--w-accent); background: rgba(91, 45, 142, .5); }
+
+/* ---------- Logo-ticker (Projecten): loopt onderin ---------- */
+.wereld-ticker {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 120;
+  background: linear-gradient(0deg, var(--w-bg) 60%, transparent);
+  padding-bottom: env(safe-area-inset-bottom);
+  pointer-events: none;
+}
+.wereld-ticker .logo-band {
+  overflow: hidden;
+  position: relative;
+  padding: 14px 0;
+  background: rgba(255, 255, 255, .03);
+  border-top: 1px solid rgba(155, 111, 207, .25);
+}
+.wereld-ticker .logo-band::before,
+.wereld-ticker .logo-band::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 120px;
+  z-index: 2;
+  pointer-events: none;
+}
+.wereld-ticker .logo-band::before { left: 0; background: linear-gradient(90deg, var(--w-bg), transparent); }
+.wereld-ticker .logo-band::after { right: 0; background: linear-gradient(-90deg, var(--w-bg), transparent); }
+.wereld-ticker .logo-track {
+  display: flex;
+  align-items: center;
+  gap: 3.5rem;
+  width: max-content;
+  animation: wereldLogoScroll 34s linear infinite;
+}
+.wereld-ticker .clogo {
+  height: 34px;
+  width: auto;
+  opacity: .5;
+  filter: brightness(0) invert(1);
+  flex-shrink: 0;
+}
+/* Scroll-hint van de engine boven de ticker tillen zolang die loopt */
+body.ticker-actief .sw-hint { bottom: calc(84px + env(safe-area-inset-bottom)); }
+@keyframes wereldLogoScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ---------- Klein scherm ---------- */
+@media (max-width: 860px) {
+  .hub-propositie {
+    left: 18px;
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    width: calc(100vw - 36px);
+  }
+  .hub-propositie::before { inset: -22px -24px -24px; }
+  .hub-propositie h1 { max-width: 16ch; font-size: clamp(1.35rem, 6vw, 1.8rem); }
+  .hub-propositie p { max-width: 34ch; font-size: .9rem; }
+  .hotspot { font-size: .85rem; padding: 9px 14px; }
+  .hotspot.is-sub { font-size: .72rem; padding: 6px 11px; }
+  .exit-knop { top: 62px; }
+  .einde { top: auto; bottom: calc(16px + env(safe-area-inset-bottom)); transform: translate(-50%, 6px); }
+  .einde.is-zichtbaar { transform: translate(-50%, 0); }
+  .einde-lijst span { font-size: .84rem; }
+  .kompas-paneel { width: 96vw; bottom: 10px; }
+  .wereld-ticker .clogo { height: 26px; }
+  .wereld-ticker .logo-band { padding: 10px 0; }
+  .einde--breed { width: 94vw; }
+  .einde-lijst--grid { grid-template-columns: 1fr; }
+  .einde-thumb { height: 108px; }
+  .einde--tegels { width: 94vw; }
+  .einde-lijst--tiles { grid-template-columns: 1fr 1fr; }   /* 2x2 op mobiel */
+  .einde-lijst--tiles li.is-link > a { min-height: 92px; padding: 14px 10px; }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .stage, .einde, .knop-ghost, .knop-accent, .hotspot, .hub-propositie { transition: none; }
+  .hotspot-dot { animation: none; }
+}
+
+/* ---------- Noscript ---------- */
+.noscript-melding {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  place-items: center;
+  background: var(--w-bg);
+  text-align: center;
+  padding: 24px;
+}
+.noscript-melding a { color: var(--w-accent); }
