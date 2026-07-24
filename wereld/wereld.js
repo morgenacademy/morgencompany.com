@@ -131,7 +131,7 @@ const GEBOUWEN = {
     legM:   'assets/echt/vid/leg-build.mp4',
     still:  'assets/echt/build-binnen.webp',
     stillM: 'assets/echt/build-binnen.webp',
-    cta: { label: 'Bekijk technology', href: '/technology/' },
+    cta: { label: 'Bekijk maatwerk', href: '/technology/' },
     sectie: {
       eyebrow: 'Build',
       title: 'Werk slimmer georganiseerd.',
@@ -268,6 +268,7 @@ const eindeCta2 = document.getElementById('einde-cta2');
 const eindeTerug = document.getElementById('einde-terug');
 const kompasPaneel = document.getElementById('kompas-paneel');
 const kompasSluit = document.getElementById('kompas-sluit');
+const wereldNav = document.querySelector('.wereld-nav');
 const wereldTicker = document.getElementById('wereld-ticker');
 const tickerTrack = document.getElementById('ticker-track');
 
@@ -508,7 +509,9 @@ function toonHub() {
   document.body.classList.remove('tegels-zichtbaar');
   setState('hub');
   window.scrollTo(0, 0);
-  hubEl.focus({ preventScroll: true });
+  const focusTarget = kompasFocusNaSluiten?.isConnected ? kompasFocusNaSluiten : hubEl;
+  kompasFocusNaSluiten = null;
+  focusTarget.focus({ preventScroll: true });
 }
 
 function toHub({ historyMode = 'base' } = {}) {
@@ -615,10 +618,23 @@ HOTSPOTS.forEach((h) => {
 
 /* ---------- het Kompas: vak onderaan op de hub ---------- */
 let kompasOpener = null;
+let kompasFocusNaSluiten = null;
+
+function zetKompasModal(open) {
+  hubEl.inert = open;
+  wereldNav.inert = open;
+}
+
+function kompasFocusables() {
+  return [...kompasPaneel.querySelectorAll(
+    'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+  )].filter((el) => !el.hidden && el.getClientRects().length > 0);
+}
 
 function openKompas({ historyMode = 'push', pushed = true, trigger = document.activeElement } = {}) {
   kompasOpener = trigger instanceof HTMLElement ? trigger : null;
   kompasPaneel.hidden = false;
+  zetKompasModal(true);
   if (historyMode !== 'none') {
     zetWereldRoute('wegwijzer', {
       replace: historyMode === 'replace',
@@ -633,16 +649,39 @@ function openKompas({ historyMode = 'push', pushed = true, trigger = document.ac
 
 function sluitKompas({ updateRoute = true, restoreFocus = true } = {}) {
   if (kompasPaneel.hidden) return;
+  const focusTarget = restoreFocus && kompasOpener?.isConnected ? kompasOpener : null;
   kompasPaneel.hidden = true;
-  if (restoreFocus && kompasOpener?.isConnected) kompasOpener.focus({ preventScroll: true });
+  zetKompasModal(false);
   if (updateRoute) {
-    if (window.history.state?.wereldPushed === true) window.history.back();
-    else zetWereldRoute('plein', { replace: true });
+    if (window.history.state?.wereldPushed === true) {
+      kompasFocusNaSluiten = focusTarget;
+      window.history.back();
+      return;
+    }
+    zetWereldRoute('plein', { replace: true });
   }
+  focusTarget?.focus({ preventScroll: true });
 }
 kompasSluit.addEventListener('click', sluitKompas);
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && !kompasPaneel.hidden) sluitKompas();
+  if (kompasPaneel.hidden) return;
+  if (e.key === 'Escape') {
+    e.preventDefault();
+    sluitKompas();
+    return;
+  }
+  if (e.key !== 'Tab') return;
+  const focusables = kompasFocusables();
+  if (!focusables.length) return;
+  const first = focusables[0];
+  const last = focusables[focusables.length - 1];
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault();
+    first.focus();
+  }
 });
 
 /* ---------- Logo-ticker: loopt onderin tijdens Projecten ---------- */
@@ -706,6 +745,7 @@ window.addEventListener('scroll', () => {
 /* ---------- URL-routes, browsergeschiedenis en start ---------- */
 function pasWereldRouteToe() {
   const route = window.location.hash.slice(1);
+  const pushed = window.history.state?.wereldPushed === true;
   if (LEGACY_ROUTES[route]) {
     window.location.replace(LEGACY_ROUTES[route]);
     return true;
@@ -713,18 +753,18 @@ function pasWereldRouteToe() {
   if (route === 'wegwijzer') {
     toonHub();
     openKompas({ historyMode: 'none', pushed: false });
-    window.history.replaceState({ wereldRoute: route, wereldPushed: false }, '', window.location.href);
+    window.history.replaceState({ wereldRoute: route, wereldPushed: pushed }, '', window.location.href);
     return true;
   }
   const gebouwId = GEBOUW_BY_ROUTE[route];
   if (gebouwId) {
     toVerhaal(gebouwId);
-    window.history.replaceState({ wereldRoute: route, wereldPushed: false }, '', window.location.href);
+    window.history.replaceState({ wereldRoute: route, wereldPushed: pushed }, '', window.location.href);
     return true;
   }
   if (route === 'plein') {
     toHub({ historyMode: 'none' });
-    window.history.replaceState({ wereldRoute: route, wereldPushed: false }, '', window.location.href);
+    window.history.replaceState({ wereldRoute: route, wereldPushed: pushed }, '', window.location.href);
     return true;
   }
   return false;

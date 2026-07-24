@@ -14,6 +14,9 @@ test('OFFER_KEYS bevat alle 14 keys (academy + consultancy + technology + kennis
 });
 
 test('ctaLabel matcht het doel van de knop', () => {
+  const online = buildCard({ offer_key: 'online_basis', waarom: 'x', samenvatting: 'y', vervolg_keys: [] });
+  assert.equal(online.ctaLabel, 'Bekijk online trainingen');
+  assert.equal(online.href, 'https://academy.morgencompany.com/');
   assert.equal(buildCard({ offer_key: 'pmtraining', waarom: 'x', samenvatting: 'y', vervolg_keys: [] }).ctaLabel, 'Bekijk deze training');
   assert.equal(buildCard({ offer_key: 'implementatietraject', waarom: 'x', samenvatting: 'y', vervolg_keys: [] }).ctaLabel, 'Vraag dit aan');
   assert.equal(buildCard({ offer_key: 'kennismaking', waarom: 'x', samenvatting: 'y', vervolg_keys: [] }).ctaLabel, 'Plan een kennismaking');

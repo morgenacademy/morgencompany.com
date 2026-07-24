@@ -506,6 +506,7 @@ body.tegels-zichtbaar #world .sw-copy {
   border-color: rgba(216, 254, 86, .4);
   color: #E9FBA9;
 }
+.sw-route { display: none; }
 .sw-route__label { background: rgba(12, 8, 24, .8); color: var(--w-ink); }
 .sw-topbar { pointer-events: none; }
 
@@ -530,6 +531,8 @@ body.tegels-zichtbaar #world .sw-copy {
   transition: opacity .35s ease, transform .35s ease;
 }
 .kompas-paneel:not([hidden]) { opacity: 1; transform: translate(-50%, 0); }
+#hub[inert],
+.wereld-nav[inert] { pointer-events: none; }
 .kompas-eyebrow {
   margin: 0;
   font-weight: 700;

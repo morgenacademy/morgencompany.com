@@ -45,8 +45,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="wereld.css?v=20260724-contextnav">
-  <link rel="stylesheet" href="/docs/academy-chat/chat.css">
+  <link rel="stylesheet" href="wereld.css?v=20260724-functional">
+  <link rel="stylesheet" href="/docs/academy-chat/chat.css?v=20260724-functional">
   <script src="https://analytics.ahrefs.com/analytics.js" data-key="jQ2PizbnpUs2qeoKjvs+Nw" async></script>
 </head>
 <body data-state="boot">
@@ -56,7 +56,7 @@
   <!-- Minimale nav-balk, boven alle states -->
   <nav class="wereld-nav" aria-label="Hoofdnavigatie">
     <a class="wereld-merk" href="./" aria-label="Morgen wereld, terug naar start">MORGEN<span class="wereld-merk-punt" aria-hidden="true">.</span></a>
-    <a class="wereld-huidige" href="/organisatie/">Liever een overzicht?</a>
+    <a class="wereld-huidige" href="/organisatie/">Snel overzicht</a>
   </nav>
 
   <!-- Hub: het plein met de vier gebouwen -->
@@ -89,11 +89,11 @@
   </div>
 
   <!-- het Kompas: opent als vak onderaan (bij de brug) vanaf de hub -->
-  <aside id="kompas-paneel" class="kompas-paneel" aria-label="het Kompas" hidden>
+  <aside id="kompas-paneel" class="kompas-paneel" role="dialog" aria-modal="true" aria-labelledby="kompas-titel" aria-describedby="kompas-sub" hidden>
     <button id="kompas-sluit" class="kompas-sluit" type="button" aria-label="Sluit het Kompas">&#215;</button>
     <p class="kompas-eyebrow">Wegwijzer</p>
-    <h2 class="kompas-titel">Waar kunnen we je mee helpen?</h2>
-    <p class="kompas-sub">Beschrijf je situatie, wij wijzen je de eerste stap.</p>
+    <h2 class="kompas-titel" id="kompas-titel">Waar kunnen we je mee helpen?</h2>
+    <p class="kompas-sub" id="kompas-sub">Beschrijf je situatie, wij wijzen je de eerste stap.</p>
     <div data-kompas></div>
   </aside>
 
@@ -121,7 +121,7 @@
   </noscript>
 
   <script src="scrub-engine.js"></script>
-  <script src="wereld.js?v=20260724-pleinlabel"></script>
-  <script type="module" src="/docs/academy-chat/chat.js"></script>
+  <script src="wereld.js?v=20260724-functional"></script>
+  <script type="module" src="/docs/academy-chat/chat.js?v=20260724-functional"></script>
 </body>
 </html>

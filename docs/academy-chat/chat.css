@@ -50,6 +50,16 @@
   -webkit-backdrop-filter: blur(12px);
 }
 
+.ac-typing {
+  color: var(--text-secondary, #d8ccec);
+  animation: ac-typing-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes ac-typing-pulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
 /* ── Startknoppen ──────────────────────────────────────── */
 
 .ac-starters {
@@ -346,4 +356,10 @@
   min-height: 0;
   display: block;
   padding: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ac-typing {
+    animation: none;
+  }
 }

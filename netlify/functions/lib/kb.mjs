@@ -13,6 +13,7 @@ export const OFFERS = [
     startTypeLabel: 'Online training',
     sectionLabel: 'Online aanbod',
     sectionTarget: 'ac-aanvraag',
+    href: 'https://academy.morgencompany.com/',
     duration: 'Direct starten',
     description: 'De laagdrempelige individuele instap om direct zelf met AI aan de slag te gaan.',
     bullets: [
@@ -236,6 +237,7 @@ export function offerDomein(o) {
 // Formulier-doelen zeggen "aanvragen/plannen", sectie-doelen zeggen "bekijken".
 const FORM_TARGETS = new Set(['ac-aanvraag']);
 export function offerCta(o) {
+  if (o.key === 'online_basis') return 'Bekijk online trainingen';
   if (o.key === 'kennismaking') return 'Plan een kennismaking';
   if (o.href || FORM_TARGETS.has(o.sectionTarget)) return 'Vraag dit aan';
   return 'Bekijk deze training';
