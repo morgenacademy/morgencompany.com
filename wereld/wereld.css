@@ -329,40 +329,67 @@ body[data-state="dive"] .hub-propositie {
 #verhaal { display: none; }
 body[data-state="verhaal"] #verhaal { display: block; }
 
-/* Inspire maakt na de papercraft-dive de stap naar echt keynotebeeld.
-   De laag staat boven de engine-scene (z10), maar onder copy, hint en acties. */
+/* Echt keynotebeeld als hangend projectiescherm ín het papercrafttheater.
+   Het scherm staat boven de engine-copygradient, maar raakt de copy niet. */
 .inspire-echt {
   position: fixed;
-  inset: 0;
-  z-index: 15;
-  overflow: hidden;
+  top: clamp(32px, 4.5vh, 64px);
+  right: clamp(28px, 5vw, 88px);
+  z-index: 25;
+  width: min(52vw, 72vh, 920px);
+  aspect-ratio: 16 / 9;
+  overflow: visible;
   pointer-events: none;
-  background: var(--w-bg);
+  padding: clamp(5px, .55vw, 9px);
+  border: 1px solid rgba(244, 240, 250, .5);
+  border-radius: clamp(12px, 1.2vw, 18px);
+  background: linear-gradient(145deg, rgba(218, 210, 233, .96), rgba(91, 78, 120, .92));
+  box-shadow:
+    0 24px 70px rgba(12, 8, 24, .62),
+    0 0 0 1px rgba(12, 8, 24, .48);
   opacity: 0;
   visibility: hidden;
-  transition: opacity .8s ease, visibility 0s linear .8s;
+  transform: translateY(8px) scale(.99);
+  transition: opacity .7s ease, transform .7s ease, visibility 0s linear .7s;
 }
 .inspire-echt.is-zichtbaar {
   opacity: 1;
   visibility: visible;
-  transition: opacity .8s ease;
+  transform: translateY(0) scale(1);
+  transition: opacity .7s ease, transform .7s ease;
 }
 .inspire-echt video {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  z-index: 1;
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
-  filter: brightness(.82) saturate(.94);
+  border-radius: clamp(8px, .8vw, 12px);
+  background: var(--w-bg);
+  filter: brightness(.94) saturate(.96);
+}
+/* Twee dunne kabels laten het scherm werkelijk in de theaterboog hangen. */
+.inspire-echt::before {
+  content: '';
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: -18vh;
+  height: 18vh;
+  border-left: 1px solid rgba(188, 174, 219, .4);
+  border-right: 1px solid rgba(188, 174, 219, .4);
 }
 .inspire-echt::after {
   content: '';
   position: absolute;
-  inset: 0;
+  z-index: 2;
+  inset: clamp(5px, .55vw, 9px);
+  border-radius: clamp(8px, .8vw, 12px);
   background:
-    linear-gradient(90deg, rgba(12, 8, 24, .82) 0%, rgba(12, 8, 24, .54) 32%, rgba(12, 8, 24, .08) 68%),
-    linear-gradient(0deg, rgba(12, 8, 24, .5) 0%, transparent 42%);
+    linear-gradient(118deg, rgba(255, 255, 255, .14), transparent 26%, transparent 76%, rgba(155, 111, 207, .08));
+  box-shadow: inset 0 0 0 1px rgba(244, 240, 250, .12);
 }
 
 .exit-knop {
@@ -727,24 +754,43 @@ body.ticker-actief .sw-hint { bottom: calc(84px + env(safe-area-inset-bottom)); 
 }
 
 @media (max-width: 860px) and (orientation: portrait) {
-  .inspire-echt video {
-    inset: clamp(108px, 14dvh, 124px) 0 auto;
-    width: 100%;
-    height: auto;
-    max-height: 48dvh;
-    object-fit: contain;
-    filter: brightness(.9) saturate(.94);
+  .inspire-echt {
+    top: clamp(108px, 14dvh, 124px);
+    left: 5vw;
+    right: auto;
+    z-index: 15;
+    width: 90vw;
+    padding: 4px;
+    border-radius: 12px;
   }
-  .inspire-echt::after {
-    background:
-      linear-gradient(0deg, var(--w-bg) 8%, rgba(12, 8, 24, .94) 34%, rgba(12, 8, 24, .18) 63%, rgba(12, 8, 24, .32) 100%);
-  }
+  .inspire-echt video,
+  .inspire-echt::after { border-radius: 8px; }
+  .inspire-echt::after { inset: 4px; }
+  .inspire-echt::before { top: -64px; height: 64px; }
   .einde--tegels {
     top: 64%;
     bottom: auto;
     transform: translate(-50%, calc(-50% + 6px));
   }
   .einde--tegels.is-zichtbaar { transform: translate(-50%, -50%); }
+}
+
+/* Op compactere landscape-schermen blijft het scherm rechts van de copy. */
+@media (min-width: 861px) and (max-width: 1180px) and (min-aspect-ratio: 4 / 3) {
+  .inspire-echt {
+    right: 4vw;
+    width: 48vw;
+  }
+}
+
+/* Hoge desktopvensters hebben genoeg verticale ruimte voor het grotere scherm
+   uit de schets, met de copy eronder en de spreker nog volledig zichtbaar. */
+@media (min-width: 861px) and (max-aspect-ratio: 6 / 5) {
+  .inspire-echt {
+    top: clamp(82px, 7vh, 150px);
+    right: clamp(54px, 8vw, 180px);
+    width: min(66vw, 1480px);
+  }
 }
 
 /* ---------- Reduced motion ---------- */

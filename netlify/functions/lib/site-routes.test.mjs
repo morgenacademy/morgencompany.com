@@ -180,7 +180,7 @@ test('het Kompas is modaal, kondigt status aan en begrenst gesprekshistorie', ()
 
 test('functionele wereldassets worden met dezelfde cacheversie geladen', () => {
   const wereldHtml = read('wereld/index.html');
-  assert.match(wereldHtml, /wereld\.css\?v=20260725-inspire-echt/);
+  assert.match(wereldHtml, /wereld\.css\?v=20260725-inspire-scherm/);
   assert.match(wereldHtml, /scrub-engine\.js\?v=20260724-ambient/);
   assert.match(wereldHtml, /wereld\.js\?v=20260725-inspire-echt/);
   assert.match(wereldHtml, /chat\.css\?v=20260724-functional/);
@@ -210,7 +210,7 @@ test('de wereld is technisch voorbereid als root-homepage', () => {
       '/organisatie/* /index.html 200',
     ]
   );
-  assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260725-inspire-echt"/);
+  assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260725-inspire-scherm"/);
   assert.match(wereldHtml, /src="\/wereld\/scrub-engine\.js\?v=20260724-ambient"/);
   assert.match(wereldHtml, /src="\/wereld\/wereld\.js\?v=20260725-inspire-echt"/);
   assert.doesNotMatch(wereldHtml, /(?:href|src)="(?:wereld\.css|scrub-engine\.js|wereld\.js)/);
@@ -335,7 +335,7 @@ test('ambient binnenvideo en scroll-scrub nemen de videoklok niet tegelijk over'
   assert.match(ambient, /catch \(e\) \{\s+stop\(\);/);
 });
 
-test('Inspire kruist lui en toegankelijk van papercraft naar echt keynotebeeld', () => {
+test('Inspire projecteert lui en toegankelijk echt keynotebeeld in het theater', () => {
   const wereldHtml = read('wereld/index.html');
   const wereld = read('wereld/wereld.js');
   const wereldCss = read('wereld/wereld.css');
@@ -360,10 +360,15 @@ test('Inspire kruist lui en toegankelijk van papercraft naar echt keynotebeeld',
   assert.match(wereld, /inspireEchtVideo\.removeAttribute\('src'\)/);
   assert.match(wereld, /inspireEchtVideo\.removeAttribute\('poster'\)/);
   assert.match(wereld, /if \(activeWorld\?\.id === 'inspire'\) activeWorld\.engine\?\.setScrubbing\(false\)/);
-  assert.match(wereldCss, /\.inspire-echt\s*\{[^}]*z-index: 15/s);
+  assert.match(wereldCss, /\.inspire-echt\s*\{[^}]*z-index: 25[^}]*aspect-ratio: 16 \/ 9/s);
+  assert.match(wereldCss, /\.inspire-echt::before\s*\{[^}]*border-left:[^}]*border-right:/s);
   assert.match(
     wereldCss,
-    /@media \(max-width: 860px\) and \(orientation: portrait\)[\s\S]*?\.inspire-echt video\s*\{[^}]*object-fit: contain/s
+    /@media \(max-width: 860px\) and \(orientation: portrait\)[\s\S]*?\.inspire-echt\s*\{[^}]*z-index: 15[^}]*width: 90vw/s
+  );
+  assert.match(
+    wereldCss,
+    /@media \(min-width: 861px\) and \(max-aspect-ratio: 6 \/ 5\)[\s\S]*?width: min\(66vw, 1480px\)/
   );
   assert.match(wereldCss, /prefers-reduced-motion: reduce[\s\S]*?\.inspire-echt \{ transition: none;/);
 
