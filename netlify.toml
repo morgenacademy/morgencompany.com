@@ -2,5 +2,11 @@
   publish = "."
   functions = "netlify/functions"
 
+[context.deploy-preview]
+  command = "cp netlify/headers/noindex _headers"
+
+[context.branch-deploy]
+  command = "cp netlify/headers/noindex _headers"
+
 [functions]
   node_bundler = "esbuild"
