@@ -88,6 +88,20 @@ test('de wereld biedt een rustige route naar de overzichtspagina', () => {
   assert.doesNotMatch(wereldHtml, />Bekijk het aanbod<\/a>/);
 });
 
+test('de projectcopy legt de visuele beeldtaal niet uit', () => {
+  const wereld = read('wereld/wereld.js');
+  const wereldHtml = read('wereld/index.html');
+  assert.match(wereld, /title: 'Zij gingen je voor\.'/);
+  assert.match(
+    wereld,
+    /body: 'Ontdek gerealiseerde projecten, trainingen en implementaties die zijn geland in het dagelijkse werk van organisaties\.'/
+  );
+  assert.match(wereld, /titel: 'Projecten in de praktijk'/);
+  assert.doesNotMatch(wereld, /title: 'Maquettes|body: 'Elke stolp/);
+  assert.doesNotMatch(wereld, /label: 'Terug naar het plein'/);
+  assert.doesNotMatch(wereldHtml, />Terug naar het plein<\/button>/);
+});
+
 test('kennismakingslinks blijven na de wereld-omschakeling bereikbaar', () => {
   assert.doesNotMatch(read('docs/academy-chat/chat.js'), /href="\/#home-aanvraag"/);
   assert.doesNotMatch(read('netlify/functions/lib/kb.mjs'), /href: '\/#home-aanvraag'/);

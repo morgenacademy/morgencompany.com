@@ -182,12 +182,12 @@ const GEBOUWEN = {
     cta: { label: 'Bekijk alle projecten', href: '/projecten/' },
     sectie: {
       eyebrow: 'Projecten',
-      title: 'Maquettes van echt werk.',
-      body: 'Elke stolp in de tuin is een project dat al draait: gebouwd met AI en geland in het dagelijkse werk van een organisatie.',
+      title: 'Zij gingen je voor.',
+      body: 'Ontdek gerealiseerde projecten, trainingen en implementaties die zijn geland in het dagelijkse werk van organisaties.',
       tags: ['Cases', 'AI in productie', 'Maatwerk'],
     },
     einde: {
-      titel: 'Zij gingen je voor',
+      titel: 'Projecten in de praktijk',
       grid: true,
       items: [
         { kop: 'PinkRoccade Local Government', tekst: 'Workshops n8n, automatiseren met AI en agentic workflows', href: '/projecten/#case-pinkroccade', img: '/docs/logos/logo_localgovernment.png' },
@@ -362,7 +362,7 @@ function mountWorld(gebouwId) {
         tags: g.sectie.tags,
         cta: {
           primary: { label: g.cta.label, href: g.cta.href },
-          secondary: { label: 'Terug naar het plein', href: '#plein' },
+          secondary: { label: 'Terug naar start', href: '#plein' },
         },
       },
     ],
