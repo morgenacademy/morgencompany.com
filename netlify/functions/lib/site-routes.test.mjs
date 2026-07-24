@@ -81,11 +81,16 @@ test('alle plekken op het wereldplein hebben een transparant klikvlak', () => {
 
 test('de wereld biedt een rustige route naar de overzichtspagina', () => {
   const wereldHtml = read('wereld/index.html');
+  const wereldCss = read('wereld/wereld.css');
   assert.match(
     wereldHtml,
     /class="wereld-huidige" href="\/organisatie\/">Liever een overzicht\?<\/a>/
   );
   assert.doesNotMatch(wereldHtml, />Bekijk het aanbod<\/a>/);
+  assert.match(
+    wereldCss,
+    /body\[data-state="dive"\] \.wereld-huidige,\s*body\[data-state="verhaal"\] \.wereld-huidige\s*\{\s*display: none;/
+  );
 });
 
 test('de projectcopy legt de visuele beeldtaal niet uit', () => {

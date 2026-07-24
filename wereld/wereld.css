@@ -94,6 +94,11 @@ body:not([data-state="verhaal"]) { overflow: hidden; height: 100vh; }
   border-color: var(--w-accent);
   box-shadow: 0 0 0 3px rgba(91, 45, 142, .45);
 }
+body[data-state="boot"] .wereld-huidige,
+body[data-state="dive"] .wereld-huidige,
+body[data-state="verhaal"] .wereld-huidige {
+  display: none;
+}
 
 /* ---------- Gedeelde knoppen ---------- */
 .knop-ghost {
