@@ -97,7 +97,7 @@ Kies er een of schrijf je eigen versie:
 | Veld | Tekst | Lengte |
 |---|---|---|
 | Title | MORGEN: Technologiepartner voor bedrijven | 41 |
-| Description | Maak AI onderdeel van je organisatie met trainingen, implementaties en integraties voor teams die slimmer willen werken. | 120 |
+| Description | Morgencompany.com - maak AI onderdeel van je bedrijf met trainingen, strategie en maatwerk automatisering. | 120 |
 | H1 nu | GoedeMORGEN. | |
 
 **Openstaand:** deze pagina draagt al je content (bijna 48.000 tekens) maar heeft als H1 de begroeting. Dat zegt Google niets. Een beschrijvende H1 zou hier het meeste opleveren. De begroeting is wel een bewuste merkkeuze, dus dit is aan jou:
