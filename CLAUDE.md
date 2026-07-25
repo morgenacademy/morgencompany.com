@@ -27,6 +27,14 @@ Let op: ook **JS-data en functies** driften (bijv. `const trainingData={...}`, `
 
 Bewust verschillend per bestand (níet gelijktrekken): `<title>`, meta description, canonical URL, welke page default actief is, form `action` URL's, en pagina-specifieke IIFE's (`paint` in index.html, filter-`apply` in projecten).
 
+**Ook per bestand verschillend: welke hero de `<h1>` is.** Elke bundel heeft precies één `<h1>`: de hero van de pagina die in dát bestand `class="page active"` heeft. Alle andere hero's zijn `<h2 class="h1">` (zelfde styling, andere semantiek). Zet dus bij een sync nooit de `active`-class of de `<h1>` van het ene bestand over het andere heen: dan tonen alle URL's zonder JS de homepage en wordt de H1 overal "GoedeMORGEN.". Controle:
+
+```bash
+# per bundel: 1 h1, en de actieve page hoort bij het bestand
+grep -c '<h1' index.html */index.html                    # overal 1
+grep -o 'page active" id="page-[a-z-]*"' */index.html    # academy->page-academy, projecten->page-assistenten, inspiratie->page-company
+```
+
 ## Het Kompas (AI-chat adviseur)
 
 - Widget: `docs/academy-chat/chat.js` + `chat.css`, mount op `#trainingwijzer-app` of `[data-kompas]` (multi-instance). Staat op homepage én academy-pagina.

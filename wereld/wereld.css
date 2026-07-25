@@ -238,6 +238,36 @@ body[data-state="dive"] .hub-propositie {
   font-weight: 500;
   line-height: 1.35;
 }
+/* Crawlbare tekst en links onder de propositie: klein en rustig, maar echt
+   aanwezig in de HTML (het noscript-blok ziet Google niet). */
+.hub-propositie .hub-tekst {
+  margin-top: 8px;
+  max-width: 58ch;
+  font-size: clamp(.78rem, 1.05vw, .92rem);
+  font-weight: 400;
+  opacity: .78;
+}
+.hub-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin-top: 10px;
+  pointer-events: auto;   /* de propositie zelf staat op none */
+}
+.hub-links a {
+  color: var(--w-ink-zacht);
+  font-size: clamp(.74rem, 1vw, .86rem);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(155, 111, 207, .45);
+  transition: color .2s, border-color .2s;
+}
+.hub-links a:hover,
+.hub-links a:focus-visible {
+  color: var(--w-accent);
+  border-color: var(--w-accent);
+  outline: none;
+}
 .hotspot-map {
   position: absolute;
   inset: 0;
@@ -673,6 +703,11 @@ body.ticker-actief .sw-hint { bottom: calc(84px + env(safe-area-inset-bottom)); 
   .hub-propositie::before { inset: -22px -24px -24px; }
   .hub-propositie h1 { max-width: 16ch; font-size: clamp(1.35rem, 6vw, 1.8rem); }
   .hub-propositie p { max-width: 34ch; font-size: .9rem; }
+  /* Blijft zichtbaar op mobiel: Google indexeert mobile-first, dus deze tekst
+     en links moeten juist daar in beeld staan. Alleen compacter. */
+  .hub-propositie .hub-tekst { max-width: 42ch; font-size: .74rem; margin-top: 6px; }
+  .hub-links { gap: 2px 10px; margin-top: 7px; }
+  .hub-links a { font-size: .72rem; }
   .hotspot { font-size: .85rem; padding: 9px 14px; }
   .hotspot.is-sub { font-size: .72rem; padding: 6px 11px; }
   .exit-knop { top: 62px; }
