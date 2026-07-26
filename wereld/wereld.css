@@ -320,6 +320,7 @@ body[data-state="dive"] .hub-propositie {
   font: 700 .95rem 'Barlow', system-ui, sans-serif;
   letter-spacing: .02em;
   color: var(--w-ink);
+  white-space: nowrap;   /* labels blijven op één regel, ook 'AI-oplossingen' */
   background: rgba(12, 8, 24, .55);
   border: 1.5px solid rgba(216, 254, 86, .35);
   border-radius: 999px;

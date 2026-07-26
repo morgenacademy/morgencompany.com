@@ -9,7 +9,7 @@
 const HOTSPOTS = [
   { id: 'train',     label: 'Trainingen',     x: 22, y: 34, xm: 22, ym: 39, enabled: true },
   { id: 'implement', label: 'Implementatie', x: 44, y: 24, xm: 41, ym: 34, enabled: true },
-  { id: 'build',     label: 'Maatwerk',     x: 69, y: 26, xm: 72, ym: 38, enabled: true },
+  { id: 'build',     label: 'AI-oplossingen', x: 69, y: 26, xm: 72, ym: 38, enabled: true },
   { id: 'inspire',   label: 'Inspiratie',   x: 77, y: 55, xm: 77, ym: 47, enabled: true },
   // Plein-plekken, secundair (sub): stolpen-tuin en kampvuur openen een
   // still-binnenwereld (geen dive), de wegwijzer linkt naar het Kompas op de site.
@@ -67,7 +67,7 @@ const ASSETS = {
    de cine-player en de scrub-engine vangen laadfouten zelf op. */
 const GEBOUWEN = {
   train: {
-    label: 'Train',
+    label: 'Trainingen',
     dive:   '/wereld/assets/echt/vid/dive-train.mp4',
     diveM:  '/wereld/assets/echt/vid/dive-train-m.mp4',
     leg:    '/wereld/assets/echt/vid/leg-train.mp4',
@@ -77,7 +77,7 @@ const GEBOUWEN = {
     cta: { label: 'Bekijk alle trainingen', href: '/academy/' },
     cta2: { label: 'Wegwijzer', action: 'kompas' },
     sectie: {
-      eyebrow: 'Train',
+      eyebrow: 'Trainingen',
       title: 'Klein beginnen. Groot doorpakken.',
       body: 'Van je eerste prompt tot echt meer uit Claude Code, Codex of n8n halen en het integreren in de werkwijze van je team.',
       tags: ['Basistraining AI', 'Bouwen met AI (vibecoding)', 'Automatiseren met AI', 'Claude Code / Codex: de basis'],
@@ -101,7 +101,7 @@ const GEBOUWEN = {
     },
   },
   implement: {
-    label: 'Implement',
+    label: 'Implementatie',
     dive:   '/wereld/assets/echt/vid/dive-implement.mp4',
     diveM:  '/wereld/assets/echt/vid/dive-implement-m.mp4',
     leg:    '/wereld/assets/echt/vid/leg-implement.mp4',
@@ -110,7 +110,7 @@ const GEBOUWEN = {
     stillM: '/wereld/assets/echt/implement-binnen.webp',
     cta: { label: 'Bekijk consultancy', href: '/consultancy/' },
     sectie: {
-      eyebrow: 'Implement',
+      eyebrow: 'Implementatie',
       title: 'Digitalisering die landt in het werk.',
       body: 'Morgen helpt om de echte keuzes scherp te maken en te vertalen naar een aanpak die past bij de strategie én bij het dagelijkse werk.',
       tags: ['Strategie', 'Uitvoering', 'Borging'],
@@ -126,18 +126,18 @@ const GEBOUWEN = {
     },
   },
   build: {
-    label: 'Build',
+    label: 'AI-oplossingen',
     dive:   '/wereld/assets/echt/vid/dive-build.mp4',
     diveM:  '/wereld/assets/echt/vid/dive-build-m.mp4',
     leg:    '/wereld/assets/echt/vid/leg-build.mp4',
     legM:   '/wereld/assets/echt/vid/leg-build-m.mp4',
     still:  '/wereld/assets/echt/build-binnen.webp',
     stillM: '/wereld/assets/echt/build-binnen.webp',
-    cta: { label: 'Bekijk maatwerk', href: '/technology/' },
+    cta: { label: 'Bekijk jouw AI-oplossing', href: '/technology/' },
     sectie: {
-      eyebrow: 'Build',
+      eyebrow: 'AI-oplossingen',
       title: 'Werk slimmer georganiseerd.',
-      body: 'We bouwen slimme applicaties, workflows en koppelingen die passen in het werk dat er al is.',
+      body: 'We bouwen slimme maatwerkapplicaties, workflows en koppelingen die passen in het werk dat er al is.',
       tags: ['Maatwerk', 'AI-workflows', 'Procesautomatisering'],
     },
     einde: {
@@ -151,7 +151,7 @@ const GEBOUWEN = {
     },
   },
   inspire: {
-    label: 'Inspire',
+    label: 'Inspiratie',
     dive:   '/wereld/assets/echt/vid/dive-inspire.mp4',
     diveM:  '/wereld/assets/echt/vid/dive-inspire-m.mp4',
     leg:    '/wereld/assets/echt/vid/leg-inspire.mp4',
@@ -160,7 +160,7 @@ const GEBOUWEN = {
     stillM: '/wereld/assets/echt/inspire-binnen.webp',
     cta: { label: 'Bekijk inspiratie', href: '/inspiratie/' },
     sectie: {
-      eyebrow: 'Inspire',
+      eyebrow: 'Inspiratie',
       title: 'Technologie verandert hoe we werken en leven.',
       body: 'Keynotes, podcast, artikelen en boek: scherp, persoonlijk en gemaakt om het gesprek in beweging te zetten.',
       tags: ['Keynotes', 'Podcast', 'Artikelen', 'Boek'],
