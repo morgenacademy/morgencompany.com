@@ -266,7 +266,6 @@ const eindeTitel = document.getElementById('einde-titel');
 const eindeLijst = document.getElementById('einde-lijst');
 const eindeCta = document.getElementById('einde-cta');
 const eindeCta2 = document.getElementById('einde-cta2');
-const eindeTerug = document.getElementById('einde-terug');
 const kompasPaneel = document.getElementById('kompas-paneel');
 const kompasSluit = document.getElementById('kompas-sluit');
 const wereldNav = document.querySelector('.wereld-nav');
@@ -363,9 +362,9 @@ function mountWorld(gebouwId) {
         title: g.sectie.title,
         body: g.sectie.body,
         tags: g.sectie.tags,
+        // Eén weg terug is genoeg: de vaste knop linksboven staat er altijd.
         cta: {
           primary: { label: g.cta.label, href: g.cta.href },
-          secondary: { label: 'Terug naar plein', href: '#plein' },
         },
       },
     ],
@@ -806,7 +805,6 @@ skipKnop.addEventListener('click', () => {
   toHub();
 });
 exitKnop.addEventListener('click', terugNaarHub);
-eindeTerug.addEventListener('click', terugNaarHub);
 
 document.addEventListener('kompas:advies', (e) => {
   meetWereld('wereld_kompas_advies', { training: e.detail?.training || 'onbekend' });
