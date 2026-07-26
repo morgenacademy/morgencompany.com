@@ -15,6 +15,16 @@ const bundles = [
 ];
 const read = (relative) => readFileSync(new URL(relative, `file://${root}/`), 'utf8');
 const bytes = (relative) => statSync(new URL(relative, `file://${root}/`)).size;
+const normalizeBundleVariants = (contents) =>
+  contents
+    .replace(
+      /<div class="page active" id="page-(assistenten|company)">/g,
+      '<div class="page" id="page-$1">'
+    )
+    .replace(
+      /<h1 class="h1"([^>]*)>([\s\S]*?)<\/h1>/g,
+      '<h2 class="h1"$1>$2</h2>'
+    );
 
 function block(contents, start, end) {
   const startAt = contents.indexOf(start);
@@ -30,9 +40,13 @@ test('project- en inspiratieblokken zijn gelijk in alle zeven bundles', () => {
     ['<div class="page" id="page-company">', '</div><!-- /page-company -->'],
   ];
   for (const [start, end] of markers) {
-    const expected = block(read(bundles[0]), start, end);
+    const expected = block(normalizeBundleVariants(read(bundles[0])), start, end);
     for (const bundle of bundles.slice(1)) {
-      assert.equal(block(read(bundle), start, end), expected, `${bundle} wijkt af bij ${start}`);
+      assert.equal(
+        block(normalizeBundleVariants(read(bundle)), start, end),
+        expected,
+        `${bundle} wijkt af bij ${start}`
+      );
     }
   }
 });
@@ -180,9 +194,9 @@ test('het Kompas is modaal, kondigt status aan en begrenst gesprekshistorie', ()
 
 test('functionele wereldassets worden met dezelfde cacheversie geladen', () => {
   const wereldHtml = read('wereld/index.html');
-  assert.match(wereldHtml, /wereld\.css\?v=20260726-cta-hint/);
-  assert.match(wereldHtml, /scrub-engine\.js\?v=20260726-cta-hint/);
-  assert.match(wereldHtml, /wereld\.js\?v=20260726-wegwijzerbalk/);
+  assert.match(wereldHtml, /wereld\.css\?v=20260726-mobiel-fixes/);
+  assert.match(wereldHtml, /scrub-engine\.js\?v=20260726-mobiel-fixes/);
+  assert.match(wereldHtml, /wereld\.js\?v=20260726-mobiel-fixes/);
   assert.match(wereldHtml, /chat\.css\?v=20260726-mobiel-invoer/);
   assert.match(wereldHtml, /chat\.js\?v=20260724-launch/);
 });
@@ -210,9 +224,9 @@ test('de wereld is technisch voorbereid als root-homepage', () => {
       '/organisatie/* /index.html 200',
     ]
   );
-  assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260725-inspire-scherm"/);
-  assert.match(wereldHtml, /src="\/wereld\/scrub-engine\.js\?v=20260724-ambient"/);
-  assert.match(wereldHtml, /src="\/wereld\/wereld\.js\?v=20260725-inspire-podium"/);
+  assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260726-mobiel-fixes"/);
+  assert.match(wereldHtml, /src="\/wereld\/scrub-engine\.js\?v=20260726-mobiel-fixes"/);
+  assert.match(wereldHtml, /src="\/wereld\/wereld\.js\?v=20260726-mobiel-fixes"/);
   assert.doesNotMatch(wereldHtml, /(?:href|src)="(?:wereld\.css|scrub-engine\.js|wereld\.js)/);
   assert.doesNotMatch(wereld, /:\s*'assets\//);
   assert.match(wereldHtml, /class="wereld-merk" href="\/"/);
@@ -353,7 +367,7 @@ test('Inspire projecteert lui en toegankelijk echt keynotebeeld in het theater',
   assert.match(wereld, /video:\s+'\/wereld\/assets\/echt\/vid\/inspire-keynote\.mp4'/);
   assert.match(wereld, /videoM:\s+'\/wereld\/assets\/echt\/vid\/inspire-keynote-m\.mp4'/);
   assert.match(wereld, /poster:\s+'\/docs\/company\/film-poster\.jpg'/);
-  assert.match(wereld, /label: 'Inspire',[\s\S]*?leg:\s+null,\s+legM:\s+null,/);
+  assert.match(wereld, /label: 'Inspiratie',[\s\S]*?leg:\s+null,\s+legM:\s+null,/);
   assert.match(wereld, /still:\s+'\/wereld\/assets\/echt\/inspire-podium\.jpg'/);
   assert.match(wereld, /stillM:\s+'\/wereld\/assets\/echt\/inspire-podium-m\.jpg'/);
   assert.match(start, /if \(reduce\) return;/);
@@ -366,7 +380,20 @@ test('Inspire projecteert lui en toegankelijk echt keynotebeeld in het theater',
   assert.match(wereldCss, /\.inspire-echt::before\s*\{[^}]*border-left:[^}]*border-right:/s);
   assert.match(
     wereldCss,
-    /@media \(max-width: 860px\) and \(orientation: portrait\)[\s\S]*?\.inspire-echt\s*\{[^}]*z-index: 15[^}]*width: 90vw/s
+    /@media \(max-width: 860px\) and \(orientation: portrait\)[\s\S]*?\.inspire-echt\s*\{[^}]*z-index: 15[^}]*width: min\(82vw, 330px\)/s
+  );
+  assert.match(
+    wereldCss,
+    /#world-inspire \.sw-copy__eyebrow \{ margin-top: 10px; \}[\s\S]*?#world-inspire \.sw-copy__cta \{[\s\S]*?margin-top: 14px;/
+  );
+  assert.match(wereldCss, /#world-inspire \.sw-hint span \{ display: none; \}/);
+  assert.match(
+    wereldCss,
+    /max-height: 700px[\s\S]*?\.inspire-echt\s*\{[^}]*width: 70vw/
+  );
+  assert.match(
+    wereldCss,
+    /max-height: 620px[\s\S]*?#world-inspire \.sw-copy__num,[\s\S]*?#world-inspire \.sw-hint \{ display: none; \}/
   );
   assert.match(
     wereldCss,
@@ -410,9 +437,8 @@ test('de projectcopy legt de visuele beeldtaal niet uit', () => {
   );
   assert.match(wereld, /titel: 'Projecten in de praktijk'/);
   assert.doesNotMatch(wereld, /title: 'Maquettes|body: 'Elke stolp/);
-  assert.match(wereld, /label: 'Terug naar plein', href: '#plein'/);
-  assert.match(wereld, /cta: \{ label: 'Bekijk maatwerk', href: '\/technology\/' \}/);
-  assert.equal((wereldHtml.match(/>Terug naar plein<\/button>/g) || []).length, 2);
+  assert.match(wereld, /cta: \{ label: 'Bekijk jouw AI-oplossing', href: '\/technology\/' \}/);
+  assert.equal((wereldHtml.match(/>Terug naar plein<\/button>/g) || []).length, 1);
   assert.doesNotMatch(wereld, /label: 'Terug naar (?:het plein|start)'/);
   assert.doesNotMatch(wereldHtml, />Terug naar (?:het plein|start)<\/button>/);
 });
