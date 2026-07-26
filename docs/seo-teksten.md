@@ -54,7 +54,8 @@ De H1 is de zichtbare hero-kop. Verander je die hier, dan verandert de kop op de
 |---|---|---|
 | Title | AI-implementatie voor organisaties \| Morgen Company | 51 |
 | Description | AI-implementatie van strategie tot uitvoering: Morgen helpt organisaties de keuzes maken en laat AI landen in processen en dagelijks werk. | 137 |
-| H1 | Digitalisering die landt in het werk. | |
+| H1 | AI-implementatie die landt in het werk. | |
+| Extra sectie | `#co-implementatie`: "Waar een implementatie begint." Legt in zoektaal uit waar een traject start, met Gemeente Tilburg en Solo Solis als bewijs. | |
 
 ### /technology/
 | Veld | Tekst | Lengte |

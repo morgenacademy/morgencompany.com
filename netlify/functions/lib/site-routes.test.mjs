@@ -196,7 +196,7 @@ test('functionele wereldassets worden met dezelfde cacheversie geladen', () => {
   const wereldHtml = read('wereld/index.html');
   assert.match(wereldHtml, /wereld\.css\?v=20260726-ticker-link/);
   assert.match(wereldHtml, /scrub-engine\.js\?v=20260726-mobiel-fixes/);
-  assert.match(wereldHtml, /wereld\.js\?v=20260726-mobiel-fixes/);
+  assert.match(wereldHtml, /wereld\.js\?v=20260726-ai-implementatie/);
   assert.match(wereldHtml, /chat\.css\?v=20260726-mobiel-invoer/);
   assert.match(wereldHtml, /chat\.js\?v=20260724-launch/);
 });
@@ -226,7 +226,7 @@ test('de wereld is technisch voorbereid als root-homepage', () => {
   );
   assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260726-ticker-link"/);
   assert.match(wereldHtml, /src="\/wereld\/scrub-engine\.js\?v=20260726-mobiel-fixes"/);
-  assert.match(wereldHtml, /src="\/wereld\/wereld\.js\?v=20260726-mobiel-fixes"/);
+  assert.match(wereldHtml, /src="\/wereld\/wereld\.js\?v=20260726-ai-implementatie"/);
   assert.doesNotMatch(wereldHtml, /(?:href|src)="(?:wereld\.css|scrub-engine\.js|wereld\.js)/);
   assert.doesNotMatch(wereld, /:\s*'assets\//);
   assert.match(wereldHtml, /class="wereld-merk" href="\/"/);
