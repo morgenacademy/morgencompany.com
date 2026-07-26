@@ -7,10 +7,10 @@
    x/y = desktop, xm/ym = mobiel (optioneel, valt terug op x/y).
    Pas deze getallen aan zodra de echte hub-still er is. */
 const HOTSPOTS = [
-  { id: 'train',     label: 'Train',     x: 22, y: 34, xm: 22, ym: 39, enabled: true },
-  { id: 'implement', label: 'Implement', x: 44, y: 24, xm: 44, ym: 36, enabled: true },
-  { id: 'build',     label: 'Build',     x: 69, y: 26, xm: 69, ym: 37, enabled: true },
-  { id: 'inspire',   label: 'Inspire',   x: 77, y: 55, xm: 77, ym: 47, enabled: true },
+  { id: 'train',     label: 'Trainingen',     x: 22, y: 34, xm: 22, ym: 39, enabled: true },
+  { id: 'implement', label: 'Implementatie', x: 44, y: 24, xm: 41, ym: 34, enabled: true },
+  { id: 'build',     label: 'Maatwerk',     x: 69, y: 26, xm: 72, ym: 38, enabled: true },
+  { id: 'inspire',   label: 'Inspiratie',   x: 77, y: 55, xm: 77, ym: 47, enabled: true },
   // Plein-plekken, secundair (sub): stolpen-tuin en kampvuur openen een
   // still-binnenwereld (geen dive), de wegwijzer linkt naar het Kompas op de site.
   { id: 'projecten', label: 'Projecten',     x: 27, y: 51, xm: 27, ym: 52, enabled: true, sub: true },
