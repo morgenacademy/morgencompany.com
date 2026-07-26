@@ -236,7 +236,6 @@ const ICONS = {
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const coarse = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 const isMobile = () => coarse || window.innerWidth <= 860;
-const INTRO_SESSION_KEY = 'morgen-wereld-intro-gezien';
 const ROUTE_BY_GEBOUW = {
   train: 'train',
   implement: 'implement',
@@ -273,14 +272,6 @@ const kompasSluit = document.getElementById('kompas-sluit');
 const wereldNav = document.querySelector('.wereld-nav');
 const wereldTicker = document.getElementById('wereld-ticker');
 const tickerTrack = document.getElementById('ticker-track');
-
-function introGezien() {
-  try { return window.sessionStorage.getItem(INTRO_SESSION_KEY) === '1'; } catch (e) { return false; }
-}
-
-function markeerIntroGezien() {
-  try { window.sessionStorage.setItem(INTRO_SESSION_KEY, '1'); } catch (e) {}
-}
 
 function zetWereldRoute(route, { replace = false, pushed = false } = {}) {
   const hash = route ? '#' + route : '';
@@ -554,7 +545,6 @@ function startIntro() {
 }
 
 function toonHub() {
-  markeerIntroGezien();
   stopCine();
   unmountWorld();
   sluitKompas({ updateRoute: false, restoreFocus: false });
@@ -637,27 +627,36 @@ function activeerHotspot(h, trigger) {
   if (!h.enabled) return;
   meetWereld('wereld_hotspot_open', { wereld_target: h.id, wereld_label: h.label });
   if (h.kompas) { openKompas({ trigger }); return; }
+  if (GEBOUWEN[h.id]) { startDive(h.id); return; }
   if (h.href) { window.location.href = h.href; return; }
-  startDive(h.id);
 }
 
+// De hotspots staan als echte links in de HTML (crawlbaar, werkt zonder JS).
+// Hier hangen we alleen het gedrag eraan. Ontbreken ze, dan maken we ze alsnog
+// aan, zodat de wereld blijft werken als de markup ooit uit de pas loopt.
 HOTSPOTS.forEach((h) => {
-  const b = document.createElement('button');
-  b.type = 'button';
-  b.className = 'hotspot' + (h.sub ? ' is-sub' : '') + (h.enabled ? '' : ' is-disabled');
-  b.dataset.hotspot = h.id;
+  let b = hotspotLayer.querySelector('[data-hotspot="' + h.id + '"]');
+  if (!b) {
+    b = document.createElement('a');
+    b.className = 'hotspot' + (h.sub ? ' is-sub' : '');
+    b.dataset.hotspot = h.id;
+    if (h.href) b.href = h.href;
+    b.innerHTML =
+      '<span class="hotspot-dot" aria-hidden="true"></span>' +
+      '<span class="hotspot-label">' + h.label + '</span>';
+    hotspotLayer.appendChild(b);
+  }
+  b.classList.toggle('is-disabled', !h.enabled);
+  if (!h.enabled) b.setAttribute('aria-disabled', 'true');
+  // Mobiel kent eigen posities; desktopwaarden staan al in de HTML.
   const x = (isMobile() && h.xm != null) ? h.xm : h.x;
   const y = (isMobile() && h.ym != null) ? h.ym : h.y;
   b.style.left = x + '%';
   b.style.top = y + '%';
-  b.setAttribute('aria-label', h.enabled ? 'Open ' + h.label : h.label + ', binnenkort beschikbaar');
-  if (!h.enabled) b.setAttribute('aria-disabled', 'true');
-  b.innerHTML =
-    '<span class="hotspot-dot" aria-hidden="true"></span>' +
-    '<span class="hotspot-label">' + h.label + '</span>' +
-    (h.enabled ? '' : '<span class="hotspot-badge">binnenkort</span>');
-  b.addEventListener('click', () => activeerHotspot(h, b));
-  hotspotLayer.appendChild(b);
+  b.addEventListener('click', (e) => {
+    e.preventDefault();   // de href is de fallback zonder JS; hier blijven we in de wereld
+    activeerHotspot(h, b);
+  });
   hotspotButtons.set(h.id, b);
 });
 
@@ -721,6 +720,29 @@ function sluitKompas({ updateRoute = true, restoreFocus = true } = {}) {
   }
   focusTarget?.focus({ preventScroll: true });
 }
+/* De balk op het plein is alleen een instap: hij opent het Wegwijzer-vak en
+   geeft de vraag door aan de bestaande chat-widget. Zo is er één gesprek en
+   één plek waar het antwoord verschijnt. */
+const hubKompasBalk = document.getElementById('hub-kompasbalk');
+const hubKompasInput = document.getElementById('hub-kompasbalk-input');
+
+if (hubKompasBalk && hubKompasInput) {
+  hubKompasBalk.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const vraag = hubKompasInput.value.trim();
+    openKompas({ trigger: hubKompasInput });
+    if (!vraag) return;                       // leeg versturen opent alleen het vak
+    // Direct doorzetten, zonder requestAnimationFrame: de widget staat al in
+    // het vak en rAF loopt niet in achtergrondtabs.
+    const doel = kompasPaneel.querySelector('.ac-input');
+    const stuur = kompasPaneel.querySelector('.ac-send');
+    if (!doel || !stuur) return;              // chat.js niet geladen: vak staat open, rest doet de bezoeker
+    hubKompasInput.value = '';
+    doel.value = vraag;
+    stuur.click();
+  });
+}
+
 kompasSluit.addEventListener('click', sluitKompas);
 document.addEventListener('keydown', (e) => {
   if (kompasPaneel.hidden) return;
@@ -849,10 +871,10 @@ function pasWereldRouteToe() {
 
 if (!pasWereldRouteToe()) {
   zetWereldRoute('', { replace: true });
-  if (reduce || introGezien()) {
-    toHub();          // reduced motion of terugkeer in dezelfde sessie: intro overslaan
+  if (reduce) {
+    toHub();          // reduced motion: intro overslaan
   } else {
-    startIntro();
+    startIntro();     // showcase: de vlucht speelt bij elke load, met skip-knop
   }
 }
 

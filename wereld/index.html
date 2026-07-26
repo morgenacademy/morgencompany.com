@@ -73,21 +73,34 @@
   <!-- Hub: het plein met de vier gebouwen -->
   <section id="hub" class="stage" tabindex="-1" aria-label="Het Morgen-plein">
     <img id="hub-still" class="hub-still" alt="Overzicht van het Morgen-plein met vier gebouwen">
-    <div id="hotspots" class="hotspots"></div>
+    <!-- Hotspots staan bewust statisch in de HTML als echte links: zo zijn de
+         vier pilaren ook vindbaar voor crawlers die geen JavaScript uitvoeren.
+         wereld.js hangt er het klikgedrag aan (dive of Wegwijzer) en zet op
+         mobiel andere posities; de href blijft de fallback zonder JS. -->
+    <div id="hotspots" class="hotspots">
+      <a class="hotspot" data-hotspot="train" href="/academy/" style="left:22%;top:34%" aria-label="Train, AI-trainingen voor teams"><span class="hotspot-dot" aria-hidden="true"></span><span class="hotspot-label">Train</span></a>
+      <a class="hotspot" data-hotspot="implement" href="/consultancy/" style="left:44%;top:24%" aria-label="Implement, implementatie en begeleiding"><span class="hotspot-dot" aria-hidden="true"></span><span class="hotspot-label">Implement</span></a>
+      <a class="hotspot" data-hotspot="build" href="/technology/" style="left:69%;top:26%" aria-label="Build, maatwerk en automatisering"><span class="hotspot-dot" aria-hidden="true"></span><span class="hotspot-label">Build</span></a>
+      <a class="hotspot" data-hotspot="inspire" href="/inspiratie/" style="left:77%;top:55%" aria-label="Inspire, keynotes, podcast en boek"><span class="hotspot-dot" aria-hidden="true"></span><span class="hotspot-label">Inspire</span></a>
+      <a class="hotspot is-sub" data-hotspot="projecten" href="/projecten/" style="left:27%;top:51%" aria-label="Projecten, klantcases en praktijkvoorbeelden"><span class="hotspot-dot" aria-hidden="true"></span><span class="hotspot-label">Projecten</span></a>
+      <a class="hotspot is-sub" data-hotspot="overons" href="/about/" style="left:70%;top:67%" aria-label="Over Morgen, team en aanpak"><span class="hotspot-dot" aria-hidden="true"></span><span class="hotspot-label">Over Morgen.</span></a>
+      <a class="hotspot is-sub" data-hotspot="kompas" href="/organisatie/#trainingwijzer-app" style="left:52%;top:47%" aria-label="Wegwijzer, vind de route die bij je past"><span class="hotspot-dot" aria-hidden="true"></span><span class="hotspot-label">Wegwijzer</span></a>
+    </div>
     <div class="hub-propositie">
       <h1>Maak AI onderdeel van het dagelijkse werk.</h1>
       <p>Met trainingen, implementatie en maatwerksoftware voor organisaties.</p>
       <!-- Crawlbare tekst en echte links: dit stond alleen in het noscript-blok,
            dat Google negeert omdat het JavaScript wel uitvoert. -->
       <p class="hub-tekst">Morgen leert teams werken met AI, helpt de keuzes landen in processen en werkafspraken, en bouwt maatwerk dat past op het werk dat er al is.</p>
-      <nav class="hub-links" aria-label="Wat Morgen doet">
-        <a href="/academy/">AI-trainingen</a>
-        <a href="/consultancy/">Implementatie en begeleiding</a>
-        <a href="/technology/">Maatwerk en automatisering</a>
-        <a href="/projecten/">Projecten</a>
-        <a href="/inspiratie/">Keynotes, podcast en boek</a>
-        <a href="/organisatie/">Snel overzicht</a>
-      </nav>
+      <!-- Instap naar de Wegwijzer: alleen de balk, zonder kop en zonder chips.
+           Versturen opent het Wegwijzer-vak en zet de vraag door naar de
+           bestaande chat-widget, zodat het gesprek op één plek gevoerd wordt. -->
+      <form class="hub-kompasbalk" id="hub-kompasbalk" role="search" aria-label="Vraag het de Wegwijzer">
+        <input class="hub-kompasbalk-input" id="hub-kompasbalk-input" type="text" maxlength="500"
+               autocomplete="off" aria-label="Stel je vraag of beschrijf je situatie"
+               placeholder="Stel je vraag of beschrijf je situatie&hellip;">
+        <button class="hub-kompasbalk-send" type="submit">Verstuur</button>
+      </form>
     </div>
   </section>
 
