@@ -163,12 +163,12 @@ const GEBOUWEN = {
     label: 'Inspire',
     dive:   '/wereld/assets/echt/vid/dive-inspire.mp4',
     diveM:  '/wereld/assets/echt/vid/dive-inspire-m.mp4',
-    // Na de dive neemt de echte keynote-laag het over. De still blijft de
-    // fout- en laadfallback; de scrub-engine hoeft geen tweede clip te laden.
+    // Na de dive neemt de echte keynote-laag het over. Een frame uit de
+    // oorspronkelijke podiumclip bewaart de compositie zonder tweede video.
     leg:    null,
     legM:   null,
-    still:  '/wereld/assets/echt/inspire-binnen.webp',
-    stillM: '/wereld/assets/echt/inspire-binnen.webp',
+    still:  '/wereld/assets/echt/inspire-podium.jpg',
+    stillM: '/wereld/assets/echt/inspire-podium-m.jpg',
     cta: { label: 'Bekijk inspiratie', href: '/inspiratie/' },
     sectie: {
       eyebrow: 'Inspire',

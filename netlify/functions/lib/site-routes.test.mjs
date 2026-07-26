@@ -182,7 +182,7 @@ test('functionele wereldassets worden met dezelfde cacheversie geladen', () => {
   const wereldHtml = read('wereld/index.html');
   assert.match(wereldHtml, /wereld\.css\?v=20260725-inspire-scherm/);
   assert.match(wereldHtml, /scrub-engine\.js\?v=20260724-ambient/);
-  assert.match(wereldHtml, /wereld\.js\?v=20260725-inspire-echt/);
+  assert.match(wereldHtml, /wereld\.js\?v=20260725-inspire-podium/);
   assert.match(wereldHtml, /chat\.css\?v=20260724-functional/);
   assert.match(wereldHtml, /chat\.js\?v=20260724-launch/);
 });
@@ -212,7 +212,7 @@ test('de wereld is technisch voorbereid als root-homepage', () => {
   );
   assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260725-inspire-scherm"/);
   assert.match(wereldHtml, /src="\/wereld\/scrub-engine\.js\?v=20260724-ambient"/);
-  assert.match(wereldHtml, /src="\/wereld\/wereld\.js\?v=20260725-inspire-echt"/);
+  assert.match(wereldHtml, /src="\/wereld\/wereld\.js\?v=20260725-inspire-podium"/);
   assert.doesNotMatch(wereldHtml, /(?:href|src)="(?:wereld\.css|scrub-engine\.js|wereld\.js)/);
   assert.doesNotMatch(wereld, /:\s*'assets\//);
   assert.match(wereldHtml, /class="wereld-merk" href="\/"/);
@@ -354,6 +354,8 @@ test('Inspire projecteert lui en toegankelijk echt keynotebeeld in het theater',
   assert.match(wereld, /videoM:\s+'\/wereld\/assets\/echt\/vid\/inspire-keynote-m\.mp4'/);
   assert.match(wereld, /poster:\s+'\/docs\/company\/film-poster\.jpg'/);
   assert.match(wereld, /label: 'Inspire',[\s\S]*?leg:\s+null,\s+legM:\s+null,/);
+  assert.match(wereld, /still:\s+'\/wereld\/assets\/echt\/inspire-podium\.jpg'/);
+  assert.match(wereld, /stillM:\s+'\/wereld\/assets\/echt\/inspire-podium-m\.jpg'/);
   assert.match(start, /if \(reduce\) return;/);
   assert.match(start, /inspireEchtVideo\.src = bron;\s+inspireEchtVideo\.load\(\)/);
   assert.match(wereld, /if \(actiefGebouw === 'inspire'\) startInspireEcht\(\);\s+else startAmbient\(actiefGebouw\);/);
@@ -374,11 +376,15 @@ test('Inspire projecteert lui en toegankelijk echt keynotebeeld in het theater',
 
   const desktop = bytes('wereld/assets/echt/vid/inspire-keynote.mp4');
   const mobile = bytes('wereld/assets/echt/vid/inspire-keynote-m.mp4');
+  const podium = bytes('wereld/assets/echt/inspire-podium.jpg');
+  const podiumMobile = bytes('wereld/assets/echt/inspire-podium-m.jpg');
   const legacy = bytes('docs/company/Filmpje Harmen Daan Karin.mp4');
   assert.ok(desktop < legacy, 'de wereldvariant moet lichter zijn dan de legacy-hero');
   assert.ok(desktop < 3_500_000, 'de desktop-keynotevariant is te zwaar');
   assert.ok(mobile < desktop, 'de mobiele keynotevariant moet lichter zijn');
   assert.ok(mobile < 2_000_000, 'de mobiele keynotevariant is te zwaar');
+  assert.ok(podium < 200_000, 'de desktop-podiumstill is te zwaar');
+  assert.ok(podiumMobile < 100_000, 'de mobiele podiumstill is te zwaar');
 });
 
 test('het plein toont de positionering als zichtbare hoofdkop', () => {
