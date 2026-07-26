@@ -2,7 +2,7 @@
 //
 // Aanbod-catalogus voor 'het Kompas' — de AI-adviseur die bezoekers wijst naar de
 // juiste richting binnen heel Morgen: leren (Academy), laten implementeren
-// (Consultancy) of laten bouwen (Technology). Enige waarheidsbron; de bot mag
+// (Implementatie) of laten bouwen (AI-oplossingen). Enige waarheidsbron; de bot mag
 // niets buiten dit aanbod adviseren of verzinnen.
 
 export const OFFERS = [
@@ -114,7 +114,7 @@ export const OFFERS = [
   },
   {
     key: 'managers',
-    training: 'Mini masterclass AI voor managers',
+    training: 'Mini masterclass AI in management',
     startTypeLabel: 'Masterclass',
     sectionLabel: 'Masterclasses',
     sectionTarget: 'ac-verdiepen',
@@ -169,13 +169,29 @@ export const OFFERS = [
     ],
   },
 
-  // ── Consultancy: laten implementeren (domein 'Consultancy') ──
+  {
+    key: 'keynote',
+    domein: 'Inspiratie',
+    training: 'Keynotes & kick-offs',
+    startTypeLabel: 'Keynote of kick-off',
+    sectionLabel: 'Inspiratie',
+    href: '/inspiratie/#cp-keynote',
+    duration: '45 tot 90 minuten',
+    description: 'Een scherp verhaal voor een hele zaal: events, directiedagen, teamdagen of de aftrap van een programma. Er zijn meerdere sprekers met een eigen invalshoek, van marketing en productiviteit tot leiderschap, veranderkunde en security, dus de keynote wordt op het onderwerp en het publiek gekozen. Past bij alle drie de richtingen: als opener voor een leertraject, voor een implementatie of los als inspiratie.',
+    bullets: [
+      'Bereikt in een keer een grote groep, ook mensen die nog niet met AI bezig zijn',
+      'Spreker en thema worden gekozen op het publiek en de vraag',
+      'Werkt als start van training of begeleiding, of los op een event',
+    ],
+  },
+
+  // ── Implementatie: laten invoeren (domein 'Implementatie') ──
   {
     key: 'implementatietraject',
-    domein: 'Consultancy',
-    training: 'AI-implementatietraject',
+    domein: 'Implementatie',
+    training: 'Begeleid AI-implementatietraject',
     startTypeLabel: 'Begeleid traject',
-    sectionLabel: 'Consultancy',
+    sectionLabel: 'Implementatie',
     href: '/consultancy/#co-aanvraag',
     duration: '3 tot 12 maanden',
     description: 'Een begeleid traject van strategie naar een werkende aanpak, borging en opschaling. We maken keuzes scherp, werken met het team en zetten een vast ritme neer.',
@@ -186,13 +202,13 @@ export const OFFERS = [
     ],
   },
 
-  // ── Technology: laten bouwen (domein 'Technology') ──
+  // ── AI-oplossingen: laten bouwen (domein 'AI-oplossingen') ──
   {
     key: 'maatwerk',
-    domein: 'Technology',
+    domein: 'AI-oplossingen',
     training: 'Maatwerk: assistenten, workflows en koppelingen',
     startTypeLabel: 'Laten bouwen',
-    sectionLabel: 'Technology',
+    sectionLabel: 'AI-oplossingen',
     href: '/technology/#te-aanvraag',
     duration: 'Op projectbasis',
     description: 'We bouwen slimme applicaties, workflows en koppelingen die passen in het werk dat er al is: procesautomatisering, klantportalen, systeemkoppelingen en maatwerk-apps.',
@@ -224,7 +240,7 @@ export const OFFERS = [
 export const OFFER_KEYS = OFFERS.map((o) => o.key);
 
 // Waar een advieskaart heen linkt. Academy-aanbod scrollt naar de juiste sectie
-// op de academy-pagina; consultancy/technology/kennismaking hebben een eigen href.
+// op de academy-pagina; implementatie/AI-oplossingen/kennismaking hebben een eigen href.
 export function offerHref(o) {
   return o.href || `/academy/#${o.sectionTarget}`;
 }
@@ -239,6 +255,7 @@ const FORM_TARGETS = new Set(['ac-aanvraag']);
 export function offerCta(o) {
   if (o.key === 'online_basis') return 'Bekijk online trainingen';
   if (o.key === 'kennismaking') return 'Plan een kennismaking';
+  if (o.key === 'keynote') return 'Bekijk de keynotes';
   if (o.href || FORM_TARGETS.has(o.sectionTarget)) return 'Vraag dit aan';
   return 'Bekijk deze training';
 }
@@ -274,19 +291,19 @@ export const PROOF = {
     {
       naam: 'Gemeente Tilburg',
       url: '/projecten/#case-tilburg',
-      pijler: 'Consultancy',
+      pijler: 'Implementatie',
       case: 'AI als waardekeuze: sessies met OR en linking pins (zo\'n zestig mensen) om AI organisatiebreed, veilig en waardevol te laten landen.',
     },
     {
       naam: 'Solo Solis (een van de grootste zonnebrillengroothandels van Europa)',
       url: '/projecten/#case-solosolis',
-      pijler: 'Technology',
+      pijler: 'AI-oplossingen',
       case: 'Proces rond bedrukte producten geautomatiseerd: van 40+ handmatige stappen naar maximaal 6 controles.',
     },
     {
       naam: 'Trappenfabriek Vermeulen',
       url: '/projecten/#case-trappenfabriek',
-      pijler: 'Technology',
+      pijler: 'AI-oplossingen',
       case: 'Logistieke AI-planning: handmatig en foutgevoelig plannings- en transportproces geautomatiseerd; AI plant nu sneller en accurater.',
     },
   ],
@@ -302,7 +319,7 @@ export const FAQ = [
   {
     vraag: 'Wat kost een implementatietraject of maatwerk?',
     antwoord:
-      'Consultancy (implementatietraject) en technology (maatwerk) zijn projectwerk op maat; daar is geen publieke prijs voor. Dat bepalen we samen in het kennismakingsgesprek op basis van scope en situatie.',
+      'Implementatie (het begeleide traject) en AI-oplossingen (maatwerk) zijn projectwerk op maat; daar is geen publieke prijs voor. Dat bepalen we samen in het kennismakingsgesprek op basis van scope en situatie.',
   },
   {
     vraag: 'Kan het op locatie of online?',
@@ -322,7 +339,7 @@ export const FAQ = [
   {
     vraag: 'Doen jullie ook AI Act / verantwoord AI-gebruik?',
     antwoord:
-      'Ja. Kansen, risico’s en AI Act-verantwoordelijkheid komen expliciet aan bod in de "Mini masterclass AI voor managers".',
+      'Ja. Kansen, risico’s en AI Act-verantwoordelijkheid komen expliciet aan bod in de "Mini masterclass AI in management".',
   },
 ];
 
@@ -345,8 +362,8 @@ export function buildSystemPrompt() {
 
   return `Je bent 'het Kompas', de AI-adviseur van Morgen. Morgen helpt organisaties met AI langs drie richtingen:
 - LEREN (Morgen Academy): trainingen en masterclasses zodat mensen zelf met AI leren werken.
-- LATEN IMPLEMENTEREN (Morgen Consultancy): een begeleid traject van strategie naar werkende aanpak en borging.
-- LATEN BOUWEN (Morgen Technology): maatwerk-assistenten, workflows en koppelingen die een concreet proces oplossen.
+- LATEN IMPLEMENTEREN (Implementatie): een begeleid traject van strategie naar werkende aanpak en borging.
+- LATEN BOUWEN (AI-oplossingen): maatwerk-assistenten, workflows en koppelingen die een concreet proces oplossen.
 Weet iemand het nog niet? Dan is een vrijblijvend kennismakingsgesprek de beste eerste stap.
 
 Je doel: de bezoeker zich gehoord laten voelen, samen scherp krijgen wat er speelt, en dan de best passende richting wijzen met uitleg waarom die bij hen past. Schrijf warm, concreet en zonder vakjargon. Kort waar het kan. Gebruik geen em-dashes; schrijf met gewone punten en komma's.
@@ -368,9 +385,9 @@ ${bewijs}
 - Bouw vertrouwen met bewijs: als een case uit de bewijslijst echt lijkt op de situatie van de bezoeker, noem die kort en natuurlijk ("bij OnView deden we net zoiets: ..."). Hooguit één case per bericht, alleen uit de lijst, en alleen als het relevant is. Verzin nooit klanten, resultaten of quotes. Voor meer voorbeelden mag je naar morgencompany.com/projecten verwijzen.
 - Zodra je genoeg weet, roep de tool \`presenteer_advies\` aan met de best passende \`offer_key\`, een korte persoonlijke \`waarom\` (1 tot 2 zinnen die HUN situatie koppelen aan wat deze stap hen concreet oplevert), een \`samenvatting\` van hun situatie in de ik/wij-vorm (dient als vooringevuld bericht in het contactformulier, dus feitelijk en in hun woorden), en 0 tot 2 logische \`vervolg_keys\`.
 - Het gaat niet om doorverwijzen. Laat in je tekst merken dat je geluisterd hebt: vat kort samen wat je hoorde en leg uit waarom dit past en wat het hen oplevert.
-- Routeer op richting: zelf leren → een training of masterclass; laten begeleiden of invoeren → het AI-implementatietraject; laten bouwen of automatiseren → maatwerk; twijfel, breed of strategisch → het kennismakingsgesprek.
+- Routeer op richting: een grote groep in een keer raken of een programma aftrappen → een keynote; zelf leren → een training of masterclass; laten begeleiden of invoeren → het begeleide AI-implementatietraject; laten bouwen of automatiseren → maatwerk; twijfel, breed of strategisch → het kennismakingsgesprek.
 - Kies de laagdrempeligste stap die echt past. Een meermaands traject adviseer je alleen als de bezoeker expliciet om organisatiebrede invoering met begeleiding vraagt; anders is een concrete training de logische eerste stap, met het traject hooguit als vervolgstap. Let op: één team dat in of voor andere teams werkt (zoals een pool projectmanagers die intern wordt ingevlogen op projecten) is gewoon één team. Voor projectmanagers is **Projectmanagement met AI** dan de voor de hand liggende start.
-- Prijzen: trainingen hebben publieke vanaf-prijzen (per groep tot 10 deelnemers; grotere groepen in overleg) die je als indicatie mag geven. Bij een prijsvraag: noem de range (vanaf €750 tot €950) en hooguit de een of twee trainingen die het relevantst lijken; som nooit het hele aanbod op. Sluit af met één gerichte vraag zodat je daarna gericht kunt adviseren. Consultancy en technology zijn maatwerk zonder publieke prijs; zeg dat eerlijk en verwijs voor een voorstel naar het gesprek of formulier. Verzin nooit een prijs, dienst, datum of voorwaarde die hier niet staat.
+- Prijzen: trainingen hebben publieke vanaf-prijzen (per groep tot 10 deelnemers; grotere groepen in overleg) die je als indicatie mag geven. Bij een prijsvraag: noem de range (vanaf €750 tot €950) en hooguit de een of twee trainingen die het relevantst lijken; som nooit het hele aanbod op. Sluit af met één gerichte vraag zodat je daarna gericht kunt adviseren. Implementatie en AI-oplossingen zijn maatwerk zonder publieke prijs; zeg dat eerlijk en verwijs voor een voorstel naar het gesprek of formulier. Verzin nooit een prijs, dienst, datum of voorwaarde die hier niet staat.
 - Beantwoord feitvragen op basis van de FAQ en het aanbod. Weet je iets niet zeker? Verwijs naar het kennismakingsgesprek of totmorgen@morgenacademy.nl.
 - Blijf binnen de scope van Morgen (leren, implementeren en bouwen met AI). Buig off-topic vragen vriendelijk terug.`;
 }
