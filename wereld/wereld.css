@@ -754,7 +754,6 @@ body.tegels-zichtbaar #world .sw-copy {
 .wereld-ticker .logo-band {
   overflow: hidden;
   position: relative;
-  padding: 14px 0;
   background: rgba(255, 255, 255, .03);
   border-top: 1px solid rgba(155, 111, 207, .25);
 }
@@ -769,6 +768,19 @@ body.tegels-zichtbaar #world .sw-copy {
 }
 .wereld-ticker .logo-band::before { left: 0; background: linear-gradient(90deg, var(--w-bg), transparent); }
 .wereld-ticker .logo-band::after { right: 0; background: linear-gradient(-90deg, var(--w-bg), transparent); }
+/* De balk zelf vangt geen muis (pointer-events: none hierboven), alleen de
+   link doet dat: klikken op de logo's gaat naar het projectenoverzicht. */
+.wereld-ticker .logo-link {
+  display: block;
+  /* De padding van de band zit hier, zodat de hele balkhoogte tikbaar is
+     en niet alleen de logo's zelf. */
+  padding: 14px 0;
+  pointer-events: auto;
+  text-decoration: none;
+  outline-offset: -2px;
+}
+.wereld-ticker .logo-link:hover .clogo,
+.wereld-ticker .logo-link:focus-visible .clogo { opacity: .85; }
 .wereld-ticker .logo-track {
   display: flex;
   align-items: center;
@@ -821,7 +833,7 @@ body.ticker-actief .sw-hint { bottom: calc(84px + env(safe-area-inset-bottom)); 
   .einde-lijst span { font-size: .84rem; }
   .kompas-paneel { width: 96vw; bottom: 10px; }
   .wereld-ticker .clogo { height: 26px; }
-  .wereld-ticker .logo-band { padding: 10px 0; }
+  .wereld-ticker .logo-link { padding: 10px 0; }
   .einde--breed { width: 94vw; }
   .einde-lijst--grid { grid-template-columns: 1fr; }
   .einde-thumb { height: 108px; }
