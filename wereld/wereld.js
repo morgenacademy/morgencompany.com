@@ -61,6 +61,15 @@ const ASSETS = {
   posterM: '/wereld/assets/echt/intro-poster-m.jpg',
 };
 
+/* De bestaande keynote-montage, opnieuw gecodeerd voor de wereld.
+   De gewone pagina behoudt het 1080p-bronbestand; deze lichtere varianten
+   worden alleen geladen zodra iemand Inspire daadwerkelijk opent. */
+const INSPIRE_ECHT = {
+  video:  '/wereld/assets/echt/vid/inspire-keynote.mp4',
+  videoM: '/wereld/assets/echt/vid/inspire-keynote-m.mp4',
+  poster: '/docs/company/film-poster.jpg',
+};
+
 /* ---- Per gebouw: assets, engine-sectie-copy en eindpaneel. ----
    Copy komt letterlijk van de bronpagina's (/academy/, /consultancy/,
    /technology/, /inspiratie/). Ontbrekende video's vallen gracieus door:
@@ -154,10 +163,12 @@ const GEBOUWEN = {
     label: 'Inspire',
     dive:   '/wereld/assets/echt/vid/dive-inspire.mp4',
     diveM:  '/wereld/assets/echt/vid/dive-inspire-m.mp4',
-    leg:    '/wereld/assets/echt/vid/leg-inspire.mp4',
-    legM:   '/wereld/assets/echt/vid/leg-inspire-m.mp4',
-    still:  '/wereld/assets/echt/inspire-binnen.webp',
-    stillM: '/wereld/assets/echt/inspire-binnen.webp',
+    // Na de dive neemt de echte keynote-laag het over. Een frame uit de
+    // oorspronkelijke podiumclip bewaart de compositie zonder tweede video.
+    leg:    null,
+    legM:   null,
+    still:  '/wereld/assets/echt/inspire-podium.jpg',
+    stillM: '/wereld/assets/echt/inspire-podium-m.jpg',
     cta: { label: 'Bekijk inspiratie', href: '/inspiratie/' },
     sectie: {
       eyebrow: 'Inspire',
@@ -261,6 +272,8 @@ const cineVideo = document.getElementById('cine-video');
 const skipKnop = document.getElementById('skip-intro');
 const exitKnop = document.getElementById('exit-verhaal');
 const worldEl = document.getElementById('world');
+const inspireEcht = document.getElementById('inspire-echt');
+const inspireEchtVideo = document.getElementById('inspire-echt-video');
 const eindePaneel = document.getElementById('verhaal-einde');
 const eindeEyebrow = document.getElementById('einde-eyebrow');
 const eindeTitel = document.getElementById('einde-titel');
@@ -337,6 +350,7 @@ let activeWorld = null;
 
 function unmountWorld() {
   stopAmbient();
+  stopInspireEcht();
   if (!activeWorld) return;
   activeWorld.engine?.destroy();
   activeWorld.host.remove();
@@ -468,6 +482,103 @@ function startAmbient(gebouwId) {
     zoek();
   }, 400);
 }
+
+/* ---------- Inspire: van papercraft naar echt keynotebeeld ----------
+   Dit is bewust een eigen videolaag. De scrub-engine beheert zijn eigen
+   videoklok; door beide niet te mengen blijven scrollen en autoplay robuust. */
+let inspireEchtWanted = false;
+let inspireEchtToken = 0;
+let inspireEchtUnload = null;
+let inspirePosterReady = false;
+
+function toonInspireEcht() {
+  if (
+    !inspireEchtWanted ||
+    huidigGebouw !== 'inspire' ||
+    document.body.dataset.state !== 'verhaal'
+  ) return;
+  inspireEcht.classList.add('is-zichtbaar');
+  document.body.classList.add('inspire-echt-zichtbaar');
+}
+
+function ontkoppelInspireEcht() {
+  inspireEchtVideo.removeAttribute('src');
+  inspireEchtVideo.removeAttribute('poster');
+  try { inspireEchtVideo.load(); } catch (e) {}
+}
+
+function stopInspireEcht({ direct = false } = {}) {
+  inspireEchtWanted = false;
+  inspireEchtToken += 1;
+  inspireEcht.classList.remove('is-zichtbaar');
+  document.body.classList.remove('inspire-echt-zichtbaar');
+  if (activeWorld?.id === 'inspire') activeWorld.engine?.setScrubbing(true);
+  try { inspireEchtVideo.pause(); } catch (e) {}
+  if (inspireEchtUnload) clearTimeout(inspireEchtUnload);
+  inspireEchtUnload = null;
+  if (!inspireEchtVideo.getAttribute('src') && !inspireEchtVideo.getAttribute('poster')) return;
+  if (direct) {
+    ontkoppelInspireEcht();
+    return;
+  }
+  // Laat de laatste frame tijdens de crossfade staan; ruim daarna decoder en
+  // bron op. Een nieuwe Inspire-start annuleert deze timer.
+  inspireEchtUnload = setTimeout(() => {
+    inspireEchtUnload = null;
+    if (!inspireEchtWanted) ontkoppelInspireEcht();
+  }, 850);
+}
+
+function startInspireEcht() {
+  stopAmbient();
+  if (inspireEchtUnload) clearTimeout(inspireEchtUnload);
+  inspireEchtUnload = null;
+  inspireEchtWanted = true;
+  const token = ++inspireEchtToken;
+  inspireEchtVideo.defaultMuted = true;
+  inspireEchtVideo.muted = true;
+  inspireEchtVideo.poster = INSPIRE_ECHT.poster;
+
+  // De poster is de inhoudelijke fallback én de reduced-motionvariant.
+  if (inspirePosterReady) {
+    toonInspireEcht();
+  } else {
+    const poster = new Image();
+    poster.onload = () => {
+      inspirePosterReady = true;
+      if (token === inspireEchtToken) toonInspireEcht();
+    };
+    poster.src = INSPIRE_ECHT.poster;
+  }
+
+  if (reduce) return;
+  const bron = isMobile() ? INSPIRE_ECHT.videoM : INSPIRE_ECHT.video;
+  if (inspireEchtVideo.getAttribute('src') !== bron) {
+    inspireEchtVideo.src = bron;
+    inspireEchtVideo.load();
+  }
+  try {
+    const p = inspireEchtVideo.play();
+    // Een geweigerde autoplay is geen lege foutstaat: de poster blijft staan.
+    if (p && p.catch) p.catch(() => {});
+  } catch (e) {}
+}
+
+inspireEchtVideo.addEventListener('loadeddata', toonInspireEcht);
+inspireEchtVideo.addEventListener('playing', () => {
+  if (!inspireEchtWanted) {
+    try { inspireEchtVideo.pause(); } catch (e) {}
+    return;
+  }
+  toonInspireEcht();
+  // De engine blijft copy en scrollpositie bijwerken, maar hoeft zijn
+  // verborgen papercraftvideo niet meer te seeken.
+  if (activeWorld?.id === 'inspire') activeWorld.engine?.setScrubbing(false);
+});
+inspireEchtVideo.addEventListener('error', () => {
+  // Het al geladen posterbeeld blijft de rustige fallback.
+  if (inspirePosterReady) toonInspireEcht();
+});
 
 /* ---------- Generiek eindpaneel, per gebouw gevuld ---------- */
 function escHtml(s) {
@@ -612,10 +723,13 @@ function toVerhaal(gebouwId) {
   setState('verhaal');
   window.scrollTo(0, 0);
   eindePaneel.classList.remove('is-zichtbaar');
+  document.body.classList.remove('tegels-zichtbaar');
   // Engine-layout verversen nu de container zichtbaar is
   window.dispatchEvent(new Event('orientationchange'));
-  startAmbient(gebouwId || huidigGebouw);
-  toonTicker(gebouwId || huidigGebouw);
+  const actiefGebouw = gebouwId || huidigGebouw;
+  if (actiefGebouw === 'inspire') startInspireEcht();
+  else startAmbient(actiefGebouw);
+  toonTicker(actiefGebouw);
 }
 
 /* ---------- Hub opbouwen ---------- */
