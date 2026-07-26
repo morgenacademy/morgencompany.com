@@ -4,7 +4,9 @@ Werkbestand voor de teksten die Google ziet. **Pas hieronder aan wat je wil, laa
 
 Vuistregels: title tot ~60 tekens (anders knipt Google af), description 120 tot 155 tekens, geen em-dashes, elke pagina een eigen kop en beschrijving.
 
-Stand: 2026-07-25, na de wereld-launch.
+Stand: 2026-07-26. Sinds deze ronde claimt alleen /consultancy/ de term "AI-implementatie";
+/academy/ staat op training en /technology/ op maatwerk en AI-oplossingen. Die drie titles
+vochten om dezelfde zoekterm, waardoor Google geen pagina koos (positie 95, nul clicks).
 
 ---
 
@@ -43,21 +45,21 @@ De H1 is de zichtbare hero-kop. Verander je die hier, dan verandert de kop op de
 ### /academy/
 | Veld | Tekst | Lengte |
 |---|---|---|
-| Title | MORGEN: AI-implementatie en trainingen op maat voor teams | 57 |
+| Title | MORGEN: AI-trainingen op maat voor teams | 40 |
 | Description | AI-trainingen, implementaties en integraties voor teams die slimmer willen werken met technologie, automatisering en AI. | 119 |
 | H1 | Klein beginnen. Groot doorpakken. | |
 
 ### /consultancy/
 | Veld | Tekst | Lengte |
 |---|---|---|
-| Title | AI-consultancy en implementatiebegeleiding \| Morgen Company | 59 |
-| Description | Van strategie tot werkende implementatie: begeleiding voor organisaties die AI verantwoord, praktisch en zichtbaar waardevol willen inzetten. | 141 |
+| Title | AI-implementatie voor organisaties \| Morgen Company | 51 |
+| Description | AI-implementatie van strategie tot uitvoering: Morgen helpt organisaties de keuzes maken en laat AI landen in processen en dagelijks werk. | 137 |
 | H1 | Digitalisering die landt in het werk. | |
 
 ### /technology/
 | Veld | Tekst | Lengte |
 |---|---|---|
-| Title | AI-implementatie en technologieprojecten \| Morgen Company | 57 |
+| Title | AI-oplossingen en maatwerksoftware \| Morgen Company | 51 |
 | Description | Morgen Company bouwt AI-assistenten, automatiseringen en digitale oplossingen die aansluiten op je werkprocessen en dagelijks gebruik. | 134 |
 | H1 nu | Werk slimmer georganiseerd. | |
 
@@ -114,17 +116,8 @@ Drie plekken, en ze moeten met elkaar kloppen:
 2. **`routeMeta` in de JS van elke bundel** — hiermee wisselt de title bij intern klikken. Deze map staat in álle 7 bundles en moet daar identiek zijn.
 3. **`wereld/index.html`** — de homepage: statische head plus het tekstblok onder de propositie.
 
-**Let op, nu nog niet in orde:** `routeMeta` is uit elkaar gelopen. Er zijn drie varianten in omloop:
-
-| Bundle | home-title in routeMeta |
-|---|---|
-| index.html | MORGEN: Technologiepartner voor bedrijven |
-| academy/index.html | Morgen Company - technologiepartner voor bedrijven |
-| de andere 5 | Morgen Company - technologiepartner voor bedrijven |
-
-En `academy/index.html` heeft ook een eigen academy-title (`MORGEN: AI-implementatie en trainingen op maat voor teams`) waar de rest `AI-training en academy voor teams | Morgen Company` zegt.
-
-Gevolg: welke title je ziet bij intern navigeren hangt af van waar je binnenkwam. Voor Google beperkt schadelijk (die leest vooral de statische head per URL), maar het is precies de drift waar CLAUDE.md voor waarschuwt. Kies per regel de juiste versie in de tabellen hierboven, dan trek ik alle 7 gelijk.
+Stand 2026-07-26: `routeMeta` staat in alle 7 bundles gelijk, gecontroleerd op de home-,
+academy-, consultancy- en technology-titles. De eerder gemelde drift is opgelost.
 
 ---
 

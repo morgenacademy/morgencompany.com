@@ -117,7 +117,7 @@ const GEBOUWEN = {
     legM:   '/wereld/assets/echt/vid/leg-implement-m.mp4',
     still:  '/wereld/assets/echt/implement-binnen.webp',
     stillM: '/wereld/assets/echt/implement-binnen.webp',
-    cta: { label: 'Bekijk consultancy', href: '/consultancy/' },
+    cta: { label: 'Bekijk implementatie', href: '/consultancy/' },
     sectie: {
       eyebrow: 'Implementatie',
       title: 'Digitalisering die landt in het werk.',
