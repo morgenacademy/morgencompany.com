@@ -52,6 +52,10 @@ html, body {
   background: var(--w-bg);
   color: var(--w-ink);
   font-family: 'Barlow', system-ui, sans-serif;
+  /* Nooit horizontaal kunnen scrollen: steekt er toch iets uit, dan rekt Safari
+     de pagina op en worden vw-maten breder dan het scherm. Clip in plaats van
+     hidden, zodat er geen extra scrollcontainer ontstaat. */
+  overflow-x: clip;
 }
 
 /* Buiten het binnen-verhaal mag de pagina niet scrollen */
@@ -781,6 +785,13 @@ body.tegels-zichtbaar #world .sw-copy {
 }
 /* Scroll-hint van de engine boven de ticker tillen zolang die loopt */
 body.ticker-actief .sw-hint { bottom: calc(84px + env(safe-area-inset-bottom)); }
+/* Op mobiel staat de sectiecopy zelf ook onderin: die moet dezelfde 70px mee
+   omhoog, anders schuift de CTA-knop over de opgetilde hint heen.
+   Alleen onder 860px, want daarboven staat de copy verticaal gecentreerd
+   (top:50%) en zou een bottom-waarde het blok uitrekken. */
+@media (max-width: 860px) {
+  body.ticker-actief .sw-copy { bottom: calc(clamp(72px, 13dvh, 120px) + 70px + env(safe-area-inset-bottom)); }
+}
 @keyframes wereldLogoScroll {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }

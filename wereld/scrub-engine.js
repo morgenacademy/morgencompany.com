@@ -274,7 +274,10 @@ function mountScrollWorld(container, config) {
       else cop = (before || after) ? 0 : smooth(1 - Math.abs(pr - 0.5) / 0.5);
       const c = copies[i];
       c.style.opacity = cop;
-      c.style.transform = reduce ? 'none' : `translateY(${(0.5 - pr) * 4}vh)`;
+      // Alleen de parallax-verschuiving doorgeven; de CSS stelt de transform
+      // samen. Een hele transform inline zetten wiste de translateY(-50%)
+      // centrering op desktop, waardoor de CTA onder de vouw bleef hangen.
+      c.style.setProperty('--sw-copy-shift', reduce ? '0px' : `${(0.5 - pr) * 4}vh`);
       c.style.pointerEvents = cop > 0.5 ? 'auto' : 'none';
     }
 
@@ -469,7 +472,7 @@ function injectCSS() {
   .sw-scene__still{will-change:transform;} .sw-scene.has-clip .sw-scene__still{opacity:0;} .sw-scene__video{z-index:1;}
   .sw-copylayer{position:fixed;inset:0;z-index:20;pointer-events:none;}
   .sw-copylayer::before{content:"";position:absolute;inset:0;width:min(58vw,780px);background:linear-gradient(90deg,var(--sw-bg) 0%,color-mix(in srgb,var(--sw-bg) 82%,transparent) 34%,color-mix(in srgb,var(--sw-bg) 40%,transparent) 62%,transparent 100%);}
-  .sw-copy{position:absolute;left:clamp(18px,5vw,64px);top:50%;transform:translateY(-50%);width:min(42vw,460px);opacity:0;will-change:opacity,transform;}
+  .sw-copy{position:absolute;left:clamp(18px,5vw,64px);top:50%;transform:translateY(calc(-50% + var(--sw-copy-shift,0px)));width:min(42vw,460px);opacity:0;will-change:opacity,transform;}
   .sw-copy__num{font-family:ui-monospace,Menlo,monospace;font-size:.74rem;letter-spacing:.12em;color:var(--sw-ink-soft);}
   .sw-copy__eyebrow{display:block;margin-top:18px;font-family:var(--sw-font-display);font-weight:700;font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:var(--sw-accent);}
   .sw-copy__title{font-family:var(--sw-font-display);font-weight:700;color:var(--sw-ink);font-size:clamp(2rem,4.4vw,3.5rem);line-height:1.03;margin:12px 0 0;letter-spacing:-.01em;text-shadow:0 2px 20px color-mix(in srgb,var(--sw-bg) 70%,transparent);}
@@ -477,7 +480,7 @@ function injectCSS() {
   .sw-copy__tags{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 0;padding:0;}
   .sw-copy__tags li{font-size:.82rem;font-weight:600;color:color-mix(in srgb,var(--sw-accent) 70%,#000);padding:7px 14px;border-radius:999px;background:color-mix(in srgb,var(--sw-accent) 14%,#fff);border:1px solid color-mix(in srgb,var(--sw-accent) 30%,transparent);}
   .sw-copy__cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px;pointer-events:auto;}
-  .sw-btn{text-decoration:none;font-weight:600;font-size:.95rem;padding:13px 24px;border-radius:999px;transition:transform .2s;}
+  .sw-btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;font-weight:600;font-size:.95rem;line-height:1.2;padding:11px 22px;border-radius:999px;transition:transform .2s;}
   .sw-btn--primary{color:#fff;background:var(--sw-ink);} .sw-btn--primary:hover{transform:translateY(-2px);}
   .sw-btn--ghost{color:var(--sw-ink);border:1.5px solid color-mix(in srgb,var(--sw-ink) 25%,transparent);} .sw-btn--ghost:hover{transform:translateY(-2px);}
   .sw-route{position:fixed;right:clamp(14px,2.4vw,30px);top:50%;z-index:40;transform:translateY(-50%);display:flex;flex-direction:column;gap:22px;padding:18px 10px;}
@@ -498,11 +501,15 @@ function injectCSS() {
     .sw-copylayer::before{width:100%;height:60%;top:auto;bottom:0;background:linear-gradient(0deg,var(--sw-bg) 8%,color-mix(in srgb,var(--sw-bg) 70%,transparent) 46%,transparent 100%);}
     /* Anchor copy to the bottom, clear of the home indicator / collapsing URL bar.
        dvh + env() are progressive: browsers that lack them keep the vh fallback line. */
-    .sw-copy{left:clamp(18px,5vw,64px);right:clamp(18px,5vw,64px);top:auto;bottom:clamp(64px,14vh,120px);transform:none;width:auto;max-width:560px;}
-    .sw-copy{bottom:calc(clamp(56px,12dvh,110px) + env(safe-area-inset-bottom));}
+    .sw-copy{left:clamp(18px,5vw,64px);right:clamp(18px,5vw,64px);top:auto;bottom:clamp(80px,15vh,130px);transform:translateY(var(--sw-copy-shift,0px));width:auto;max-width:560px;}
+    .sw-copy{bottom:calc(clamp(72px,13dvh,120px) + env(safe-area-inset-bottom));}
     .sw-copy__title{font-size:clamp(1.9rem,7.5vw,2.7rem);}
     .sw-copy__body{max-width:none;font-size:clamp(.98rem,3.6vw,1.1rem);} .sw-scene__video,.sw-scene__still{object-position:center 46%;}
-    .sw-hint{bottom:calc(20px + env(safe-area-inset-bottom));}
+    /* Compacter en lager: de hint deelt de onderrand met de CTA-knop van de copy.
+       Samen met de hogere .sw-copy houdt dit ze uit elkaar op smalle schermen. */
+    .sw-hint{bottom:calc(14px + env(safe-area-inset-bottom));gap:6px;font-size:.68rem;}
+    .sw-hint i{width:18px;height:28px;border-radius:10px;}
+    .sw-hint i::after{top:5px;height:6px;}
     .sw-route{gap:16px;right:6px;} .sw-route__label{display:none;}
   }
   /* Portrait phones crop a 16:9 clip hard; keep the framing centred so the focal
@@ -514,7 +521,9 @@ function injectCSS() {
   @media (hover:none) and (pointer:coarse){
     .sw-route{padding:14px 6px;}
     .sw-route__dot{width:28px;height:28px;}
-    .sw-btn{padding:15px 26px;}
+    /* Geen extra padding maar een vaste minimumhoogte: de knop oogt strak en
+       blijft toch een tikdoel van 44px. */
+    .sw-btn{min-height:44px;}
   }
   @media (prefers-reduced-motion:reduce){ .sw-hint i::after{animation:none;} .sw-pt{display:none;} }
   `;
