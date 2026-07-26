@@ -120,7 +120,7 @@ const GEBOUWEN = {
     cta: { label: 'Bekijk implementatie', href: '/consultancy/' },
     sectie: {
       eyebrow: 'Implementatie',
-      title: 'Digitalisering die landt in het werk.',
+      title: 'AI-implementatie die landt in het werk.',
       body: 'Morgen helpt om de echte keuzes scherp te maken en te vertalen naar een aanpak die past bij de strategie én bij het dagelijkse werk.',
       tags: ['Strategie', 'Uitvoering', 'Borging'],
     },
