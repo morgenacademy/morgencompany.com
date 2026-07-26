@@ -821,11 +821,12 @@ body.ticker-actief .sw-hint { bottom: calc(84px + env(safe-area-inset-bottom)); 
 
 @media (max-width: 860px) and (orientation: portrait) {
   .inspire-echt {
-    top: clamp(108px, 14dvh, 124px);
-    left: 5vw;
+    top: clamp(104px, 13vh, 116px);
+    top: clamp(104px, 13dvh, 116px);
+    left: max(9vw, calc((100vw - 330px) / 2));
     right: auto;
     z-index: 15;
-    width: 90vw;
+    width: min(82vw, 330px);
     padding: 4px;
     border-radius: 12px;
   }
@@ -833,12 +834,74 @@ body.ticker-actief .sw-hint { bottom: calc(84px + env(safe-area-inset-bottom)); 
   .inspire-echt::after { border-radius: 8px; }
   .inspire-echt::after { inset: 4px; }
   .inspire-echt::before { top: -64px; height: 64px; }
+  #world-inspire .sw-copy__eyebrow { margin-top: 10px; }
+  #world-inspire .sw-copy__title {
+    margin-top: 8px;
+    font-size: clamp(1.7rem, 7vw, 2.1rem);
+  }
+  #world-inspire .sw-copy__body {
+    margin-top: 10px;
+    line-height: 1.45;
+  }
+  #world-inspire .sw-copy__tags {
+    gap: 6px;
+    margin-top: 12px;
+  }
+  #world-inspire .sw-copy__tags li { padding: 5px 10px; }
+  #world-inspire .sw-copy__cta {
+    flex-wrap: nowrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  #world-inspire .sw-copy__cta .sw-btn {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 44px;
+    padding: 10px 8px;
+    font-size: .88rem;
+    text-align: center;
+    white-space: nowrap;
+  }
+  #world-inspire .sw-hint span { display: none; }
   .einde--tegels {
     top: 64%;
     bottom: auto;
     transform: translate(-50%, calc(-50% + 6px));
   }
   .einde--tegels.is-zichtbaar { transform: translate(-50%, -50%); }
+}
+
+/* Een korte mobiele browserviewport heeft minder ruimte door de Safari-balken.
+   Het scherm blijft zichtbaar, maar maakt eerder plaats voor copy en CTA's. */
+@media (max-width: 860px) and (orientation: portrait) and (max-height: 700px) {
+  .inspire-echt {
+    top: 104px;
+    left: 15vw;
+    width: 70vw;
+  }
+}
+
+@media (max-width: 860px) and (orientation: portrait) and (max-height: 620px) {
+  .inspire-echt {
+    left: 21vw;
+    width: 58vw;
+  }
+  #world-inspire .sw-copy {
+    bottom: calc(clamp(40px, 8dvh, 56px) + env(safe-area-inset-bottom));
+  }
+  #world-inspire .sw-copy__num,
+  #world-inspire .sw-copy__tags,
+  #world-inspire .sw-hint { display: none; }
+  #world-inspire .sw-copy__eyebrow { margin-top: 0; }
+  #world-inspire .sw-copy__title {
+    font-size: clamp(1.5rem, 7.2vw, 1.75rem);
+  }
+  #world-inspire .sw-copy__body {
+    margin-top: 8px;
+    font-size: .92rem;
+    line-height: 1.38;
+  }
+  #world-inspire .sw-copy__cta { margin-top: 10px; }
 }
 
 /* Op compactere landscape-schermen blijft het scherm rechts van de copy. */

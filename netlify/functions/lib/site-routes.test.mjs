@@ -180,7 +180,7 @@ test('het Kompas is modaal, kondigt status aan en begrenst gesprekshistorie', ()
 
 test('functionele wereldassets worden met dezelfde cacheversie geladen', () => {
   const wereldHtml = read('wereld/index.html');
-  assert.match(wereldHtml, /wereld\.css\?v=20260725-inspire-scherm/);
+  assert.match(wereldHtml, /wereld\.css\?v=20260726-wegwijzer-inspire-mobile/);
   assert.match(wereldHtml, /scrub-engine\.js\?v=20260724-ambient/);
   assert.match(wereldHtml, /wereld\.js\?v=20260725-inspire-podium/);
   assert.match(wereldHtml, /chat\.css\?v=20260724-functional/);
@@ -210,7 +210,7 @@ test('de wereld is technisch voorbereid als root-homepage', () => {
       '/organisatie/* /index.html 200',
     ]
   );
-  assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260725-inspire-scherm"/);
+  assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260726-wegwijzer-inspire-mobile"/);
   assert.match(wereldHtml, /src="\/wereld\/scrub-engine\.js\?v=20260724-ambient"/);
   assert.match(wereldHtml, /src="\/wereld\/wereld\.js\?v=20260725-inspire-podium"/);
   assert.doesNotMatch(wereldHtml, /(?:href|src)="(?:wereld\.css|scrub-engine\.js|wereld\.js)/);
@@ -366,7 +366,20 @@ test('Inspire projecteert lui en toegankelijk echt keynotebeeld in het theater',
   assert.match(wereldCss, /\.inspire-echt::before\s*\{[^}]*border-left:[^}]*border-right:/s);
   assert.match(
     wereldCss,
-    /@media \(max-width: 860px\) and \(orientation: portrait\)[\s\S]*?\.inspire-echt\s*\{[^}]*z-index: 15[^}]*width: 90vw/s
+    /@media \(max-width: 860px\) and \(orientation: portrait\)[\s\S]*?\.inspire-echt\s*\{[^}]*z-index: 15[^}]*width: min\(82vw, 330px\)/s
+  );
+  assert.match(
+    wereldCss,
+    /#world-inspire \.sw-copy__eyebrow \{ margin-top: 10px; \}[\s\S]*?#world-inspire \.sw-copy__cta \{[\s\S]*?margin-top: 14px;/
+  );
+  assert.match(wereldCss, /#world-inspire \.sw-hint span \{ display: none; \}/);
+  assert.match(
+    wereldCss,
+    /max-height: 700px[\s\S]*?\.inspire-echt\s*\{[^}]*width: 70vw/
+  );
+  assert.match(
+    wereldCss,
+    /max-height: 620px[\s\S]*?#world-inspire \.sw-copy__num,[\s\S]*?#world-inspire \.sw-hint \{ display: none; \}/
   );
   assert.match(
     wereldCss,
