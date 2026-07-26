@@ -37,6 +37,16 @@ Kosten: elke bezoeker downloadt ~224 KB in plaats van ~40 KB (raakt Core Web Vit
 
 Op 2026-07-25 is het ergste symptoom weg: alle zeven bundles hadden statisch `page-home` actief, waardoor elke URL zonder JavaScript de homepage toonde en de H1 overal "GoedeMORGEN." was. Nu staat per bundel de eigen pagina op `active` en is die hero de enige echte `<h1>`. De zichtbare inhoud verschilt dus per URL. Wat resteert is de duplicatie in de HTML zelf.
 
+Op 2026-07-26 is de drift zelf weggewerkt. Er waren toen drie blokken uit elkaar gelopen:
+
+| Blok | Wat er mis was | Beslissing |
+|---|---|---|
+| `page-consultancy` | drie varianten; vijf bundles misten de sectie 'Je doet het straks zelf' en de intro 'In de organisatie, met de teams', inspiratie had een eigen wgrid | canoniek is `consultancy/index.html` |
+| `page-home` | zes bundles hadden een `tw-banner` die `/organisatie/` niet heeft | canoniek is `index.html`, dus zonder banner |
+| `page-about` | inspiratie had een andere hero-foto | canoniek is `about/index.html`, de twee wisselende foto's |
+
+Alle acht blokken zijn sindsdien byte-identiek in alle zeven bundles, op de twee bewuste verschillen na (`page active` en `<h1>` tegenover `<h2>`). Dat is een momentopname, geen garantie: zonder splitsing loopt het opnieuw uit elkaar. Meet het na met het script onderaan dit document.
+
 ## Waarom het niet triviaal is
 
 De instant-navigatie hángt op deze opzet: `nav(page, anchor)` wisselt alleen de `.active`-class, zonder page-load. Haal je de andere pagina's weg, dan moet elke interne klik iets anders doen. Drie routes:
@@ -73,6 +83,36 @@ grep -c '<div class="page' index.html */index.html
 grep -o '<article id="case-[a-z-]*"' projecten/index.html
 grep -o 'id="cp-[a-z]*"' inspiratie/index.html
 ```
+
+### Drift meten zolang de bundles nog bestaan
+
+Zolang er zeven kopieën zijn, is dit de controle die telt: elk page-blok hoort
+byte-identiek te zijn in alle zeven, op `page active` en `<h1>` na.
+
+```bash
+python3 - <<'PY'
+import hashlib, re
+B=['index.html','academy/index.html','technology/index.html','consultancy/index.html',
+   'about/index.html','projecten/index.html','inspiratie/index.html']
+PAGES=['home','academy','technology','consultancy','assistenten','about','company','organisatie']
+def norm(f,p):
+    s=open(f).read()
+    for st in (f'<div class="page active" id="page-{p}">', f'<div class="page" id="page-{p}">'):
+        if st in s: a=s.index(st); break
+    else: return None
+    t=s[a:s.index(f'</div><!-- /page-{p} -->',a)]
+    t=t.replace(f'<div class="page active" id="page-{p}">', f'<div class="page" id="page-{p}">')
+    t=re.sub(r'<h1(\s[^>]*)?>(.*?)</h1>', r'<h2\1>\2</h2>', t, flags=re.S)
+    return hashlib.sha1(t.encode()).hexdigest()[:10]
+for p in PAGES:
+    h={f:norm(f,p) for f in B}
+    aanwezig=[x for x in h.values() if x]
+    print(f'{p:14} {"GELIJK" if len(set(aanwezig))==1 else "DRIFT"}')
+PY
+```
+
+Staat er DRIFT, kies dan het bestand waar die pagina thuishoort als bron en zet
+dat blok in de andere zes, met `page active` naar `page` en de `<h1>` naar `<h2>`.
 
 Daarnaast in een echte browser: intern klikken vanaf elke pagina, terug- en vooruitknop, een deeplink met anchor rechtstreeks openen, het Kompas gebruiken, en een formulier versturen.
 
