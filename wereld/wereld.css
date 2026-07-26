@@ -52,6 +52,10 @@ html, body {
   background: var(--w-bg);
   color: var(--w-ink);
   font-family: 'Barlow', system-ui, sans-serif;
+  /* Nooit horizontaal kunnen scrollen: steekt er toch iets uit, dan rekt Safari
+     de pagina op en worden vw-maten breder dan het scherm. Clip in plaats van
+     hidden, zodat er geen extra scrollcontainer ontstaat. */
+  overflow-x: clip;
 }
 
 /* Buiten het binnen-verhaal mag de pagina niet scrollen */

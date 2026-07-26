@@ -196,7 +196,7 @@ const GEBOUWEN = {
     sectie: {
       eyebrow: 'Projecten',
       title: 'Zij gingen je voor.',
-      body: 'Ontdek gerealiseerde projecten, trainingen en implementaties die zijn geland in het dagelijkse werk van organisaties.',
+      body: 'Bekijk gerealiseerde projecten, trainingen en implementaties die zijn geland in het dagelijkse werk van organisaties.',
       tags: ['Cases', 'AI in productie', 'Maatwerk'],
     },
     einde: {

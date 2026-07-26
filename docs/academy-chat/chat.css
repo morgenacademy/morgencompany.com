@@ -96,6 +96,7 @@
 
 .ac-input {
   flex: 1;
+  min-width: 0;   /* anders houdt de intrinsieke breedte van een input de rij te breed */
   font-family: inherit;
   font-size: 0.76rem;
   padding: 0.38rem 0.8rem;
@@ -136,6 +137,19 @@
 .ac-send:disabled {
   opacity: 0.5;
   cursor: default;
+}
+
+/* Touch: iOS zoomt de hele pagina in zodra een invoerveld met een tekstgrootte
+   onder 16px focus krijgt. Het zichtbare venster wordt daardoor smaller dan de
+   pagina zelf, en een paneel op 96vw (het Kompas) valt half van het scherm.
+   16px houdt die zoom tegen; de ruimere padding maakt er meteen een fatsoenlijk
+   tikdoel van. */
+@media (hover: none) and (pointer: coarse) {
+  .ac-input,
+  .ac-send {
+    font-size: 16px;
+    padding: 0.6rem 0.9rem;
+  }
 }
 
 /* ── Advieskaart ───────────────────────────────────────── */

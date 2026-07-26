@@ -139,7 +139,7 @@ test('formulierinzendingen komen terug op de juiste route met een bevestiging', 
     assert.match(contents, /success\.setAttribute\('role','status'\)/);
     assert.match(contents, /container\.replaceChildren\(success\)/);
     assert.match(contents, /Aanvraag ontvangen/);
-    assert.match(contents, /chat\.css\?v=20260724-functional/);
+    assert.match(contents, /chat\.css\?v=20260726-mobiel-invoer/);
     assert.match(contents, /chat\.js\?v=20260724-launch/);
   }
 });
@@ -183,7 +183,7 @@ test('functionele wereldassets worden met dezelfde cacheversie geladen', () => {
   assert.match(wereldHtml, /wereld\.css\?v=20260726-cta-hint/);
   assert.match(wereldHtml, /scrub-engine\.js\?v=20260726-cta-hint/);
   assert.match(wereldHtml, /wereld\.js\?v=20260726-wegwijzerbalk/);
-  assert.match(wereldHtml, /chat\.css\?v=20260724-functional/);
+  assert.match(wereldHtml, /chat\.css\?v=20260726-mobiel-invoer/);
   assert.match(wereldHtml, /chat\.js\?v=20260724-launch/);
 });
 
@@ -406,7 +406,7 @@ test('de projectcopy legt de visuele beeldtaal niet uit', () => {
   assert.match(wereld, /title: 'Zij gingen je voor\.'/);
   assert.match(
     wereld,
-    /body: 'Ontdek gerealiseerde projecten, trainingen en implementaties die zijn geland in het dagelijkse werk van organisaties\.'/
+    /body: 'Bekijk gerealiseerde projecten, trainingen en implementaties die zijn geland in het dagelijkse werk van organisaties\.'/
   );
   assert.match(wereld, /titel: 'Projecten in de praktijk'/);
   assert.doesNotMatch(wereld, /title: 'Maquettes|body: 'Elke stolp/);
