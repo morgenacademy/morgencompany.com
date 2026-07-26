@@ -7,10 +7,10 @@
    x/y = desktop, xm/ym = mobiel (optioneel, valt terug op x/y).
    Pas deze getallen aan zodra de echte hub-still er is. */
 const HOTSPOTS = [
-  { id: 'train',     label: 'Train',     x: 22, y: 34, xm: 22, ym: 39, enabled: true },
-  { id: 'implement', label: 'Implement', x: 44, y: 24, xm: 44, ym: 36, enabled: true },
-  { id: 'build',     label: 'Build',     x: 69, y: 26, xm: 69, ym: 37, enabled: true },
-  { id: 'inspire',   label: 'Inspire',   x: 77, y: 55, xm: 77, ym: 47, enabled: true },
+  { id: 'train',     label: 'Trainingen',     x: 22, y: 34, xm: 22, ym: 39, enabled: true },
+  { id: 'implement', label: 'Implementatie', x: 44, y: 24, xm: 41, ym: 34, enabled: true },
+  { id: 'build',     label: 'AI-oplossingen', x: 69, y: 26, xm: 72, ym: 38, enabled: true },
+  { id: 'inspire',   label: 'Inspiratie',   x: 77, y: 55, xm: 77, ym: 47, enabled: true },
   // Plein-plekken, secundair (sub): stolpen-tuin en kampvuur openen een
   // still-binnenwereld (geen dive), de wegwijzer linkt naar het Kompas op de site.
   { id: 'projecten', label: 'Projecten',     x: 27, y: 51, xm: 27, ym: 52, enabled: true, sub: true },
@@ -76,7 +76,7 @@ const INSPIRE_ECHT = {
    de cine-player en de scrub-engine vangen laadfouten zelf op. */
 const GEBOUWEN = {
   train: {
-    label: 'Train',
+    label: 'Trainingen',
     dive:   '/wereld/assets/echt/vid/dive-train.mp4',
     diveM:  '/wereld/assets/echt/vid/dive-train-m.mp4',
     leg:    '/wereld/assets/echt/vid/leg-train.mp4',
@@ -86,7 +86,7 @@ const GEBOUWEN = {
     cta: { label: 'Bekijk alle trainingen', href: '/academy/' },
     cta2: { label: 'Wegwijzer', action: 'kompas' },
     sectie: {
-      eyebrow: 'Train',
+      eyebrow: 'Trainingen',
       title: 'Klein beginnen. Groot doorpakken.',
       body: 'Van je eerste prompt tot echt meer uit Claude Code, Codex of n8n halen en het integreren in de werkwijze van je team.',
       tags: ['Basistraining AI', 'Bouwen met AI (vibecoding)', 'Automatiseren met AI', 'Claude Code / Codex: de basis'],
@@ -110,7 +110,7 @@ const GEBOUWEN = {
     },
   },
   implement: {
-    label: 'Implement',
+    label: 'Implementatie',
     dive:   '/wereld/assets/echt/vid/dive-implement.mp4',
     diveM:  '/wereld/assets/echt/vid/dive-implement-m.mp4',
     leg:    '/wereld/assets/echt/vid/leg-implement.mp4',
@@ -119,7 +119,7 @@ const GEBOUWEN = {
     stillM: '/wereld/assets/echt/implement-binnen.webp',
     cta: { label: 'Bekijk consultancy', href: '/consultancy/' },
     sectie: {
-      eyebrow: 'Implement',
+      eyebrow: 'Implementatie',
       title: 'Digitalisering die landt in het werk.',
       body: 'Morgen helpt om de echte keuzes scherp te maken en te vertalen naar een aanpak die past bij de strategie én bij het dagelijkse werk.',
       tags: ['Strategie', 'Uitvoering', 'Borging'],
@@ -135,18 +135,18 @@ const GEBOUWEN = {
     },
   },
   build: {
-    label: 'Build',
+    label: 'AI-oplossingen',
     dive:   '/wereld/assets/echt/vid/dive-build.mp4',
     diveM:  '/wereld/assets/echt/vid/dive-build-m.mp4',
     leg:    '/wereld/assets/echt/vid/leg-build.mp4',
     legM:   '/wereld/assets/echt/vid/leg-build-m.mp4',
     still:  '/wereld/assets/echt/build-binnen.webp',
     stillM: '/wereld/assets/echt/build-binnen.webp',
-    cta: { label: 'Bekijk maatwerk', href: '/technology/' },
+    cta: { label: 'Bekijk jouw AI-oplossing', href: '/technology/' },
     sectie: {
-      eyebrow: 'Build',
+      eyebrow: 'AI-oplossingen',
       title: 'Werk slimmer georganiseerd.',
-      body: 'We bouwen slimme applicaties, workflows en koppelingen die passen in het werk dat er al is.',
+      body: 'We bouwen slimme maatwerkapplicaties, workflows en koppelingen die passen in het werk dat er al is.',
       tags: ['Maatwerk', 'AI-workflows', 'Procesautomatisering'],
     },
     einde: {
@@ -160,7 +160,7 @@ const GEBOUWEN = {
     },
   },
   inspire: {
-    label: 'Inspire',
+    label: 'Inspiratie',
     dive:   '/wereld/assets/echt/vid/dive-inspire.mp4',
     diveM:  '/wereld/assets/echt/vid/dive-inspire-m.mp4',
     // Na de dive neemt de echte keynote-laag het over. Een frame uit de
@@ -171,7 +171,7 @@ const GEBOUWEN = {
     stillM: '/wereld/assets/echt/inspire-podium-m.jpg',
     cta: { label: 'Bekijk inspiratie', href: '/inspiratie/' },
     sectie: {
-      eyebrow: 'Inspire',
+      eyebrow: 'Inspiratie',
       title: 'Technologie verandert hoe we werken en leven.',
       body: 'Keynotes, podcast, artikelen en boek: scherp, persoonlijk en gemaakt om het gesprek in beweging te zetten.',
       tags: ['Keynotes', 'Podcast', 'Artikelen', 'Boek'],
@@ -247,7 +247,6 @@ const ICONS = {
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const coarse = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 const isMobile = () => coarse || window.innerWidth <= 860;
-const INTRO_SESSION_KEY = 'morgen-wereld-intro-gezien';
 const ROUTE_BY_GEBOUW = {
   train: 'train',
   implement: 'implement',
@@ -280,20 +279,11 @@ const eindeTitel = document.getElementById('einde-titel');
 const eindeLijst = document.getElementById('einde-lijst');
 const eindeCta = document.getElementById('einde-cta');
 const eindeCta2 = document.getElementById('einde-cta2');
-const eindeTerug = document.getElementById('einde-terug');
 const kompasPaneel = document.getElementById('kompas-paneel');
 const kompasSluit = document.getElementById('kompas-sluit');
 const wereldNav = document.querySelector('.wereld-nav');
 const wereldTicker = document.getElementById('wereld-ticker');
 const tickerTrack = document.getElementById('ticker-track');
-
-function introGezien() {
-  try { return window.sessionStorage.getItem(INTRO_SESSION_KEY) === '1'; } catch (e) { return false; }
-}
-
-function markeerIntroGezien() {
-  try { window.sessionStorage.setItem(INTRO_SESSION_KEY, '1'); } catch (e) {}
-}
 
 function zetWereldRoute(route, { replace = false, pushed = false } = {}) {
   const hash = route ? '#' + route : '';
@@ -386,9 +376,9 @@ function mountWorld(gebouwId) {
         title: g.sectie.title,
         body: g.sectie.body,
         tags: g.sectie.tags,
+        // Eén weg terug is genoeg: de vaste knop linksboven staat er altijd.
         cta: {
           primary: { label: g.cta.label, href: g.cta.href },
-          secondary: { label: 'Terug naar plein', href: '#plein' },
         },
       },
     ],
@@ -665,7 +655,6 @@ function startIntro() {
 }
 
 function toonHub() {
-  markeerIntroGezien();
   stopCine();
   unmountWorld();
   sluitKompas({ updateRoute: false, restoreFocus: false });
@@ -751,27 +740,36 @@ function activeerHotspot(h, trigger) {
   if (!h.enabled) return;
   meetWereld('wereld_hotspot_open', { wereld_target: h.id, wereld_label: h.label });
   if (h.kompas) { openKompas({ trigger }); return; }
+  if (GEBOUWEN[h.id]) { startDive(h.id); return; }
   if (h.href) { window.location.href = h.href; return; }
-  startDive(h.id);
 }
 
+// De hotspots staan als echte links in de HTML (crawlbaar, werkt zonder JS).
+// Hier hangen we alleen het gedrag eraan. Ontbreken ze, dan maken we ze alsnog
+// aan, zodat de wereld blijft werken als de markup ooit uit de pas loopt.
 HOTSPOTS.forEach((h) => {
-  const b = document.createElement('button');
-  b.type = 'button';
-  b.className = 'hotspot' + (h.sub ? ' is-sub' : '') + (h.enabled ? '' : ' is-disabled');
-  b.dataset.hotspot = h.id;
+  let b = hotspotLayer.querySelector('[data-hotspot="' + h.id + '"]');
+  if (!b) {
+    b = document.createElement('a');
+    b.className = 'hotspot' + (h.sub ? ' is-sub' : '');
+    b.dataset.hotspot = h.id;
+    if (h.href) b.href = h.href;
+    b.innerHTML =
+      '<span class="hotspot-dot" aria-hidden="true"></span>' +
+      '<span class="hotspot-label">' + h.label + '</span>';
+    hotspotLayer.appendChild(b);
+  }
+  b.classList.toggle('is-disabled', !h.enabled);
+  if (!h.enabled) b.setAttribute('aria-disabled', 'true');
+  // Mobiel kent eigen posities; desktopwaarden staan al in de HTML.
   const x = (isMobile() && h.xm != null) ? h.xm : h.x;
   const y = (isMobile() && h.ym != null) ? h.ym : h.y;
   b.style.left = x + '%';
   b.style.top = y + '%';
-  b.setAttribute('aria-label', h.enabled ? 'Open ' + h.label : h.label + ', binnenkort beschikbaar');
-  if (!h.enabled) b.setAttribute('aria-disabled', 'true');
-  b.innerHTML =
-    '<span class="hotspot-dot" aria-hidden="true"></span>' +
-    '<span class="hotspot-label">' + h.label + '</span>' +
-    (h.enabled ? '' : '<span class="hotspot-badge">binnenkort</span>');
-  b.addEventListener('click', () => activeerHotspot(h, b));
-  hotspotLayer.appendChild(b);
+  b.addEventListener('click', (e) => {
+    e.preventDefault();   // de href is de fallback zonder JS; hier blijven we in de wereld
+    activeerHotspot(h, b);
+  });
   hotspotButtons.set(h.id, b);
 });
 
@@ -835,6 +833,29 @@ function sluitKompas({ updateRoute = true, restoreFocus = true } = {}) {
   }
   focusTarget?.focus({ preventScroll: true });
 }
+/* De balk op het plein is alleen een instap: hij opent het Wegwijzer-vak en
+   geeft de vraag door aan de bestaande chat-widget. Zo is er één gesprek en
+   één plek waar het antwoord verschijnt. */
+const hubKompasBalk = document.getElementById('hub-kompasbalk');
+const hubKompasInput = document.getElementById('hub-kompasbalk-input');
+
+if (hubKompasBalk && hubKompasInput) {
+  hubKompasBalk.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const vraag = hubKompasInput.value.trim();
+    openKompas({ trigger: hubKompasInput });
+    if (!vraag) return;                       // leeg versturen opent alleen het vak
+    // Direct doorzetten, zonder requestAnimationFrame: de widget staat al in
+    // het vak en rAF loopt niet in achtergrondtabs.
+    const doel = kompasPaneel.querySelector('.ac-input');
+    const stuur = kompasPaneel.querySelector('.ac-send');
+    if (!doel || !stuur) return;              // chat.js niet geladen: vak staat open, rest doet de bezoeker
+    hubKompasInput.value = '';
+    doel.value = vraag;
+    stuur.click();
+  });
+}
+
 kompasSluit.addEventListener('click', sluitKompas);
 document.addEventListener('keydown', (e) => {
   if (kompasPaneel.hidden) return;
@@ -898,7 +919,6 @@ skipKnop.addEventListener('click', () => {
   toHub();
 });
 exitKnop.addEventListener('click', terugNaarHub);
-eindeTerug.addEventListener('click', terugNaarHub);
 
 document.addEventListener('kompas:advies', (e) => {
   meetWereld('wereld_kompas_advies', { training: e.detail?.training || 'onbekend' });
@@ -963,10 +983,10 @@ function pasWereldRouteToe() {
 
 if (!pasWereldRouteToe()) {
   zetWereldRoute('', { replace: true });
-  if (reduce || introGezien()) {
-    toHub();          // reduced motion of terugkeer in dezelfde sessie: intro overslaan
+  if (reduce) {
+    toHub();          // reduced motion: intro overslaan
   } else {
-    startIntro();
+    startIntro();     // showcase: de vlucht speelt bij elke load, met skip-knop
   }
 }
 

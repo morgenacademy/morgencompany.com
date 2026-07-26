@@ -21,13 +21,13 @@
   <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="De wereld van Morgen met Train, Implement, Build en Inspire">
+  <meta property="og:image:alt" content="De wereld van Morgen met trainingen, implementatie, AI-oplossingen en inspiratie">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="MORGEN: AI-training, implementatie en maatwerkoplossingen">
   <meta name="twitter:description" content="Ontdek hoe Morgen AI laat werken in teams en processen met training, implementatie en maatwerksoftware.">
   <meta name="twitter:image" content="https://morgencompany.com/wereld/assets/echt/share.jpg">
-  <meta name="twitter:image:alt" content="De wereld van Morgen met Train, Implement, Build en Inspire">
+  <meta name="twitter:image:alt" content="De wereld van Morgen met trainingen, implementatie, AI-oplossingen en inspiratie">
 
   <script type="application/ld+json">
   {"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://morgencompany.com/#organization","name":"Morgen Company","legalName":"Harmen van Heist B.V.","url":"https://morgencompany.com/","logo":{"@type":"ImageObject","url":"https://morgencompany.com/favicon-company.svg"},"image":"https://morgencompany.com/wereld/assets/echt/share.jpg","description":"Morgen helpt organisaties AI toepassen in werk en processen met praktische trainingen, implementatiebegeleiding en maatwerksoftware.","email":"totmorgen@morgenacademy.nl","sameAs":["https://www.linkedin.com/company/morgencompany","https://www.youtube.com/@MorgenAcademy","https://www.instagram.com/morgenacademy.nl/"]},{"@type":"WebSite","@id":"https://morgencompany.com/#website","url":"https://morgencompany.com/","name":"MORGEN","publisher":{"@id":"https://morgencompany.com/#organization"},"inLanguage":"nl-NL"}]}
@@ -59,7 +59,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;900&amp;display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="/wereld/wereld.css?v=20260725-inspire-scherm">
+  <link rel="stylesheet" href="/wereld/wereld.css?v=20260726-wegwijzerbalk">
   <link rel="stylesheet" href="/docs/academy-chat/chat.css?v=20260724-functional">
 </head>
 <body data-state="boot">
@@ -73,21 +73,34 @@
   <!-- Hub: het plein met de vier gebouwen -->
   <section id="hub" class="stage" tabindex="-1" aria-label="Het Morgen-plein">
     <img id="hub-still" class="hub-still" alt="Overzicht van het Morgen-plein met vier gebouwen">
-    <div id="hotspots" class="hotspots"></div>
+    <!-- Hotspots staan bewust statisch in de HTML als echte links: zo zijn de
+         vier pilaren ook vindbaar voor crawlers die geen JavaScript uitvoeren.
+         wereld.js hangt er het klikgedrag aan (dive of Wegwijzer) en zet op
+         mobiel andere posities; de href blijft de fallback zonder JS. -->
+    <div id="hotspots" class="hotspots">
+      <a class="hotspot" data-hotspot="train" href="/academy/" style="left:22%;top:34%" aria-label="Trainingen: AI-training voor teams"><span class="hotspot-dot" aria-hidden="true"></span><span class="hotspot-label">Trainingen</span></a>
+      <a class="hotspot" data-hotspot="implement" href="/consultancy/" style="left:44%;top:24%" aria-label="Implementatie: begeleiding bij het invoeren van AI"><span class="hotspot-dot" aria-hidden="true"></span><span class="hotspot-label">Implementatie</span></a>
+      <a class="hotspot" data-hotspot="build" href="/technology/" style="left:69%;top:26%" aria-label="AI-oplossingen: maatwerk en automatisering"><span class="hotspot-dot" aria-hidden="true"></span><span class="hotspot-label">AI-oplossingen</span></a>
+      <a class="hotspot" data-hotspot="inspire" href="/inspiratie/" style="left:77%;top:55%" aria-label="Inspiratie: keynotes, podcast en boek"><span class="hotspot-dot" aria-hidden="true"></span><span class="hotspot-label">Inspiratie</span></a>
+      <a class="hotspot is-sub" data-hotspot="projecten" href="/projecten/" style="left:27%;top:51%" aria-label="Projecten, klantcases en praktijkvoorbeelden"><span class="hotspot-dot" aria-hidden="true"></span><span class="hotspot-label">Projecten</span></a>
+      <a class="hotspot is-sub" data-hotspot="overons" href="/about/" style="left:70%;top:67%" aria-label="Over Morgen, team en aanpak"><span class="hotspot-dot" aria-hidden="true"></span><span class="hotspot-label">Over Morgen.</span></a>
+      <a class="hotspot is-sub" data-hotspot="kompas" href="/organisatie/#trainingwijzer-app" style="left:52%;top:47%" aria-label="Wegwijzer, vind de route die bij je past"><span class="hotspot-dot" aria-hidden="true"></span><span class="hotspot-label">Wegwijzer</span></a>
+    </div>
     <div class="hub-propositie">
       <h1>Maak AI onderdeel van het dagelijkse werk.</h1>
       <p>Met trainingen, implementatie en maatwerksoftware voor organisaties.</p>
       <!-- Crawlbare tekst en echte links: dit stond alleen in het noscript-blok,
            dat Google negeert omdat het JavaScript wel uitvoert. -->
       <p class="hub-tekst">Morgen leert teams werken met AI, helpt de keuzes landen in processen en werkafspraken, en bouwt maatwerk dat past op het werk dat er al is.</p>
-      <nav class="hub-links" aria-label="Wat Morgen doet">
-        <a href="/academy/">AI-trainingen</a>
-        <a href="/consultancy/">Implementatie en begeleiding</a>
-        <a href="/technology/">Maatwerk en automatisering</a>
-        <a href="/projecten/">Projecten</a>
-        <a href="/inspiratie/">Keynotes, podcast en boek</a>
-        <a href="/organisatie/">Snel overzicht</a>
-      </nav>
+      <!-- Instap naar de Wegwijzer: alleen de balk, zonder kop en zonder chips.
+           Versturen opent het Wegwijzer-vak en zet de vraag door naar de
+           bestaande chat-widget, zodat het gesprek op één plek gevoerd wordt. -->
+      <form class="hub-kompasbalk" id="hub-kompasbalk" role="search" aria-label="Vraag het de Wegwijzer">
+        <input class="hub-kompasbalk-input" id="hub-kompasbalk-input" type="text" maxlength="500"
+               autocomplete="off" aria-label="Stel je vraag of beschrijf je situatie"
+               placeholder="Stel je vraag of beschrijf je situatie&hellip;">
+        <button class="hub-kompasbalk-send" type="submit">Verstuur</button>
+      </form>
     </div>
   </section>
 
@@ -114,7 +127,6 @@
       <div class="einde-acties">
         <a class="knop-accent" id="einde-cta" href="/academy/"></a>
         <a class="knop-ghost" id="einde-cta2" href="#" hidden></a>
-        <button class="knop-ghost" id="einde-terug" type="button">Terug naar plein</button>
       </div>
     </aside>
   </div>
@@ -143,7 +155,7 @@
         <p>
           <a href="/academy/">Bekijk trainingen</a>
           <a href="/consultancy/">Bekijk consultancy</a>
-          <a href="/technology/">Bekijk maatwerk</a>
+          <a href="/technology/">Bekijk AI-oplossingen</a>
           <a href="/inspiratie/">Bekijk inspiratie</a>
         </p>
         <p>Deze wereld heeft JavaScript nodig. Je kunt ook direct <a href="/organisatie/#aanbod">het aanbod bekijken</a>.</p>
@@ -152,7 +164,7 @@
   </noscript>
 
   <script src="/wereld/scrub-engine.js?v=20260724-ambient"></script>
-  <script src="/wereld/wereld.js?v=20260725-inspire-podium"></script>
+  <script src="/wereld/wereld.js?v=20260726-wegwijzerbalk"></script>
   <script type="module" src="/docs/academy-chat/chat.js?v=20260724-launch"></script>
 </body>
 </html>
