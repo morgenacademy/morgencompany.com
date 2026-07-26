@@ -705,7 +705,12 @@ body.tegels-zichtbaar #world .sw-copy {
   width: min(94vw, 620px);
   max-height: min(78vh, 620px);
   max-height: min(78dvh, 620px);
-  overflow-y: auto;
+  /* Kop en sluitknop staan vast, alleen het gesprek scrollt. Scrollde het hele
+     paneel, dan verdween de kruisknop uit beeld zodra het gesprek op gang kwam
+     en was er op een telefoon geen uitweg meer (Escape bestaat daar niet). */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   padding: clamp(18px, 3.5vw, 28px);
   border-radius: 26px;
   background: rgba(12, 8, 24, .82);
@@ -716,6 +721,20 @@ body.tegels-zichtbaar #world .sw-copy {
   transition: opacity .35s ease, transform .35s ease;
 }
 .kompas-paneel:not([hidden]) { opacity: 1; transform: translate(-50%, 0); }
+.kompas-paneel > [data-kompas] {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  /* hairline maakt van de scrollgrens een bewuste rand in plaats van tekst die
+     halverwege onder de subtitel doorschuift */
+  border-top: 1px solid rgba(155, 111, 207, .22);
+  margin-top: 4px;
+  padding-top: 12px;
+  padding-right: 2px;
+}
+.kompas-paneel > .kompas-eyebrow,
+.kompas-paneel > .kompas-titel,
+.kompas-paneel > .kompas-sub { flex: 0 0 auto; }
 #hub[inert],
 .wereld-nav[inert] { pointer-events: none; }
 .kompas-eyebrow {

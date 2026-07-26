@@ -3,13 +3,14 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { OFFER_KEYS, findOffer, buildSystemPrompt, buildCard } from './kb.mjs';
 
-test('OFFER_KEYS bevat alle 14 keys (academy + consultancy + technology + kennismaking)', () => {
-  assert.equal(OFFER_KEYS.length, 14);
+test('OFFER_KEYS bevat alle 15 keys (academy + keynote + implementatie + AI-oplossingen + kennismaking)', () => {
+  assert.equal(OFFER_KEYS.length, 15);
   assert.ok(OFFER_KEYS.includes('basis'));
   assert.ok(OFFER_KEYS.includes('masterclass'));
   assert.ok(OFFER_KEYS.includes('pmtraining'));
   assert.ok(OFFER_KEYS.includes('implementatietraject'));
   assert.ok(OFFER_KEYS.includes('maatwerk'));
+  assert.ok(OFFER_KEYS.includes('keynote'));
   assert.ok(OFFER_KEYS.includes('kennismaking'));
 });
 
@@ -36,10 +37,11 @@ test('buildSystemPrompt bevat het Kompas, de drie pijlers, aanbod en tool', () =
   const p = buildSystemPrompt();
   assert.ok(p.includes('het Kompas'));
   assert.ok(p.includes('Morgen Academy'));
-  assert.ok(p.includes('Consultancy'));
-  assert.ok(p.includes('Technology'));
+  assert.ok(p.includes('Implementatie'));
+  assert.ok(p.includes('AI-oplossingen'));
+  assert.doesNotMatch(p, /Morgen Consultancy|Morgen Technology/);
   assert.ok(p.includes('Basistraining AI'));
-  assert.ok(p.includes('AI-implementatietraject'));
+  assert.ok(p.includes('Begeleid AI-implementatietraject'));
   assert.ok(p.includes('presenteer_advies'));
   assert.ok(p.includes('waarom'));
   assert.ok(p.includes('totmorgen@morgenacademy.nl'));
