@@ -155,7 +155,9 @@ function initKompas(mount) {
         ${state.log.length === 0 ? renderStarters() : ''}
         <div class="ac-input-row">
           <input class="ac-input" type="text" maxlength="${MAX_MESSAGE_LENGTH}" aria-label="Stel je vraag of beschrijf je situatie" placeholder="Stel je vraag of beschrijf je situatie…" ${state.busy ? 'disabled' : ''} />
-          <button class="ac-send" type="button" ${state.busy ? 'disabled' : ''}>Verstuur</button>
+          <button class="ac-send" type="button" aria-label="Vraag versturen" ${state.busy ? 'disabled' : ''}>
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M4 12h15m-6-7 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
         </div>
       </div>`;
     drawLog();

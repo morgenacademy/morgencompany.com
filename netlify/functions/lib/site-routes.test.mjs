@@ -153,8 +153,8 @@ test('formulierinzendingen komen terug op de juiste route met een bevestiging', 
     assert.match(contents, /success\.setAttribute\('role','status'\)/);
     assert.match(contents, /container\.replaceChildren\(success\)/);
     assert.match(contents, /Aanvraag ontvangen/);
-    assert.match(contents, /chat\.css\?v=20260726-mobiel-invoer/);
-    assert.match(contents, /chat\.js\?v=20260724-launch/);
+    assert.match(contents, /chat\.css\?v=20260726-verstuur-icoon/);
+    assert.match(contents, /chat\.js\?v=20260726-verstuur-icoon/);
   }
 });
 
@@ -194,11 +194,11 @@ test('het Kompas is modaal, kondigt status aan en begrenst gesprekshistorie', ()
 
 test('functionele wereldassets worden met dezelfde cacheversie geladen', () => {
   const wereldHtml = read('wereld/index.html');
-  assert.match(wereldHtml, /wereld\.css\?v=20260726-ai-implementatie/);
+  assert.match(wereldHtml, /wereld\.css\?v=20260726-verstuur-icoon/);
   assert.match(wereldHtml, /scrub-engine\.js\?v=20260726-ai-implementatie/);
   assert.match(wereldHtml, /wereld\.js\?v=20260726-ai-implementatie/);
-  assert.match(wereldHtml, /chat\.css\?v=20260726-mobiel-invoer/);
-  assert.match(wereldHtml, /chat\.js\?v=20260724-launch/);
+  assert.match(wereldHtml, /chat\.css\?v=20260726-verstuur-icoon/);
+  assert.match(wereldHtml, /chat\.js\?v=20260726-verstuur-icoon/);
 });
 
 test('de wereld is technisch voorbereid als root-homepage', () => {
@@ -224,7 +224,7 @@ test('de wereld is technisch voorbereid als root-homepage', () => {
       '/organisatie/* /index.html 200',
     ]
   );
-  assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260726-ai-implementatie"/);
+  assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260726-verstuur-icoon"/);
   assert.match(wereldHtml, /src="\/wereld\/scrub-engine\.js\?v=20260726-ai-implementatie"/);
   assert.match(wereldHtml, /src="\/wereld\/wereld\.js\?v=20260726-ai-implementatie"/);
   assert.doesNotMatch(wereldHtml, /(?:href|src)="(?:wereld\.css|scrub-engine\.js|wereld\.js)/);
