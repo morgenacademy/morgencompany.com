@@ -258,12 +258,13 @@ body[data-kompas-open] .hub-propositie {
   font-weight: 400;
   opacity: .78;
 }
-/* Instapbalk naar de Wegwijzer: alleen invoer en verstuurknop. Het gesprek
-   zelf voert het Wegwijzer-vak, dus hier geen log en geen chips. */
+/* Instapbalk naar de Wegwijzer: alleen invoer met verstuurpijl. Het gesprek
+   zelf voert het Wegwijzer-vak, dus hier geen log en geen chips. De pijl
+   staat in het veld zelf (position: relative op de form), zodat het één
+   samenhangend invoerelement blijft in plaats van veld + losse knop. */
 .hub-kompasbalk {
+  position: relative;
   display: flex;
-  align-items: center;
-  gap: 8px;
   width: min(100%, 460px);
   margin-top: 14px;
   pointer-events: auto;   /* de propositie zelf staat op none */
@@ -271,7 +272,7 @@ body[data-kompas-open] .hub-propositie {
 .hub-kompasbalk-input {
   flex: 1 1 auto;
   min-width: 0;
-  padding: 11px 16px;
+  padding: 11px 48px 11px 16px;
   border-radius: 999px;
   border: 1px solid rgba(155, 111, 207, .45);
   background: rgba(12, 8, 24, .62);
@@ -289,21 +290,27 @@ body[data-kompas-open] .hub-propositie {
 /* Bewust rustig: de balk mag het plein niet overstemmen. Het geel-groen komt
    pas terug bij hover en focus. */
 .hub-kompasbalk-send {
-  flex: 0 0 auto;
-  padding: 11px 20px;
-  border-radius: 999px;
-  border: 1px solid rgba(155, 111, 207, .5);
-  background: rgba(91, 45, 142, .38);
-  backdrop-filter: blur(8px);
-  color: var(--w-ink);
-  font: 600 .88rem 'Barlow', system-ui, sans-serif;
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 50%;
+  border: 0;
+  background: transparent;
+  color: var(--w-ink-zacht);
   cursor: pointer;
-  transition: border-color .2s, background .2s, color .2s;
+  transition: background .2s, color .2s;
 }
+.hub-kompasbalk-send svg { display: block; }
 .hub-kompasbalk-send:hover,
 .hub-kompasbalk-send:focus-visible {
-  border-color: var(--w-accent);
-  background: rgba(91, 45, 142, .6);
+  background: rgba(216, 254, 86, .16);
   color: var(--w-accent);
   outline: none;
 }
@@ -829,9 +836,9 @@ body.ticker-actief .sw-hint { bottom: calc(84px + env(safe-area-inset-bottom)); 
   /* Blijft zichtbaar op mobiel: Google indexeert mobile-first, dus deze tekst
      en links moeten juist daar in beeld staan. Alleen compacter. */
   .hub-propositie .hub-tekst { max-width: 42ch; font-size: .74rem; margin-top: 6px; }
-  .hub-kompasbalk { width: 100%; margin-top: 11px; gap: 6px; }
-  .hub-kompasbalk-input { padding: 10px 14px; font-size: .86rem; }
-  .hub-kompasbalk-send { padding: 10px 16px; font-size: .82rem; }
+  .hub-kompasbalk { width: 100%; margin-top: 11px; }
+  .hub-kompasbalk-input { padding: 10px 42px 10px 14px; font-size: .86rem; }
+  .hub-kompasbalk-send { width: 30px; height: 30px; right: 4px; }
   .hotspot { font-size: .76rem; padding: 8px 12px; gap: 7px; }
   .hotspot.is-sub { font-size: .72rem; padding: 6px 11px; }
   .exit-knop { top: 62px; }
