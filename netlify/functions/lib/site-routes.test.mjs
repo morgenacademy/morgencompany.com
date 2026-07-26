@@ -180,9 +180,9 @@ test('het Kompas is modaal, kondigt status aan en begrenst gesprekshistorie', ()
 
 test('functionele wereldassets worden met dezelfde cacheversie geladen', () => {
   const wereldHtml = read('wereld/index.html');
-  assert.match(wereldHtml, /wereld\.css\?v=20260725-inspire-scherm/);
-  assert.match(wereldHtml, /scrub-engine\.js\?v=20260724-ambient/);
-  assert.match(wereldHtml, /wereld\.js\?v=20260725-inspire-podium/);
+  assert.match(wereldHtml, /wereld\.css\?v=20260726-cta-hint/);
+  assert.match(wereldHtml, /scrub-engine\.js\?v=20260726-cta-hint/);
+  assert.match(wereldHtml, /wereld\.js\?v=20260726-wegwijzerbalk/);
   assert.match(wereldHtml, /chat\.css\?v=20260724-functional/);
   assert.match(wereldHtml, /chat\.js\?v=20260724-launch/);
 });
