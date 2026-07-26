@@ -793,6 +793,9 @@ let kompasFocusNaSluiten = null;
 function zetKompasModal(open) {
   hubEl.inert = open;
   wereldNav.inert = open;
+  // Propositietekst onder het vak wegblenden: het Wegwijzer-vak overlapt hem
+  // deels en twee teksten naast elkaar leest onrustig. Terug bij sluiten.
+  document.body.toggleAttribute('data-kompas-open', open);
 }
 
 function kompasFocusables() {
