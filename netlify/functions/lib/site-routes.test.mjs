@@ -194,8 +194,8 @@ test('het Kompas is modaal, kondigt status aan en begrenst gesprekshistorie', ()
 
 test('functionele wereldassets worden met dezelfde cacheversie geladen', () => {
   const wereldHtml = read('wereld/index.html');
-  assert.match(wereldHtml, /wereld\.css\?v=20260726-ticker-link/);
-  assert.match(wereldHtml, /scrub-engine\.js\?v=20260726-mobiel-fixes/);
+  assert.match(wereldHtml, /wereld\.css\?v=20260726-ai-implementatie/);
+  assert.match(wereldHtml, /scrub-engine\.js\?v=20260726-ai-implementatie/);
   assert.match(wereldHtml, /wereld\.js\?v=20260726-ai-implementatie/);
   assert.match(wereldHtml, /chat\.css\?v=20260726-mobiel-invoer/);
   assert.match(wereldHtml, /chat\.js\?v=20260724-launch/);
@@ -224,8 +224,8 @@ test('de wereld is technisch voorbereid als root-homepage', () => {
       '/organisatie/* /index.html 200',
     ]
   );
-  assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260726-ticker-link"/);
-  assert.match(wereldHtml, /src="\/wereld\/scrub-engine\.js\?v=20260726-mobiel-fixes"/);
+  assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260726-ai-implementatie"/);
+  assert.match(wereldHtml, /src="\/wereld\/scrub-engine\.js\?v=20260726-ai-implementatie"/);
   assert.match(wereldHtml, /src="\/wereld\/wereld\.js\?v=20260726-ai-implementatie"/);
   assert.doesNotMatch(wereldHtml, /(?:href|src)="(?:wereld\.css|scrub-engine\.js|wereld\.js)/);
   assert.doesNotMatch(wereld, /:\s*'assets\//);
@@ -393,11 +393,11 @@ test('Inspire projecteert lui en toegankelijk echt keynotebeeld in het theater',
   );
   assert.match(
     wereldCss,
-    /max-height: 620px[\s\S]*?#world-inspire \.sw-copy__num,[\s\S]*?#world-inspire \.sw-hint \{ display: none; \}/
+    /max-height: 620px[\s\S]*?#world-inspire \.sw-copy__tags,[\s\S]*?#world-inspire \.sw-hint \{ display: none; \}/
   );
   assert.match(
     wereldCss,
-    /@media \(min-width: 861px\) and \(max-aspect-ratio: 6 \/ 5\)[\s\S]*?width: min\(66vw, 1480px\)/
+    /@media \(min-width: 861px\) and \(max-aspect-ratio: 6 \/ 5\)[\s\S]*?width: min\(62vw, 720px, 60vh\)/
   );
   assert.match(wereldCss, /prefers-reduced-motion: reduce[\s\S]*?\.inspire-echt \{ transition: none;/);
 
