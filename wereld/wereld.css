@@ -774,8 +774,6 @@ body.tegels-zichtbaar #world .sw-copy {
 .kompas-paneel > .kompas-eyebrow,
 .kompas-paneel > .kompas-titel,
 .kompas-paneel > .kompas-sub { flex: 0 0 auto; }
-#hub[inert],
-.wereld-nav[inert] { pointer-events: none; }
 .kompas-eyebrow {
   margin: 0;
   font-weight: 700;

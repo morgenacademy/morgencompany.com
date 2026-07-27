@@ -229,22 +229,28 @@ test('formulierinzendingen komen terug op de juiste route met een bevestiging', 
   }
 });
 
-test('het Kompas is modaal, kondigt status aan en begrenst gesprekshistorie', () => {
+test('het Kompas laat het plein klikbaar, kondigt status aan en begrenst gesprekshistorie', () => {
   const wereldHtml = read('wereld/index.html');
   const wereld = read('wereld/wereld.js');
   const wereldCss = read('wereld/wereld.css');
   const chat = read('docs/academy-chat/chat.js');
   const chatCss = read('docs/academy-chat/chat.css');
 
-  assert.match(wereldHtml, /role="dialog" aria-modal="true" aria-labelledby="kompas-titel" aria-describedby="kompas-sub"/);
-  assert.match(wereld, /hubEl\.inert = open/);
-  assert.match(wereld, /wereldNav\.inert = open/);
-  assert.match(wereld, /if \(e\.key !== 'Tab'\) return/);
-  assert.equal((wereld.match(/sluitKompas\(\{ updateRoute: false, restoreFocus: false \}\)/g) || []).length, 3);
+  // Het vak is bewust niet modaal: het plein blijft klikbaar, zodat een tik op
+  // een gebouw het vak sluit en gewoon doorgaat. Inert of aria-modal zou dat
+  // weer breken, want inert levert geen klik-events.
+  assert.match(wereldHtml, /role="dialog" aria-labelledby="kompas-titel" aria-describedby="kompas-sub"/);
+  assert.doesNotMatch(wereldHtml, /aria-modal/);
+  assert.doesNotMatch(wereld, /\.inert = /);
+  assert.doesNotMatch(wereldCss, /\[inert\]/);
+  assert.match(wereld, /if \(e\.key !== 'Escape'\) return/);
+  assert.match(wereld, /if \(kompasStondOpen\) sluitKompas\(\{ updateRoute: false, restoreFocus: false \}\)/);
+  assert.match(wereld, /startDive\(h\.id, \{ vervangRoute: kompasStondOpen \}\)/);
+  assert.match(wereld, /\? \{ replace: true, pushed: window\.history\.state\?\.wereldPushed === true \}/);
+  assert.equal((wereld.match(/sluitKompas\(\{ updateRoute: false, restoreFocus: false \}\)/g) || []).length, 4);
   assert.match(wereld, /if \(reduce \|\| !g\.dive\) \{ toVerhaal\(gebouwId\); return; \}/);
   assert.equal((wereld.match(/wereldPushed: pushed/g) || []).length, 4);
   assert.match(wereldCss, /\.sw-route \{ display: none; \}/);
-  assert.match(wereldCss, /#hub\[inert\],\s*\.wereld-nav\[inert\] \{ pointer-events: none; \}/);
 
   assert.match(chat, /const MAX_HISTORY_MESSAGES = 20/);
   assert.match(chat, /const MAX_MESSAGE_LENGTH = 2000/);
@@ -265,9 +271,9 @@ test('het Kompas is modaal, kondigt status aan en begrenst gesprekshistorie', ()
 
 test('functionele wereldassets worden met dezelfde cacheversie geladen', () => {
   const wereldHtml = read('wereld/index.html');
-  assert.match(wereldHtml, /wereld\.css\?v=20260727-skipknop-hoek/);
-  assert.match(wereldHtml, /scrub-engine\.js\?v=20260727-skipknop-hoek/);
-  assert.match(wereldHtml, /wereld\.js\?v=20260727-skipknop-hoek/);
+  assert.match(wereldHtml, /wereld\.css\?v=20260727-wegwijzer-hotspots/);
+  assert.match(wereldHtml, /scrub-engine\.js\?v=20260727-wegwijzer-hotspots/);
+  assert.match(wereldHtml, /wereld\.js\?v=20260727-wegwijzer-hotspots/);
   assert.match(wereldHtml, /chat\.css\?v=20260726-verstuur-icoon/);
   assert.match(wereldHtml, /chat\.js\?v=20260726-verstuur-icoon/);
 });
@@ -295,9 +301,9 @@ test('de wereld is technisch voorbereid als root-homepage', () => {
       '/organisatie/* /index.html 200',
     ]
   );
-  assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260727-skipknop-hoek"/);
-  assert.match(wereldHtml, /src="\/wereld\/scrub-engine\.js\?v=20260727-skipknop-hoek"/);
-  assert.match(wereldHtml, /src="\/wereld\/wereld\.js\?v=20260727-skipknop-hoek"/);
+  assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260727-wegwijzer-hotspots"/);
+  assert.match(wereldHtml, /src="\/wereld\/scrub-engine\.js\?v=20260727-wegwijzer-hotspots"/);
+  assert.match(wereldHtml, /src="\/wereld\/wereld\.js\?v=20260727-wegwijzer-hotspots"/);
   assert.doesNotMatch(wereldHtml, /(?:href|src)="(?:wereld\.css|scrub-engine\.js|wereld\.js)/);
   assert.doesNotMatch(wereld, /:\s*'assets\//);
   assert.match(wereldHtml, /class="wereld-merk" href="\/"/);
