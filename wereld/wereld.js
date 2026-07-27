@@ -14,7 +14,7 @@ const HOTSPOTS = [
   // Plein-plekken, secundair (sub): stolpen-tuin en kampvuur openen een
   // still-binnenwereld (geen dive), de wegwijzer linkt naar het Kompas op de site.
   { id: 'projecten', label: 'Projecten',     x: 27, y: 51, xm: 27, ym: 52, enabled: true, sub: true },
-  { id: 'overons',   label: 'Over Morgen.',  x: 70, y: 67, xm: 71, ym: 62, enabled: true, sub: true },
+  { id: 'overons',   label: 'Over Morgen.',  x: 70, y: 67, xm: 74, ym: 56, enabled: true, sub: true },
   { id: 'kompas',    label: 'Wegwijzer',     x: 52, y: 47, xm: 52, ym: 50, enabled: true, sub: true, kompas: true },
 ];
 
@@ -761,11 +761,6 @@ HOTSPOTS.forEach((h) => {
   }
   b.classList.toggle('is-disabled', !h.enabled);
   if (!h.enabled) b.setAttribute('aria-disabled', 'true');
-  // Mobiel kent eigen posities; desktopwaarden staan al in de HTML.
-  const x = (isMobile() && h.xm != null) ? h.xm : h.x;
-  const y = (isMobile() && h.ym != null) ? h.ym : h.y;
-  b.style.left = x + '%';
-  b.style.top = y + '%';
   b.addEventListener('click', (e) => {
     e.preventDefault();   // de href is de fallback zonder JS; hier blijven we in de wereld
     activeerHotspot(h, b);
@@ -785,6 +780,57 @@ HOTSPOTS.forEach((h) => {
   path.addEventListener('click', () => activeerHotspot(h, b));
   hotspotSvg.appendChild(path);
 });
+
+/* De labels stonden als percentage van het scherm, terwijl de still en de
+   klikvlakken een cover-uitsnede van de bron zijn (preserveAspectRatio slice).
+   Bij een andere schermverhouding schoof het beeld dus wel mee en het label
+   niet, waardoor 'Over Morgen.' onder het eiland in het zwart belandde.
+
+   De percentages horen dus bij de bron, niet bij het scherm: we rekenen ze om
+   naar de viewBox van de SVG en projecteren ze met dezelfde matrix als de
+   klikvlakken. Zo blijft de handmatig getunede spreiding van de labels intact
+   en schuiven ze toch met de cover-uitsnede mee. */
+const hotspotViewBox = hotspotMap.viewBox.split(/[\s,]+/).map(Number);
+const klem = (waarde, min, max) => (min > max ? (min + max) / 2 : Math.min(max, Math.max(min, waarde)));
+
+function ankerInViewBox(h) {
+  const [vbX, vbY, vbBreedte, vbHoogte] = hotspotViewBox;
+  const x = (isMobile() && h.xm != null) ? h.xm : h.x;
+  const y = (isMobile() && h.ym != null) ? h.ym : h.y;
+  return { x: vbX + (x / 100) * vbBreedte, y: vbY + (y / 100) * vbHoogte };
+}
+
+function plaatsHotspots() {
+  const ctm = hotspotSvg.getScreenCTM();
+  if (!ctm) return;
+  const vlak = hotspotLayer.getBoundingClientRect();
+  const punt = hotspotSvg.createSVGPoint();
+  const marge = 6;
+  HOTSPOTS.forEach((h) => {
+    const b = hotspotButtons.get(h.id);
+    if (!b) return;
+    const anker = ankerInViewBox(h);
+    punt.x = anker.x;
+    punt.y = anker.y;
+    const scherm = punt.matrixTransform(ctm);
+    // Het label staat gecentreerd op dit punt (translate(-50%, -50%)), dus
+    // houden we een halve labelmaat marge van de schermrand.
+    const halveBreedte = b.offsetWidth / 2;
+    const halveHoogte = b.offsetHeight / 2;
+    const links = klem(scherm.x - vlak.left, halveBreedte + marge, vlak.width - halveBreedte - marge);
+    const boven = klem(scherm.y - vlak.top, halveHoogte + marge, vlak.height - halveHoogte - marge);
+    b.style.left = links + 'px';
+    b.style.top = boven + 'px';
+  });
+}
+
+plaatsHotspots();
+window.addEventListener('resize', plaatsHotspots);
+window.addEventListener('orientationchange', plaatsHotspots);
+// Mobiel Safari schuift zijn adresbalk in en uit: de laag verandert dan van
+// hoogte zonder dat er een betrouwbaar resize-event volgt. De observer houdt
+// de labels ook dan op hun gebouw.
+if ('ResizeObserver' in window) new ResizeObserver(plaatsHotspots).observe(hotspotLayer);
 
 /* ---------- het Kompas: vak onderaan op de hub ---------- */
 let kompasOpener = null;
