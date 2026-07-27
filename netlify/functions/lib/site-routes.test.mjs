@@ -113,11 +113,16 @@ test('een laag die niet aan de beurt is vangt geen kliks op', () => {
     wereldCss,
     /body\[data-state="hub"\] #hub,\s*body\[data-state="intro"\] #cine,\s*body\[data-state="dive"\] #cine \{\s*pointer-events: auto;/
   );
-  // Mobiele browserbalken vallen buiten env(safe-area-inset-bottom): de
-  // skipknop moet daar ruim bovenuit blijven, met een fatsoenlijk raakvlak.
+  // De skipknop hoort in de hoek, op safe-area-afstand van de onderrand, met een
+  // raakvlak van 44px op mobiel. Hij hoefde nooit omhoog voor de browserbalk:
+  // dat de knop niet reageerde kwam van het Wegwijzer-vak dat eroverheen lag.
   assert.match(
     wereldCss,
-    /@media \(max-width: 860px\) \{\s*\.skip-knop \{\s*bottom: calc\(72px \+ env\(safe-area-inset-bottom\)\);[\s\S]*?min-height: 44px;/
+    /\.skip-knop \{[^}]*bottom: calc\(24px \+ env\(safe-area-inset-bottom\)\);/s
+  );
+  assert.match(
+    wereldCss,
+    /@media \(max-width: 860px\) \{\s*\.skip-knop \{[^}]*min-height: 44px;/s
   );
 });
 

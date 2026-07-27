@@ -203,13 +203,12 @@ body[data-state="dive"] #cine.is-playing { opacity: 1; }
   display: none;
 }
 body[data-state="intro"] .skip-knop { display: block; }
-/* Mobiele browsers zetten hun eigen balk onderin het beeld, en die valt buiten
-   env(safe-area-inset-bottom). Ligt de knop te laag, dan opent mikken erop de
-   adresbalk. Hij zakt dus zo ver mogelijk de hoek in, maar blijft net boven die
-   balk hangen, met een raakvlak van 44px. */
+/* Op mobiel alleen een royaler raakvlak. De knop hoeft niet omhoog voor de
+   browserbalk: die valt buiten de layout-viewport, dus bottom telt al vanaf de
+   rand erboven. Dat de knop eerder niet reageerde kwam van het verborgen
+   Wegwijzer-vak dat eroverheen lag, niet van de hoogte. */
 @media (max-width: 860px) {
   .skip-knop {
-    bottom: calc(72px + env(safe-area-inset-bottom));
     padding: 13px 22px;
     min-height: 44px;
   }
