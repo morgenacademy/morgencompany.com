@@ -1,6 +1,11 @@
 /api/chat /.netlify/functions/chat 200
 http://www.morgencompany.com/* https://morgencompany.com/:splat 301!
 https://www.morgencompany.com/* https://morgencompany.com/:splat 301!
+# morgenacademy.nl is een alias, geen primair domein: Netlify stuurt de
+# www-variant daarvan niet automatisch door. Handmatig dus, anders komt
+# www.morgenacademy.nl niet bij de Academy-proxy onderaan dit bestand.
+http://www.morgenacademy.nl/* https://morgenacademy.nl/:splat 301!
+https://www.morgenacademy.nl/* https://morgenacademy.nl/:splat 301!
 /wereld / 301!
 /wereld/ / 301!
 /wereld/index.html / 301!
