@@ -113,11 +113,16 @@ test('een laag die niet aan de beurt is vangt geen kliks op', () => {
     wereldCss,
     /body\[data-state="hub"\] #hub,\s*body\[data-state="intro"\] #cine,\s*body\[data-state="dive"\] #cine \{\s*pointer-events: auto;/
   );
-  // Mobiele browserbalken vallen buiten env(safe-area-inset-bottom): de
-  // skipknop moet daar ruim bovenuit blijven, met een fatsoenlijk raakvlak.
+  // De skipknop hoort in de hoek, op safe-area-afstand van de onderrand, met een
+  // raakvlak van 44px op mobiel. Hij hoefde nooit omhoog voor de browserbalk:
+  // dat de knop niet reageerde kwam van het Wegwijzer-vak dat eroverheen lag.
   assert.match(
     wereldCss,
-    /@media \(max-width: 860px\) \{\s*\.skip-knop \{\s*bottom: calc\(104px \+ env\(safe-area-inset-bottom\)\);[\s\S]*?min-height: 44px;/
+    /\.skip-knop \{[^}]*bottom: calc\(24px \+ env\(safe-area-inset-bottom\)\);/s
+  );
+  assert.match(
+    wereldCss,
+    /@media \(max-width: 860px\) \{\s*\.skip-knop \{[^}]*min-height: 44px;/s
   );
 });
 
@@ -260,9 +265,9 @@ test('het Kompas is modaal, kondigt status aan en begrenst gesprekshistorie', ()
 
 test('functionele wereldassets worden met dezelfde cacheversie geladen', () => {
   const wereldHtml = read('wereld/index.html');
-  assert.match(wereldHtml, /wereld\.css\?v=20260727-kompas-spooklaag/);
-  assert.match(wereldHtml, /scrub-engine\.js\?v=20260727-kompas-spooklaag/);
-  assert.match(wereldHtml, /wereld\.js\?v=20260727-kompas-spooklaag/);
+  assert.match(wereldHtml, /wereld\.css\?v=20260727-skipknop-hoek/);
+  assert.match(wereldHtml, /scrub-engine\.js\?v=20260727-skipknop-hoek/);
+  assert.match(wereldHtml, /wereld\.js\?v=20260727-skipknop-hoek/);
   assert.match(wereldHtml, /chat\.css\?v=20260726-verstuur-icoon/);
   assert.match(wereldHtml, /chat\.js\?v=20260726-verstuur-icoon/);
 });
@@ -290,9 +295,9 @@ test('de wereld is technisch voorbereid als root-homepage', () => {
       '/organisatie/* /index.html 200',
     ]
   );
-  assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260727-kompas-spooklaag"/);
-  assert.match(wereldHtml, /src="\/wereld\/scrub-engine\.js\?v=20260727-kompas-spooklaag"/);
-  assert.match(wereldHtml, /src="\/wereld\/wereld\.js\?v=20260727-kompas-spooklaag"/);
+  assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260727-skipknop-hoek"/);
+  assert.match(wereldHtml, /src="\/wereld\/scrub-engine\.js\?v=20260727-skipknop-hoek"/);
+  assert.match(wereldHtml, /src="\/wereld\/wereld\.js\?v=20260727-skipknop-hoek"/);
   assert.doesNotMatch(wereldHtml, /(?:href|src)="(?:wereld\.css|scrub-engine\.js|wereld\.js)/);
   assert.doesNotMatch(wereld, /:\s*'assets\//);
   assert.match(wereldHtml, /class="wereld-merk" href="\/"/);
