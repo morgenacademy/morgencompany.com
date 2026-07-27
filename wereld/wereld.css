@@ -146,6 +146,16 @@ body[data-state="verhaal"] .wereld-huidige {
   opacity: 0;
   visibility: hidden;
   transition: opacity .6s ease, visibility 0s linear .6s;
+  /* Een laag die niet aan de beurt is mag geen kliks opvangen. #cine ligt boven
+     de hub en bleef na de intro een onzichtbaar klikschild (opacity 0, maar wel
+     zichtbaar en klikbaar), waardoor geen enkel hotspot-label nog reageerde.
+     Alleen de laag die bij de huidige state hoort krijgt kliks terug. */
+  pointer-events: none;
+}
+body[data-state="hub"] #hub,
+body[data-state="intro"] #cine,
+body[data-state="dive"] #cine {
+  pointer-events: auto;
 }
 
 /* Hub zichtbaar in hub-state en (als onderlaag) tijdens de dive.
@@ -189,6 +199,17 @@ body[data-state="dive"] #cine.is-playing { opacity: 1; }
   display: none;
 }
 body[data-state="intro"] .skip-knop { display: block; }
+/* Mobiele browsers zetten hun eigen balk onderin het beeld, en die valt buiten
+   env(safe-area-inset-bottom). De knop kwam daardoor onder de adresbalk te
+   liggen: mikken op 'Sla intro over' opende de adresbalk. Op smalle schermen
+   houden we daarom extra ruimte vrij, plus een royaler raakvlak. */
+@media (max-width: 860px) {
+  .skip-knop {
+    bottom: calc(104px + env(safe-area-inset-bottom));
+    padding: 13px 22px;
+    min-height: 44px;
+  }
+}
 
 /* ---------- Hub ---------- */
 .hub-still {
