@@ -121,6 +121,27 @@ test('een laag die niet aan de beurt is vangt geen kliks op', () => {
   );
 });
 
+test('verborgen panelen liggen niet als onzichtbaar tikdoel over de hub', () => {
+  const wereldCss = read('wereld/wereld.css');
+  const wereldHtml = read('wereld/index.html');
+  // Een eigen display-waarde overrulet het hidden-attribuut (dat werkt via de
+  // browserstijl [hidden] { display: none }). Zo'n paneel wordt dan toch
+  // gelayout en onderschept met opacity 0 nog steeds elke tik: 'Over Morgen.'
+  // en 'Sla intro over' vielen precies binnen het Wegwijzer-vak.
+  for (const id of ['kompas-paneel', 'wereld-ticker']) {
+    assert.match(wereldHtml, new RegExp(`id="${id}"[^>]*hidden`), `${id} hoort hidden te staan in de markup`);
+  }
+  assert.match(wereldCss, /\.kompas-paneel \{[^}]*visibility: hidden;/s);
+  assert.match(wereldCss, /\.kompas-paneel \{[^}]*pointer-events: none;/s);
+  assert.match(
+    wereldCss,
+    /\.kompas-paneel:not\(\[hidden\]\) \{[^}]*visibility: visible;[^}]*pointer-events: auto;/s
+  );
+  // Losse knoppen met hidden (zoals #einde-cta2) krijgen display: inline-block
+  // en hebben dezelfde afscherming nodig.
+  assert.match(wereldCss, /\.knop-accent\[hidden\], \.knop-ghost\[hidden\] \{ display: none; \}/);
+});
+
 test('invoervelden op touch zijn 16px, anders zoomt iOS de pagina scheef', () => {
   const wereldCss = read('wereld/wereld.css');
   const chatCss = read('docs/academy-chat/chat.css');
@@ -239,9 +260,9 @@ test('het Kompas is modaal, kondigt status aan en begrenst gesprekshistorie', ()
 
 test('functionele wereldassets worden met dezelfde cacheversie geladen', () => {
   const wereldHtml = read('wereld/index.html');
-  assert.match(wereldHtml, /wereld\.css\?v=20260727-ios-inputzoom/);
-  assert.match(wereldHtml, /scrub-engine\.js\?v=20260727-ios-inputzoom/);
-  assert.match(wereldHtml, /wereld\.js\?v=20260727-ios-inputzoom/);
+  assert.match(wereldHtml, /wereld\.css\?v=20260727-kompas-spooklaag/);
+  assert.match(wereldHtml, /scrub-engine\.js\?v=20260727-kompas-spooklaag/);
+  assert.match(wereldHtml, /wereld\.js\?v=20260727-kompas-spooklaag/);
   assert.match(wereldHtml, /chat\.css\?v=20260726-verstuur-icoon/);
   assert.match(wereldHtml, /chat\.js\?v=20260726-verstuur-icoon/);
 });
@@ -269,9 +290,9 @@ test('de wereld is technisch voorbereid als root-homepage', () => {
       '/organisatie/* /index.html 200',
     ]
   );
-  assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260727-ios-inputzoom"/);
-  assert.match(wereldHtml, /src="\/wereld\/scrub-engine\.js\?v=20260727-ios-inputzoom"/);
-  assert.match(wereldHtml, /src="\/wereld\/wereld\.js\?v=20260727-ios-inputzoom"/);
+  assert.match(wereldHtml, /href="\/wereld\/wereld\.css\?v=20260727-kompas-spooklaag"/);
+  assert.match(wereldHtml, /src="\/wereld\/scrub-engine\.js\?v=20260727-kompas-spooklaag"/);
+  assert.match(wereldHtml, /src="\/wereld\/wereld\.js\?v=20260727-kompas-spooklaag"/);
   assert.doesNotMatch(wereldHtml, /(?:href|src)="(?:wereld\.css|scrub-engine\.js|wereld\.js)/);
   assert.doesNotMatch(wereld, /:\s*'assets\//);
   assert.match(wereldHtml, /class="wereld-merk" href="\/"/);
