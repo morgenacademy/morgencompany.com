@@ -138,6 +138,10 @@ body[data-state="verhaal"] .wereld-huidige {
   transform: translateY(-2px);
   box-shadow: 0 10px 30px rgba(216, 254, 86, .25);
 }
+/* Dezelfde valkuil als bij het Wegwijzer-vak: de display hierboven wint van het
+   hidden-attribuut, dus een verborgen knop (#einde-cta2 staat hidden in de
+   markup) zou als onzichtbaar tikdoel blijven bestaan. */
+.knop-accent[hidden], .knop-ghost[hidden] { display: none; }
 
 /* ---------- Fullscreen states ---------- */
 .stage {
@@ -739,9 +743,24 @@ body.tegels-zichtbaar #world .sw-copy {
   backdrop-filter: blur(16px);
   box-shadow: 0 30px 80px rgba(12, 8, 24, .75);
   opacity: 0;
+  /* Het display: flex hierboven overrulet het HTML-attribuut hidden, dat in de
+     browserstijl niet meer is dan een display-none-regel. Het paneel werd dus
+     altijd gelayout en bleef als onzichtbaar vlak over de hub liggen: opacity 0
+     onderschept nog steeds elke tik. Op een telefoon vielen 'Over Morgen.' en
+     'Sla intro over' precies binnen dat vlak en reageerden ze nergens op.
+     visibility haalt het paneel uit de hit-test en uit de voorleesvolgorde;
+     pointer-events is het vangnet. Geen van beide in de transition, anders
+     blijft de laag alsnog een fractie hangen. */
+  visibility: hidden;
+  pointer-events: none;
   transition: opacity .35s ease, transform .35s ease;
 }
-.kompas-paneel:not([hidden]) { opacity: 1; transform: translate(-50%, 0); }
+.kompas-paneel:not([hidden]) {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  visibility: visible;
+  pointer-events: auto;
+}
 .kompas-paneel > [data-kompas] {
   flex: 1 1 auto;
   min-height: 0;
