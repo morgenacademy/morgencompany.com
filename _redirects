@@ -33,4 +33,12 @@ https://www.morgencompany.com/* https://morgencompany.com/:splat 301!
 /inspiratie/ /inspiratie/index.html 200
 /spraaktool /spraaktool/index.html 200
 /spraaktool/ /spraaktool/index.html 200
+# morgenacademy.nl wijst naar deze site, maar de Academy-app (login,
+# dashboard, cursussen, checkout, klantportalen) draait op
+# academy.morgencompany.com. Alles op dat domein dat hierboven niet is
+# afgevangen, proxyen we door (status 200, geen 301) zodat bestaande
+# klantlinks blijven werken met hun eigen URL. Staat bewust als laatste:
+# company-paden die hierboven staan blijven van deze site.
+https://morgenacademy.nl/* https://academy.morgencompany.com/:splat 200
+http://morgenacademy.nl/* https://academy.morgencompany.com/:splat 200
 /* /404.html 404
