@@ -896,6 +896,16 @@ body.ticker-actief .sw-hint { bottom: calc(84px + env(safe-area-inset-bottom)); 
   .einde-lijst--tiles li.is-link > a { min-height: 92px; padding: 14px 10px; }
 }
 
+/* Touch: iOS zoomt de hele pagina in zodra een invoerveld met een tekstgrootte
+   onder 16px focus krijgt, en zoomt daarna niet uit zichzelf terug. Het
+   zichtbare venster blijft dan smaller dan de pagina: knoppen rechts vallen
+   half buiten beeld en tikken landen naast de hotspots, alsof het plein niet
+   meer reageert. 16px houdt die zoom tegen. Dezelfde afspraak staat in
+   docs/academy-chat/chat.css voor het invoerveld van het Kompas zelf. */
+@media (hover: none) and (pointer: coarse) {
+  .hub-kompasbalk-input { font-size: 16px; }
+}
+
 @media (max-width: 860px) and (orientation: portrait) {
   .inspire-echt {
     top: clamp(104px, 13vh, 116px);
