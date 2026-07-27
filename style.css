@@ -505,6 +505,16 @@ nav.scrolled {
 }
 .logo-band::before { left: 0; background: linear-gradient(90deg, var(--bg-dark), transparent); }
 .logo-band::after { right: 0; background: linear-gradient(-90deg, var(--bg-dark), transparent); }
+/* De gekloonde banden staan op secties met een eigen achtergrond, waar een fade
+   in --bg-dark als donkere veeg zichtbaar wordt. Daar maskeren we de rand weg in
+   plaats van er een kleur overheen te leggen: werkt op elke achtergrond. Die
+   banden bevatten alleen de logostrip, dus er valt geen label onder het masker. */
+.logo-band[data-logo-band-clone]::before,
+.logo-band[data-logo-band-clone]::after { display: none; }
+.logo-band[data-logo-band-clone] {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 90px, #000 calc(100% - 90px), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 90px, #000 calc(100% - 90px), transparent);
+}
 .logo-track { display: flex; align-items: center; gap: 3.5rem; animation: logoScroll 28s linear infinite; width: max-content; }
 .logo-track:hover { animation-play-state: paused; }
 .clogo { height: 32px; width: auto; opacity: .45; filter: brightness(0) invert(1); transition: opacity .25s; flex-shrink: 0; }

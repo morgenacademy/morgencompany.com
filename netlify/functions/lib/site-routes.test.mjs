@@ -180,8 +180,8 @@ test('formulierinzendingen komen terug op de juiste route met een bevestiging', 
     assert.match(contents, /success\.setAttribute\('role','status'\)/);
     assert.match(contents, /container\.replaceChildren\(success\)/);
     assert.match(contents, /Aanvraag ontvangen/);
-    assert.match(contents, /chat\.css\?v=20260726-mobiel-invoer/);
-    assert.match(contents, /chat\.js\?v=20260724-launch/);
+    assert.match(contents, /chat\.css\?v=20260726-verstuur-icoon/);
+    assert.match(contents, /chat\.js\?v=20260726-verstuur-icoon/);
   }
 });
 
@@ -224,8 +224,8 @@ test('functionele wereldassets worden met dezelfde cacheversie geladen', () => {
   assert.match(wereldHtml, /wereld\.css\?v=20260727-hotspot-kliklaag/);
   assert.match(wereldHtml, /scrub-engine\.js\?v=20260727-hotspot-kliklaag/);
   assert.match(wereldHtml, /wereld\.js\?v=20260727-hotspot-kliklaag/);
-  assert.match(wereldHtml, /chat\.css\?v=20260726-mobiel-invoer/);
-  assert.match(wereldHtml, /chat\.js\?v=20260724-launch/);
+  assert.match(wereldHtml, /chat\.css\?v=20260726-verstuur-icoon/);
+  assert.match(wereldHtml, /chat\.js\?v=20260726-verstuur-icoon/);
 });
 
 test('de wereld is technisch voorbereid als root-homepage', () => {
