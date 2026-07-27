@@ -281,7 +281,6 @@ const eindeCta = document.getElementById('einde-cta');
 const eindeCta2 = document.getElementById('einde-cta2');
 const kompasPaneel = document.getElementById('kompas-paneel');
 const kompasSluit = document.getElementById('kompas-sluit');
-const wereldNav = document.querySelector('.wereld-nav');
 const wereldTicker = document.getElementById('wereld-ticker');
 const tickerTrack = document.getElementById('ticker-track');
 
@@ -685,10 +684,17 @@ function terugNaarHub() {
   toHub({ historyMode: 'replace' });
 }
 
-function startDive(gebouwId, { updateRoute = true } = {}) {
+function startDive(gebouwId, { updateRoute = true, vervangRoute = false } = {}) {
   sluitKompas({ updateRoute: false, restoreFocus: false });
   huidigGebouw = gebouwId;
-  if (updateRoute) zetWereldRoute(ROUTE_BY_GEBOUW[gebouwId], { pushed: true });
+  if (updateRoute) {
+    // vervangRoute: we komen uit het Wegwijzer-vak. Die stap staat al in de
+    // geschiedenis; die schrijven we over zodat terug naar het plein leidt.
+    // Of dat een gepushte stap was, blijft daarbij staan.
+    zetWereldRoute(ROUTE_BY_GEBOUW[gebouwId], vervangRoute
+      ? { replace: true, pushed: window.history.state?.wereldPushed === true }
+      : { pushed: true });
+  }
   const g = GEBOUWEN[gebouwId];
   // Reduced motion of een plek zonder dive-cinematic: direct het verhaal in.
   if (reduce || !g.dive) { toVerhaal(gebouwId); return; }
@@ -738,9 +744,22 @@ const hotspotButtons = new Map();
 function activeerHotspot(h, trigger) {
   trigger.classList.remove('is-object-hovered');
   if (!h.enabled) return;
+  const kompasStondOpen = !kompasPaneel.hidden;
+  // Wegwijzer nogmaals aantikken sluit hem: het vak staat er al, dus dit leest
+  // als een tuimelschakelaar en niet als een tweede opening.
+  if (h.kompas) {
+    if (kompasStondOpen) { sluitKompas(); return; }
+    meetWereld('wereld_hotspot_open', { wereld_target: h.id, wereld_label: h.label });
+    openKompas({ trigger });
+    return;
+  }
   meetWereld('wereld_hotspot_open', { wereld_target: h.id, wereld_label: h.label });
-  if (h.kompas) { openKompas({ trigger }); return; }
-  if (GEBOUWEN[h.id]) { startDive(h.id); return; }
+  // Staat het Wegwijzer-vak open en kiest de bezoeker een gebouw, dan hoort die
+  // klik gewoon te werken: vak dicht en door. De wegwijzer-stap in de
+  // geschiedenis wordt daarbij vervangen in plaats van aangevuld, anders komt
+  // je terug-knop uit op een vak dat je net verlaten hebt.
+  if (kompasStondOpen) sluitKompas({ updateRoute: false, restoreFocus: false });
+  if (GEBOUWEN[h.id]) { startDive(h.id, { vervangRoute: kompasStondOpen }); return; }
   if (h.href) { window.location.href = h.href; return; }
 }
 
@@ -836,24 +855,20 @@ if ('ResizeObserver' in window) new ResizeObserver(plaatsHotspots).observe(hotsp
 let kompasOpener = null;
 let kompasFocusNaSluiten = null;
 
-function zetKompasModal(open) {
-  hubEl.inert = open;
-  wereldNav.inert = open;
+/* Het vak is bewust niet modaal: het plein blijft klikbaar, zodat een tik op
+   Trainingen of Projecten gewoon werkt in plaats van dood te lopen tot je het
+   kruisje gevonden hebt. Eerder stonden hub en nav op inert; inert levert geen
+   klik-events, dus die tikken kwamen nergens aan. */
+function zetKompasOpen(open) {
   // Propositietekst onder het vak wegblenden: het Wegwijzer-vak overlapt hem
   // deels en twee teksten naast elkaar leest onrustig. Terug bij sluiten.
   document.body.toggleAttribute('data-kompas-open', open);
 }
 
-function kompasFocusables() {
-  return [...kompasPaneel.querySelectorAll(
-    'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
-  )].filter((el) => !el.hidden && el.getClientRects().length > 0);
-}
-
 function openKompas({ historyMode = 'push', pushed = true, trigger = document.activeElement } = {}) {
   kompasOpener = trigger instanceof HTMLElement ? trigger : null;
   kompasPaneel.hidden = false;
-  zetKompasModal(true);
+  zetKompasOpen(true);
   meetWereld('wereld_kompas_open');
   if (historyMode !== 'none') {
     zetWereldRoute('wegwijzer', {
@@ -871,7 +886,7 @@ function sluitKompas({ updateRoute = true, restoreFocus = true } = {}) {
   if (kompasPaneel.hidden) return;
   const focusTarget = restoreFocus && kompasOpener?.isConnected ? kompasOpener : null;
   kompasPaneel.hidden = true;
-  zetKompasModal(false);
+  zetKompasOpen(false);
   if (updateRoute) {
     if (window.history.state?.wereldPushed === true) {
       kompasFocusNaSluiten = focusTarget;
@@ -905,26 +920,14 @@ if (hubKompasBalk && hubKompasInput) {
   });
 }
 
-kompasSluit.addEventListener('click', sluitKompas);
+kompasSluit.addEventListener('click', () => sluitKompas());
 document.addEventListener('keydown', (e) => {
   if (kompasPaneel.hidden) return;
-  if (e.key === 'Escape') {
-    e.preventDefault();
-    sluitKompas();
-    return;
-  }
-  if (e.key !== 'Tab') return;
-  const focusables = kompasFocusables();
-  if (!focusables.length) return;
-  const first = focusables[0];
-  const last = focusables[focusables.length - 1];
-  if (e.shiftKey && document.activeElement === first) {
-    e.preventDefault();
-    last.focus();
-  } else if (!e.shiftKey && document.activeElement === last) {
-    e.preventDefault();
-    first.focus();
-  }
+  if (e.key !== 'Escape') return;
+  // Geen Tab-val meer: het plein is niet langer inert, dus doortabben naar de
+  // gebouwen hoort te kunnen. Escape blijft de snelle uitweg.
+  e.preventDefault();
+  sluitKompas();
 });
 
 /* ---------- Logo-ticker: loopt onderin tijdens Projecten ---------- */
