@@ -1,5 +1,7 @@
 # SEO-teksten Morgen
 
+> Paden in dit document zijn relatief aan `company/` (sinds de monorepo van oktober 2026). `academy/index.html` hieronder is dus `company/academy/index.html`, niet de academy-app.
+
 Werkbestand voor de teksten die Google ziet. **Pas hieronder aan wat je wil, laat de rest staan.** Ik neem de wijzigingen daarna over in de code (7 bundles + `wereld/index.html`) en controleer of alles consistent staat.
 
 Vuistregels: title tot ~60 tekens (anders knipt Google af), description 120 tot 155 tekens, geen em-dashes, elke pagina een eigen kop en beschrijving.

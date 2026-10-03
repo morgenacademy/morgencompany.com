@@ -1,0 +1,16 @@
+project_id = "fiquwpfscmmeqlpkrjjp"
+
+[functions.create-mollie-payment]
+verify_jwt = false
+
+[functions.mollie-webhook]
+verify_jwt = false
+
+[functions.bunny-videos]
+verify_jwt = false
+
+[functions.portal-download]
+verify_jwt = false
+
+[functions.admin-invite-course]
+verify_jwt = true

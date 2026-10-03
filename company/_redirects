@@ -1,0 +1,55 @@
+/api/chat /.netlify/functions/chat 200
+http://www.morgencompany.com/* https://morgencompany.com/:splat 301!
+https://www.morgencompany.com/* https://morgencompany.com/:splat 301!
+# morgenacademy.nl is een alias, geen primair domein: Netlify stuurt de
+# www-variant daarvan niet automatisch door. Handmatig dus, anders komt
+# www.morgenacademy.nl niet bij de Academy-proxy onderaan dit bestand.
+http://www.morgenacademy.nl/* https://morgenacademy.nl/:splat 301!
+https://www.morgenacademy.nl/* https://morgenacademy.nl/:splat 301!
+# Broncode en tooling van de site zelf zijn niet voor bezoekers. Forced
+# (!) omdat de bestanden wel in de publish-map staan.
+/netlify/* /404.html 404!
+/scripts/* /404.html 404!
+/package.json /404.html 404!
+/package-lock.json /404.html 404!
+/wereld / 301!
+/wereld/ / 301!
+/wereld/index.html / 301!
+/index.html / 301!
+/ /wereld/index.html 200!
+/PLUGANDPAY_URL_HIER /academy 301
+/blog/De%20onvermijdelijke%20samensmelting%20van%20AI%20en%20VR%20-%20Wat%20betekent%20het%20om%20mens%20te%20zijn /blog/ai-vr-wat-betekent-het-om-mens-te-zijn/ 301
+/blog/De%20onvermijdelijke%20samensmelting%20van%20AI%20en%20VR%20-%20Wat%20betekent%20het%20om%20mens%20te%20zijn/ /blog/ai-vr-wat-betekent-het-om-mens-te-zijn/ 301
+/blog/oordeelskracht-chat-zegt-het-toch /blog/chat-zegt-het-toch/ 301
+/blog/oordeelskracht-chat-zegt-het-toch/ /blog/chat-zegt-het-toch/ 301
+/assistenten /projecten/ 301
+/assistenten/ /projecten/ 301
+/assistenten/* /projecten/ 301
+/organisatie /index.html 200
+/organisatie/ /index.html 200
+/organisatie/* /index.html 200
+/academy /academy/index.html 200
+/academy/ /academy/index.html 200
+/technology /technology/index.html 200
+/technology/ /technology/index.html 200
+/consultancy /consultancy/index.html 200
+/consultancy/ /consultancy/index.html 200
+/projecten /projecten/index.html 200
+/projecten/ /projecten/index.html 200
+/about /about/index.html 200
+/about/ /about/index.html 200
+/company /inspiratie/ 301
+/company/ /inspiratie/ 301
+/inspiratie /inspiratie/index.html 200
+/inspiratie/ /inspiratie/index.html 200
+/spraaktool /spraaktool/index.html 200
+/spraaktool/ /spraaktool/index.html 200
+# morgenacademy.nl wijst naar deze site, maar de Academy-app (login,
+# dashboard, cursussen, checkout, klantportalen) draait op
+# academy.morgencompany.com. Alles op dat domein dat hierboven niet is
+# afgevangen, proxyen we door (status 200, geen 301) zodat bestaande
+# klantlinks blijven werken met hun eigen URL. Staat bewust als laatste:
+# company-paden die hierboven staan blijven van deze site.
+https://morgenacademy.nl/* https://academy.morgencompany.com/:splat 200
+http://morgenacademy.nl/* https://academy.morgencompany.com/:splat 200
+/* /404.html 404

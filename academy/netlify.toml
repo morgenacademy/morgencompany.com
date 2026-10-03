@@ -1,0 +1,16 @@
+# Expliciete build-config. `npm run build` draait ook het postbuild-script
+# (scripts/prerender.mjs), dat met puppeteer de publieke routes prerendert.
+#
+# We installeren Chrome expliciet vóór de build. Puppeteer downloadt Chrome
+# normaal in zijn postinstall naar ~/.cache/puppeteer, maar die map zit NIET
+# in Netlify's dependency-cache. Zodra Netlify node_modules uit cache herstelt
+# ("up to date"), draait die postinstall niet meer en ontbreekt Chrome ->
+# prerender faalt met "Could not find Chrome". `browsers install chrome` is
+# idempotent en garandeert dat de juiste Chrome-versie aanwezig is.
+[build]
+  command = "npx puppeteer browsers install chrome && npm run build"
+  publish = "dist"
+
+[build.environment]
+  # Pin op een stabiele LTS zodat de Chromium-download betrouwbaar werkt.
+  NODE_VERSION = "20"
