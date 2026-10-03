@@ -534,3 +534,19 @@ test('onbekende routes krijgen een echte 404', () => {
   assert.match(read('_redirects'), /^\/\* \/404\.html 404$/m);
   assert.match(read('404.html'), /<meta name="robots" content="noindex,follow">/);
 });
+
+test('interne bestanden zijn niet publiek', () => {
+  const lines = read('_redirects').split('\n');
+  const proxy = lines.findIndex((line) => line.startsWith('https://morgenacademy.nl/*'));
+  assert.ok(proxy !== -1, 'academy-proxy niet gevonden');
+  for (const rule of [
+    '/netlify/* /404.html 404!',
+    '/scripts/* /404.html 404!',
+    '/package.json /404.html 404!',
+    '/package-lock.json /404.html 404!',
+  ]) {
+    const index = lines.indexOf(rule);
+    assert.ok(index !== -1, `regel ontbreekt: ${rule}`);
+    assert.ok(index < proxy, `regel staat na de academy-proxy: ${rule}`);
+  }
+});

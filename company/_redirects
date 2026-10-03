@@ -6,6 +6,12 @@ https://www.morgencompany.com/* https://morgencompany.com/:splat 301!
 # www.morgenacademy.nl niet bij de Academy-proxy onderaan dit bestand.
 http://www.morgenacademy.nl/* https://morgenacademy.nl/:splat 301!
 https://www.morgenacademy.nl/* https://morgenacademy.nl/:splat 301!
+# Broncode en tooling van de site zelf zijn niet voor bezoekers. Forced
+# (!) omdat de bestanden wel in de publish-map staan.
+/netlify/* /404.html 404!
+/scripts/* /404.html 404!
+/package.json /404.html 404!
+/package-lock.json /404.html 404!
 /wereld / 301!
 /wereld/ / 301!
 /wereld/index.html / 301!
