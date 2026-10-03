@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFileSync, statSync } from 'node:fs';
+import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 
@@ -548,5 +548,15 @@ test('interne bestanden zijn niet publiek', () => {
     const index = lines.indexOf(rule);
     assert.ok(index !== -1, `regel ontbreekt: ${rule}`);
     assert.ok(index < proxy, `regel staat na de academy-proxy: ${rule}`);
+  }
+});
+
+test('alle pagina’s meten met de ahrefs-key van het Morgen-account', () => {
+  const pages = readdirSync(root, { recursive: true })
+    .filter((file) => file.endsWith('.html') && !file.startsWith('node_modules'))
+    .filter((file) => read(file).includes('analytics.ahrefs.com'));
+  assert.ok(pages.length >= 14, `te weinig pagina's met ahrefs: ${pages.length}`);
+  for (const page of pages) {
+    assert.match(read(page), /data-key="yQRbW6fpGOr1fbA21yjdNQ"/, `${page} gebruikt een andere ahrefs-key`);
   }
 });
