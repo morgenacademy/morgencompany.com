@@ -70,6 +70,8 @@ grep -o 'page active" id="page-[a-z-]*"' company/*/index.html    # academy->page
 ## Commando's
 
 ```bash
+npm --prefix company ci          # na een verse clone: nodig voor netlify dev (tests draaien ook zonder)
+npm --prefix academy ci          # na een verse clone: nodig voor dev, test en build
 npm --prefix company test        # node --test, moet groen voor merge
 npm --prefix academy test        # vitest, moet groen voor merge
 npx http-server company -c-1 -p 8899   # statische preview (of launch.json "static-site")
