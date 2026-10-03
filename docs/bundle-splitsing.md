@@ -1,5 +1,7 @@
 # Bundle-splitsing: van 7 volledige kopieën naar echte pagina's
 
+> Paden in dit document zijn relatief aan `company/` (sinds de monorepo van oktober 2026). `academy/index.html` hieronder is dus `company/academy/index.html`, niet de academy-app.
+
 Startpunt voor een aparte sessie. Dit is bewust géén quick fix: het raakt de routing van de hele site.
 
 ## Prompt om mee te beginnen
