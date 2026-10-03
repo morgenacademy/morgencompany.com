@@ -62,6 +62,7 @@ grep -o 'page active" id="page-[a-z-]*"' company/*/index.html    # academy->page
 - Canonical domein: `academy.morgencompany.com`.
 - Supabase-project `fiquwpfscmmeqlpkrjjp`. Edge functions en migraties staan in `academy/supabase/`. Supabase CLI vanuit `academy/` draaien. De cursusdata is door Karin ingericht: niet zomaar wijzigen.
 - Env: `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_SUPABASE_PROJECT_ID`. Op Netlify in project `morgenacademy`, lokaal in `academy/.env`.
+- Supabase pauzeert het gratis project na 7 dagen stilte, en dan valt het klantportaal om. `.github/workflows/supabase-keepalive.yml` pingt dagelijks (repo-secrets `SUPABASE_URL`, `SUPABASE_ANON_KEY`). Workflows moeten in de root-`.github/` staan: GitHub leest `academy/.github/` niet.
 - Aanbod-sync: trainingsnamen in `academy/src/data/courses.ts` volgen `company/academy/index.html` en `company/netlify/functions/lib/kb.mjs`. Wijzig ze in dezelfde PR.
 
 # Voor beide
