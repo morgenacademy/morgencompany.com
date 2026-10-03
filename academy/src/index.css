@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Arimo:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Navy palette — afgestemd op company.com #0C0818 */
+    --navy: 255 50% 6%;        /* #0C0818 */
+    --nmd: 257 35% 12%;        /* kaarten / inputs */
+    --nlt: 260 30% 19%;        /* secondary */
+
+    /* Brand colors — Morgen huisstijl */
+    --pink: 268 52% 42%;       /* Morgen paars (primary) */
+    --purple: 268 52% 37%;     /* #5B2D8E diep paars (accent / ring) */
+    --neon: 74 97% 67%;        /* #d8fe56 neon-geel (CTA-accent) */
+    --blue: 225 66% 47%;       /* #2552c9 */
+    --green: 155 71% 36%;      /* #1a9e72 */
+
+    /* Text colors */
+    --brand-white: 267 31% 94%;   /* #F0ECF5 */
+    --brand-grey: 244 47% 86%;    /* #d6d4ef */
+    --brand-lgrey: 243 26% 81%;   /* #c0bdde */
+    --brand-black: 240 33% 7%;    /* #0a0a1a */
+
+    /* Semantic tokens mapped to brand */
+    --background: var(--navy);
+    --foreground: var(--brand-white);
+
+    --card: var(--nmd);
+    --card-foreground: var(--brand-white);
+
+    --popover: var(--nmd);
+    --popover-foreground: var(--brand-white);
+
+    --primary: var(--pink);
+    --primary-foreground: var(--brand-white);
+
+    --secondary: var(--nlt);
+    --secondary-foreground: var(--brand-lgrey);
+
+    --muted: var(--nmd);
+    --muted-foreground: var(--brand-grey);
+
+    --accent: var(--purple);
+    --accent-foreground: var(--brand-white);
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: var(--brand-white);
+
+    --success: var(--green);
+
+    --border: 0 0% 100% / 0.06;
+    --input: var(--nmd);
+    --ring: var(--purple);
+
+    --radius: 12px;
+
+    --sidebar-background: var(--nmd);
+    --sidebar-foreground: var(--brand-lgrey);
+    --sidebar-primary: var(--pink);
+    --sidebar-primary-foreground: var(--brand-white);
+    --sidebar-accent: var(--nlt);
+    --sidebar-accent-foreground: var(--brand-lgrey);
+    --sidebar-border: 0 0% 100% / 0.06;
+    --sidebar-ring: var(--purple);
+
+    --font-display: 'Barlow', sans-serif;
+    --font-body: 'Barlow', sans-serif;
+    --font-ui: 'Barlow', sans-serif;
+
+    --gradient-primary: linear-gradient(135deg, #5B2D8E, #9B6FCF);
+    --gradient-accent: linear-gradient(135deg, #d8fe56, #b8e040);
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    color: hsl(var(--brand-lgrey));
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: hsl(var(--brand-white));
+  }
+
+  label, nav, button {
+    font-family: var(--font-ui);
+  }
+
+  /* Input focus states */
+  input:focus, textarea:focus, select:focus {
+    border-color: hsl(var(--purple)) !important;
+  }
+
+  /* Callout blocks */
+  .callout {
+    border-left: 3px solid hsl(var(--pink));
+    background: rgba(91, 45, 142, 0.10);
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

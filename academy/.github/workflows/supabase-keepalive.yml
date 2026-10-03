@@ -1,0 +1,68 @@
+# Houdt het Supabase-project wakker.
+#
+# Supabase pauzeert projecten op het gratis plan na zeven dagen zonder
+# activiteit. Een gepauzeerd project neemt het klantportaal mee: elke RPC faalt
+# en de bezoeker ziet "Fout opgetreden. Probeer het later opnieuw."
+#
+# Deze workflow pingt de database elke dag. Faalt de ping, dan faalt de run en
+# stuurt GitHub een mail. Dat is meteen je monitoring.
+#
+# Eenmalig instellen (Settings > Secrets and variables > Actions):
+#   SUPABASE_URL       https://fiquwpfscmmeqlpkrjjp.supabase.co
+#   SUPABASE_ANON_KEY  de publishable (anon) key uit het Supabase-dashboard
+#
+# Let op: GitHub schakelt geplande workflows automatisch uit na 60 dagen zonder
+# commits in de repo. Ligt de repo lang stil, zet hem dan weer aan via de
+# Actions-tab (of draai hem handmatig met "Run workflow").
+
+name: Supabase keep-alive
+
+on:
+  schedule:
+    # Elke dag rond 07:23 UTC. Dagelijks in plaats van wekelijks, zodat een
+    # gemiste run (GitHub stelt cron-jobs uit bij drukte) niet meteen de
+    # zevendaagse grens overschrijdt.
+    - cron: "23 7 * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    name: Ping de database
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Roep de keepalive-RPC aan
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${SUPABASE_URL:-}" ] || [ -z "${SUPABASE_ANON_KEY:-}" ]; then
+            echo "::error::Zet de repository secrets SUPABASE_URL en SUPABASE_ANON_KEY."
+            exit 1
+          fi
+
+          # curl geeft zelf geen foutcode bij een 4xx/5xx, dus we lezen de
+          # statuscode uit. Een netwerkfout laat curl wel falen: die vangen we
+          # apart af, anders stopt het script zonder uitleg.
+          status=$(curl -sS -o response.json -w '%{http_code}' \
+            --max-time 30 --retry 3 --retry-delay 10 --retry-all-errors \
+            -X POST "${SUPABASE_URL%/}/rest/v1/rpc/keepalive" \
+            -H "apikey: ${SUPABASE_ANON_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
+            -H "Content-Type: application/json" \
+            -d '{}') || {
+              echo "::error::Supabase is niet bereikbaar. Staat het project gepauzeerd in het dashboard?"
+              exit 1
+            }
+
+          echo "HTTP ${status}"
+          [ -f response.json ] && cat response.json && echo
+
+          if [ "${status}" != "200" ]; then
+            echo "::error::Keep-alive mislukt (HTTP ${status}). Staat het project gepauzeerd in het Supabase-dashboard?"
+            exit 1
+          fi
+
+          echo "Project is wakker."
