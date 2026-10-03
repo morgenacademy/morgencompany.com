@@ -557,8 +557,12 @@ test('alle pagina’s meten met de ahrefs-key van het Morgen-account', () => {
     .filter((file) => read(file).includes('analytics.ahrefs.com'));
   assert.ok(pages.length >= 14, `te weinig pagina's met ahrefs: ${pages.length}`);
   for (const page of pages) {
-    // Bundels zetten de key als data-key-attribuut, wereld/ via dataset.key.
-    assert.ok(read(page).includes("yQRbW6fpGOr1fbA21yjdNQ"), `${page} mist de ahrefs-key van het Morgen-account`);
+    // De installatiecheck van ahrefs leest de HTML: de tag moet er letterlijk
+    // staan, niet pas later via JavaScript worden toegevoegd.
+    assert.ok(
+      read(page).includes('<script src="https://analytics.ahrefs.com/analytics.js" data-key="yQRbW6fpGOr1fbA21yjdNQ" async></script>'),
+      `${page} mist de vaste ahrefs-tag van het Morgen-account`,
+    );
     assert.doesNotMatch(read(page), /jQ2PizbnpUs2qeoKjvs/, `${page} gebruikt nog de oude privé-key`);
   }
 });
