@@ -1,73 +1,23 @@
-# Welcome to your Lovable project
+# Morgen Academy (academy/)
 
-## Project info
+De online leeromgeving van Morgen: cursussen, checkout (Mollie) en klantportalen. Live op academy.morgencompany.com; links naar morgenacademy.nl blijven werken.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+Gebouwd met Vite, TypeScript, React, shadcn-ui, Tailwind CSS en Supabase.
 
-## How can I edit this code?
-
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+## Lokaal werken
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+git clone git@github.com:morgenacademy/morgencompany.com.git
+cd morgencompany.com/academy
+npm ci
+npm run dev        # http://localhost:8080
+npm test           # vitest
 ```
 
-**Edit a file directly in GitHub**
+Zet de Supabase-waarden in `academy/.env` (`VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_SUPABASE_PROJECT_ID`). De echte waarden staan in de Netlify-omgeving van project `morgenacademy`. Supabase-commando's draai je vanuit deze map.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Deploy
 
-**Use GitHub Codespaces**
+Netlify-project `morgenacademy` bouwt automatisch bij een merge naar `main`, maar alleen als er iets in `academy/` is veranderd. `npm run build` draait daarna `scripts/prerender.mjs` voor de publieke pagina's.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Meer afspraken (werkwijze, aanbod-sync met de website, keep-alive): zie `CLAUDE.md` in de root van de repo.
